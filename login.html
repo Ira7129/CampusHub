@@ -25,12 +25,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 body{
     min-height:100vh;
     background:#050816;
-    overflow:hidden;
+    overflow-x:hidden;
     position:relative;
     display:flex;
     justify-content:center;
     align-items:center;
     color:white;
+    padding:20px;
 }
 
 /* ========================= */
@@ -45,31 +46,24 @@ body{
     align-items:center;
     gap:10px;
     padding:14px 24px;
-    border:2px solid rgba(0,255,255,0.4);
+    border:none;
     border-radius:35px;
-    background:rgba(255,255,255,0.05);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.08);
     color:#00ffff;
     font-size:15px;
     font-weight:bold;
     cursor:pointer;
     backdrop-filter:blur(10px);
-    transition:all 0.4s ease-in-out;
+    transition:0.4s;
     z-index:1000;
 }
 
 .back-btn:hover{
     background:#00ffff;
     color:black;
-    transform:translateX(-10px) scale(1.1);
-    box-shadow:0 0 30px rgba(0,255,255,0.8);
-}
-
-.back-btn:active{
-    transform:translateX(-5px) scale(1.05);
-}
-
-.back-btn i{
-    font-size:14px;
+    transform:translateY(-4px) scale(1.05);
+    box-shadow:0 0 30px rgba(0,255,255,0.5);
 }
 
 /* ========================= */
@@ -178,7 +172,6 @@ body{
     justify-content:center;
     align-items:center;
     gap:60px;
-    padding:20px;
 }
 
 /* ========================= */
@@ -187,7 +180,6 @@ body{
 
 .left-section{
     flex:1;
-    animation:fadeLeft 1.5s ease;
 }
 
 .left-section h1{
@@ -219,7 +211,7 @@ body{
     border-radius:22px;
     padding:20px;
     backdrop-filter:blur(10px);
-    transition:all 0.4s ease-in-out;
+    transition:0.4s;
 }
 
 .feature:hover{
@@ -247,7 +239,6 @@ body{
     box-shadow:0 0 40px rgba(0,255,255,0.12);
     position:relative;
     overflow:hidden;
-    animation:fadeUp 1.5s ease;
 }
 
 .login-card::before{
@@ -279,6 +270,8 @@ body{
 .logo{
     text-align:center;
     margin-bottom:25px;
+    position:relative;
+    z-index:2;
 }
 
 .logo h2{
@@ -296,85 +289,33 @@ body{
     border-radius:15px;
     padding:5px;
     margin-bottom:25px;
+    position:relative;
+    z-index:2;
 }
 
 .toggle-btn{
     flex:1;
     padding:12px;
-    border:2px solid rgba(0,255,255,0.3);
+    border:none;
     background:transparent;
     color:white;
     cursor:pointer;
     border-radius:12px;
-    transition:all 0.4s ease-in-out;
+    transition:0.4s;
     font-weight:bold;
 }
 
-/* EMAIL TOGGLE - CYAN PULSE */
-.email-toggle{
-    border:2px solid rgba(0,255,255,0.5);
-    animation:emailPulse 2s infinite;
-}
-
-.email-toggle:hover{
-    border-color:#00ffff;
-    box-shadow:0 0 20px rgba(0,255,255,0.8);
-}
-
-.email-toggle.active{
-    background:linear-gradient(135deg,#00ffff,#0099ff);
-    border-color:#00ffff;
-    box-shadow:0 0 25px rgba(0,255,255,1),inset 0 0 15px rgba(0,255,255,0.4);
-}
-
-@keyframes emailPulse{
-    0%,100%{
-        box-shadow:0 0 5px rgba(0,255,255,0.5);
-    }
-    50%{
-        box-shadow:0 0 15px rgba(0,255,255,0.8);
-    }
-}
-
-/* PHONE TOGGLE - PURPLE SHAKE */
-.phone-toggle{
-    border:2px solid rgba(200,100,255,0.5);
-}
-
-.phone-toggle:hover{
-    border-color:#c864ff;
-    box-shadow:0 0 20px rgba(200,100,255,0.8);
-    animation:phoneShake 0.5s;
-}
-
-.phone-toggle.active{
-    background:linear-gradient(135deg,#c864ff,#8b3aff);
-    border-color:#c864ff;
-    box-shadow:0 0 25px rgba(200,100,255,1),inset 0 0 15px rgba(200,100,255,0.4);
-}
-
-@keyframes phoneShake{
-    0%,100%{transform:translateX(0);}
-    25%{transform:translateX(-5px);}
-    75%{transform:translateX(5px);}
+.toggle-btn.active{
+    background:linear-gradient(45deg,#00ffff,#0077ff);
 }
 
 /* ========================= */
-/* LOGIN FORMS */
+/* FORMS */
 /* ========================= */
 
-#emailLogin,
-#phoneLogin{
-    animation:fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn{
-    from{
-        opacity:0;
-    }
-    to{
-        opacity:1;
-    }
+.form-section{
+    position:relative;
+    z-index:2;
 }
 
 /* ========================= */
@@ -395,7 +336,11 @@ body{
     background:rgba(255,255,255,0.08);
     color:white;
     font-size:16px;
-    transition:all 0.4s ease-in-out;
+    transition:0.4s;
+}
+
+.input-box input::placeholder{
+    color:#bbb;
 }
 
 .input-box input:focus{
@@ -418,6 +363,7 @@ body{
 .phone-box{
     display:flex;
     gap:10px;
+    margin-bottom:22px;
 }
 
 .country-code{
@@ -428,13 +374,6 @@ body{
     color:white;
     padding:0 10px;
     outline:none;
-    transition:all 0.4s ease-in-out;
-}
-
-.country-code:hover,
-.country-code:focus{
-    background:rgba(255,255,255,0.12);
-    box-shadow:0 0 10px rgba(0,255,255,0.3);
 }
 
 .country-code option{
@@ -473,42 +412,17 @@ body{
     padding:16px;
     border:none;
     border-radius:18px;
+    background:linear-gradient(45deg,#00ffff,#0077ff);
     color:white;
     font-size:17px;
     font-weight:bold;
     cursor:pointer;
-    transition:all 0.4s ease-in-out;
-    margin-bottom:25px;
+    transition:0.4s;
 }
 
-/* LOGIN EMAIL BUTTON - BLUE SCALE */
-.login-email-btn{
-    background:linear-gradient(135deg,#00d4ff,#0099ff);
-    box-shadow:0 0 20px rgba(0,212,255,0.4);
-}
-
-.login-email-btn:hover{
-    transform:scale(1.08);
-    box-shadow:0 0 35px rgba(0,212,255,0.8);
-}
-
-.login-email-btn:active{
-    transform:scale(0.95);
-}
-
-/* LOGIN PHONE BUTTON - GREEN SLIDE */
-.login-phone-btn{
-    background:linear-gradient(135deg,#00ff88,#00cc66);
-    box-shadow:0 0 20px rgba(0,255,136,0.4);
-}
-
-.login-phone-btn:hover{
-    transform:translateX(8px);
-    box-shadow:0 0 35px rgba(0,255,136,0.8);
-}
-
-.login-phone-btn:active{
-    transform:translateX(3px);
+.login-btn:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 30px rgba(0,255,255,0.5);
 }
 
 /* ========================= */
@@ -519,8 +433,10 @@ body{
     display:flex;
     align-items:center;
     gap:15px;
-    margin-bottom:25px;
+    margin:25px 0;
     color:#aaa;
+    position:relative;
+    z-index:2;
 }
 
 .divider::before,
@@ -540,70 +456,26 @@ body{
     justify-content:center;
     gap:15px;
     margin-bottom:25px;
+    position:relative;
+    z-index:2;
 }
 
 .social-btn{
     width:52px;
     height:52px;
-    border:2px solid rgba(255,255,255,0.2);
+    border:none;
     border-radius:50%;
     background:rgba(255,255,255,0.08);
     color:white;
     cursor:pointer;
-    transition:all 0.4s ease-in-out;
+    transition:0.4s;
     font-size:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
 }
 
-/* GOOGLE BUTTON - RED ROTATE */
-.google-btn{
-    border-color:rgba(234,67,53,0.5);
-}
-
-.google-btn:hover{
-    background:linear-gradient(135deg,#ea4335,#ff6b6b);
-    border-color:#ea4335;
-    box-shadow:0 0 20px rgba(234,67,53,0.8);
-    transform:rotate(360deg) scale(1.2);
-    animation:none;
-}
-
-/* FACEBOOK BUTTON - BLUE BOUNCE */
-.facebook-btn{
-    border-color:rgba(59,89,152,0.5);
-}
-
-.facebook-btn:hover{
-    background:linear-gradient(135deg,#3b5998,#4267b2);
-    border-color:#3b5998;
-    box-shadow:0 0 20px rgba(59,89,152,0.8);
-    animation:bounce 0.6s;
-}
-
-@keyframes bounce{
-    0%,100%{transform:translateY(0);}
-    25%{transform:translateY(-10px);}
-    75%{transform:translateY(10px);}
-}
-
-/* GITHUB BUTTON - DARK FLIP */
-.github-btn{
-    border-color:rgba(255,255,255,0.3);
-}
-
-.github-btn:hover{
-    background:linear-gradient(135deg,#1f1f1f,#333333);
-    border-color:#ffffff;
-    box-shadow:0 0 20px rgba(255,255,255,0.6);
-    transform:perspective(600px) rotateY(360deg);
-    color:#00ffff;
-}
-
-@keyframes flip{
-    0%{transform:perspective(600px) rotateY(0deg);}
-    100%{transform:perspective(600px) rotateY(360deg);}
+.social-btn:hover{
+    background:#00ffff;
+    color:black;
+    transform:translateY(-5px);
 }
 
 /* ========================= */
@@ -613,56 +485,19 @@ body{
 .signup{
     text-align:center;
     color:#d0d0d0;
+    position:relative;
+    z-index:2;
 }
 
 .signup a{
     color:#00ffff;
     text-decoration:none;
     font-weight:bold;
-    transition:all 0.4s ease-in-out;
-    position:relative;
-    background:linear-gradient(90deg,#ffb700,#ffd700,#ffb700);
-    background-size:200% auto;
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    transition:0.3s;
 }
 
 .signup a:hover{
-    text-shadow:0 0 10px rgba(0,255,255,0.8);
-    animation:goldWave 0.8s ease-in-out;
-}
-
-@keyframes goldWave{
-    0%{letter-spacing:0;}
-    50%{letter-spacing:2px;}
-    100%{letter-spacing:0;}
-}
-
-/* ========================= */
-/* ANIMATIONS */
-/* ========================= */
-
-@keyframes fadeUp{
-    from{
-        opacity:0;
-        transform:translateY(60px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-@keyframes fadeLeft{
-    from{
-        opacity:0;
-        transform:translateX(-60px);
-    }
-    to{
-        opacity:1;
-        transform:translateX(0);
-    }
+    text-shadow:0 0 15px #00ffff;
 }
 
 /* ========================= */
@@ -670,6 +505,10 @@ body{
 /* ========================= */
 
 @media(max-width:1000px){
+
+    body{
+        overflow-y:auto;
+    }
 
     .container{
         flex-direction:column;
@@ -746,7 +585,7 @@ body{
 <!-- MAIN -->
 <div class="container">
 
-    <!-- LEFT -->
+    <!-- LEFT SECTION -->
     <div class="left-section">
 
         <h1 class="title">
@@ -799,29 +638,30 @@ body{
         <!-- TOGGLE -->
         <div class="login-toggle">
 
-            <button class="toggle-btn email-toggle active"
-            onclick="showEmailLogin()"
-            id="emailBtn">
+            <button class="toggle-btn active"
+            id="emailBtn"
+            type="button">
                 Email Login
             </button>
 
-            <button class="toggle-btn phone-toggle"
-            onclick="showPhoneLogin()"
-            id="phoneBtn">
+            <button class="toggle-btn"
+            id="phoneBtn"
+            type="button">
                 Phone Login
             </button>
 
         </div>
 
         <!-- EMAIL LOGIN -->
-        <div id="emailLogin">
+        <div id="emailLogin" class="form-section">
 
-            <form>
+            <form action="#" method="POST">
 
                 <div class="input-box">
                     <input type="email"
                     placeholder="Enter Email"
                     required>
+
                     <i class="fa-solid fa-envelope"></i>
                 </div>
 
@@ -829,6 +669,7 @@ body{
                     <input type="password"
                     placeholder="Enter Password"
                     required>
+
                     <i class="fa-solid fa-lock"></i>
                 </div>
 
@@ -845,7 +686,7 @@ body{
 
                 </div>
 
-                <button class="login-btn login-email-btn">
+                <button class="login-btn" type="submit">
                     Login With Email
                 </button>
 
@@ -854,20 +695,24 @@ body{
         </div>
 
         <!-- PHONE LOGIN -->
-        <div id="phoneLogin" style="display:none;">
+        <div id="phoneLogin"
+        class="form-section"
+        style="display:none;">
 
-            <form>
+            <form action="#" method="POST">
 
                 <div class="phone-box">
 
                     <select class="country-code">
+
                         <option>+91</option>
                         <option>+1</option>
                         <option>+44</option>
                         <option>+61</option>
+
                     </select>
 
-                    <div class="input-box" style="flex:1;">
+                    <div class="input-box" style="flex:1; margin-bottom:0;">
 
                         <input type="tel"
                         placeholder="Phone Number"
@@ -880,14 +725,16 @@ body{
                 </div>
 
                 <div class="input-box">
+
                     <input type="password"
                     placeholder="Enter Password / OTP"
                     required>
 
                     <i class="fa-solid fa-key"></i>
+
                 </div>
 
-                <button class="login-btn login-phone-btn">
+                <button class="login-btn" type="submit">
                     Login With Phone
                 </button>
 
@@ -900,18 +747,18 @@ body{
             OR
         </div>
 
-        <!-- SOCIAL -->
+        <!-- SOCIAL LOGIN -->
         <div class="social-login">
 
-            <button class="social-btn google-btn">
+            <button class="social-btn" type="button">
                 <i class="fa-brands fa-google"></i>
             </button>
 
-            <button class="social-btn facebook-btn">
+            <button class="social-btn" type="button">
                 <i class="fa-brands fa-facebook-f"></i>
             </button>
 
-            <button class="social-btn github-btn">
+            <button class="social-btn" type="button">
                 <i class="fa-brands fa-github"></i>
             </button>
 
@@ -920,7 +767,8 @@ body{
         <!-- SIGNUP -->
         <div class="signup">
             Don't have an account?
-            <a href="signup.html" class="signup-link">
+
+            <a href="./signup.html">
                 Sign Up
             </a>
         </div>
@@ -935,33 +783,35 @@ body{
 /* LOGIN SWITCH */
 /* ========================= */
 
-function showEmailLogin(){
-    const emailDiv = document.getElementById("emailLogin");
-    const phoneDiv = document.getElementById("phoneLogin");
+const emailBtn = document.getElementById("emailBtn");
+const phoneBtn = document.getElementById("phoneBtn");
 
-    phoneDiv.style.display = "none";
-    emailDiv.style.display = "block";
-    emailDiv.offsetHeight; // trigger reflow
-    emailDiv.style.opacity = "1";
+const emailLogin = document.getElementById("emailLogin");
+const phoneLogin = document.getElementById("phoneLogin");
 
-    document.getElementById("emailBtn").classList.add("active");
-    document.getElementById("phoneBtn").classList.remove("active");
-}
+emailBtn.addEventListener("click", () => {
 
-function showPhoneLogin(){
-    const emailDiv = document.getElementById("emailLogin");
-    const phoneDiv = document.getElementById("phoneLogin");
+    emailLogin.style.display = "block";
+    phoneLogin.style.display = "none";
 
-    emailDiv.style.display = "none";
-    phoneDiv.style.display = "block";
-    phoneDiv.offsetHeight; // trigger reflow
-    phoneDiv.style.opacity = "1";
+    emailBtn.classList.add("active");
+    phoneBtn.classList.remove("active");
 
-    document.getElementById("phoneBtn").classList.add("active");
-    document.getElementById("emailBtn").classList.remove("active");
-}
+});
 
-/* TITLE */
+phoneBtn.addEventListener("click", () => {
+
+    emailLogin.style.display = "none";
+    phoneLogin.style.display = "block";
+
+    phoneBtn.classList.add("active");
+    emailBtn.classList.remove("active");
+
+});
+
+/* ========================= */
+/* ANIMATIONS */
+/* ========================= */
 
 anime({
     targets:'.title',
@@ -971,8 +821,6 @@ anime({
     easing:'easeOutExpo'
 });
 
-/* LOGIN CARD */
-
 anime({
     targets:'.login-card',
     scale:[0.8,1],
@@ -980,8 +828,6 @@ anime({
     duration:1800,
     easing:'easeOutElastic(1, .8)'
 });
-
-/* FLOAT FEATURES */
 
 anime({
     targets:'.feature',
@@ -994,8 +840,6 @@ anime({
     easing:'easeInOutSine'
 });
 
-/* BUTTON PULSE */
-
 anime({
     targets:'.login-btn',
     scale:[
@@ -1005,8 +849,6 @@ anime({
     loop:true,
     easing:'easeInOutQuad'
 });
-
-/* BACK BUTTON ANIMATION */
 
 anime({
     targets:'.back-btn',
