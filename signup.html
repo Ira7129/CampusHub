@@ -242,6 +242,7 @@ body{
     position:relative;
     overflow:hidden;
     animation:fadeUp 1.5s ease;
+    z-index:1;
 }
 
 .signup-card::before{
@@ -259,6 +260,8 @@ body{
     left:-50%;
     transform:rotate(25deg);
     animation:shine 6s linear infinite;
+    z-index:0;
+    pointer-events:none;
 }
 
 @keyframes shine{
@@ -273,6 +276,8 @@ body{
 .logo{
     text-align:center;
     margin-bottom:25px;
+    position:relative;
+    z-index:1;
 }
 
 .logo h2{
@@ -388,13 +393,27 @@ body{
     font-size:17px;
     font-weight:bold;
     cursor:pointer;
-    transition:0.4s;
+    transition:0.3s ease;
     margin-bottom:25px;
+    position:relative;
+    z-index:1;
+    min-height:50px;
+    touch-action:manipulation;
 }
 
 .signup-btn:hover{
-    transform:scale(1.03);
-    box-shadow:0 0 30px rgba(0,255,255,0.5);
+    transform:translateY(-2px);
+    box-shadow:0 8px 30px rgba(0,255,255,0.5);
+}
+
+.signup-btn:active{
+    transform:translateY(0);
+    box-shadow:0 4px 15px rgba(0,255,255,0.3);
+}
+
+.signup-btn:focus{
+    outline:2px solid #00ffff;
+    outline-offset:2px;
 }
 
 /* ========================= */
@@ -436,14 +455,29 @@ body{
     background:rgba(255,255,255,0.08);
     color:white;
     cursor:pointer;
-    transition:0.4s;
+    transition:0.3s ease;
     font-size:18px;
+    position:relative;
+    z-index:1;
+    touch-action:manipulation;
+    min-width:48px;
+    min-height:48px;
 }
 
 .social-btn:hover{
     background:#00ffff;
     color:black;
     transform:translateY(-5px);
+    box-shadow:0 8px 20px rgba(0,255,255,0.3);
+}
+
+.social-btn:active{
+    transform:translateY(-2px);
+}
+
+.social-btn:focus{
+    outline:2px solid #00ffff;
+    outline-offset:2px;
 }
 
 /* ========================= */
@@ -556,6 +590,26 @@ body{
     .input-group{
         flex-direction:column;
         gap:0;
+    }
+
+    .signup-btn{
+        padding:18px;
+        font-size:18px;
+        min-height:56px;
+    }
+
+    .social-btn{
+        width:56px;
+        height:56px;
+        min-width:56px;
+        min-height:56px;
+        font-size:20px;
+    }
+
+    .back-btn{
+        width:50px;
+        height:50px;
+        font-size:18px;
     }
 
 }
@@ -1022,12 +1076,10 @@ anime({
 
 anime({
     targets:'.signup-btn',
-    scale:[
-        {value:1.03,duration:1200},
-        {value:1,duration:1200}
-    ],
-    loop:true,
-    easing:'easeInOutQuad'
+    opacity:[0,1],
+    duration:1200,
+    easing:'easeOutQuad',
+    delay:400
 });
 
 /* ========================= */
@@ -1036,12 +1088,9 @@ anime({
 
 anime({
     targets:'.back-btn',
-    translateX:[
-        {value:-8,duration:1200},
-        {value:0,duration:1200}
-    ],
-    loop:true,
-    easing:'easeInOutSine'
+    opacity:[0,1],
+    duration:1000,
+    easing:'easeOutQuad'
 });
 
 </script>
