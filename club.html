@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusHub Clubs</title>
+
+<!-- GOOGLE FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- FONT AWESOME -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- AOS -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#060816;
+    color:white;
+    overflow-x:hidden;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+/* BACKGROUND */
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    overflow:hidden;
+}
+
+.blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.4;
+    animation:float 8s infinite alternate ease-in-out;
+}
+
+.blob1{
+    width:320px;
+    height:320px;
+    background:#00e5ff;
+    top:-80px;
+    left:-60px;
+}
+
+.blob2{
+    width:260px;
+    height:260px;
+    background:#7a5cff;
+    right:-80px;
+    top:30%;
+}
+
+.blob3{
+    width:220px;
+    height:220px;
+    background:#ff4ecd;
+    bottom:-60px;
+    left:40%;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(0px) translateX(0px);
+    }
+    to{
+        transform:translateY(-30px) translateX(20px);
+    }
+}
+
+/* NAVBAR */
+nav{
+    width:100%;
+    position:fixed;
+    top:0;
+    z-index:999;
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    backdrop-filter:blur(15px);
+    background:rgba(6,8,22,.45);
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+    font-size:30px;
+    font-weight:800;
+    background:linear-gradient(90deg,#00e5ff,#7a5cff,#ff4ecd);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.nav-links{
+    display:flex;
+    gap:28px;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    transition:.3s;
+    position:relative;
+}
+
+.nav-links a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0%;
+    height:2px;
+    background:#00e5ff;
+    transition:.3s;
+}
+
+.nav-links a:hover::after{
+    width:100%;
+}
+
+.create-btn{
+    padding:12px 24px;
+    border:none;
+    border-radius:40px;
+    background:linear-gradient(90deg,#00e5ff,#7a5cff);
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    box-shadow:0 0 20px rgba(0,229,255,.3);
+}
+
+/* HERO */
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:140px 8% 60px;
+    gap:50px;
+}
+
+.hero-text{
+    flex:1;
+}
+
+.hero-text h1{
+    font-size:72px;
+    line-height:1.1;
+    margin-bottom:25px;
+}
+
+.hero-text h1 span{
+    background:linear-gradient(90deg,#00e5ff,#7a5cff,#ff4ecd);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.hero-text p{
+    color:#d3d3d3;
+    line-height:1.9;
+    margin-bottom:35px;
+    max-width:650px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:18px;
+}
+
+.hero-buttons a{
+    padding:14px 30px;
+    border-radius:40px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.4s;
+}
+
+.primary-btn{
+    background:linear-gradient(90deg,#00e5ff,#7a5cff);
+    color:white;
+}
+
+.secondary-btn{
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);
+    color:white;
+    backdrop-filter:blur(10px);
+}
+
+.hero-buttons a:hover{
+    transform:translateY(-4px);
+}
+
+/* HERO CARD */
+.hero-card{
+    width:430px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:30px;
+    padding:30px;
+    backdrop-filter:blur(20px);
+    animation:cardFloat 4s infinite ease-in-out;
+}
+
+@keyframes cardFloat{
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+.hero-card h2{
+    margin-bottom:20px;
+}
+
+.select-box{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:16px;
+    background:rgba(255,255,255,.08);
+    color:white;
+    margin-bottom:25px;
+    outline:none;
+    font-size:16px;
+}
+
+.select-box option{
+    background:#0f172a;
+}
+
+.stat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.stat-box{
+    background:rgba(255,255,255,.06);
+    padding:18px;
+    border-radius:18px;
+    text-align:center;
+}
+
+.stat-box h3{
+    color:#00e5ff;
+    margin-bottom:5px;
+}
+
+/* SECTION */
+.section{
+    padding:100px 8%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:70px;
+}
+
+.section-title h2{
+    font-size:54px;
+    margin-bottom:14px;
+}
+
+.section-title p{
+    color:#d3d3d3;
+}
+
+/* CLUBS */
+.club-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+}
+
+.club-card{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:30px;
+    padding:30px;
+    backdrop-filter:blur(18px);
+    position:relative;
+    overflow:hidden;
+    transition:.4s;
+}
+
+.club-card:hover{
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:0 15px 40px rgba(0,229,255,.12);
+}
+
+.club-banner{
+    height:160px;
+    border-radius:24px;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:55px;
+    background:linear-gradient(135deg,#00e5ff,#7a5cff,#ff4ecd);
+}
+
+.club-card h3{
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.club-card p{
+    color:#d0d0d0;
+    line-height:1.8;
+    margin-bottom:22px;
+}
+
+.club-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.members{
+    color:#00e5ff;
+    font-weight:600;
+}
+
+.join-btn{
+    padding:10px 20px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(90deg,#00e5ff,#7a5cff);
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.join-btn:hover{
+    transform:scale(1.05);
+}
+
+/* EVENTS */
+.events-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+}
+
+.event-card{
+    border-radius:28px;
+    overflow:hidden;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    transition:.4s;
+}
+
+.event-card:hover{
+    transform:translateY(-8px);
+}
+
+.event-image{
+    height:220px;
+    background:linear-gradient(135deg,#00e5ff,#7a5cff,#ff4ecd);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:60px;
+}
+
+.event-content{
+    padding:26px;
+}
+
+.event-content h3{
+    margin-bottom:12px;
+}
+
+.event-content p{
+    color:#d0d0d0;
+    line-height:1.8;
+    margin-bottom:18px;
+}
+
+.event-meta{
+    display:flex;
+    justify-content:space-between;
+    color:#00e5ff;
+}
+
+/* CTA */
+.cta{
+    margin:0 8% 100px;
+    padding:80px 40px;
+    border-radius:40px;
+    text-align:center;
+    background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(122,92,255,.18));
+    border:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(18px);
+}
+
+.cta h2{
+    font-size:52px;
+    margin-bottom:20px;
+}
+
+.cta p{
+    max-width:750px;
+    margin:auto;
+    line-height:1.9;
+    color:#d0d0d0;
+    margin-bottom:30px;
+}
+
+/* FOOTER */
+footer{
+    padding:40px 8%;
+    border-top:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.socials{
+    display:flex;
+    gap:14px;
+}
+
+.socials a{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.socials a:hover{
+    transform:translateY(-4px);
+    background:linear-gradient(135deg,#00e5ff,#7a5cff);
+}
+
+/* MOBILE */
+@media(max-width:950px){
+
+.hero{
+    flex-direction:column;
+    text-align:center;
+}
+
+.hero-text h1{
+    font-size:50px;
+}
+
+.hero-buttons{
+    justify-content:center;
+}
+
+.hero-card{
+    width:100%;
+}
+
+.nav-links{
+    display:none;
+}
+
+.section-title h2,
+.cta h2{
+    font-size:38px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+
+<div class="logo">CampusHub</div>
+
+<div class="nav-links">
+    <a href="#clubs">Clubs</a>
+    <a href="#events">Events</a>
+    <a href="#community">Community</a>
+    <a href="#join">Join</a>
+</div>
+
+<button class="create-btn">Create Club</button>
+
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+<div class="hero-text" data-aos="fade-right">
+
+<h1>
+Find Your <span>College Community</span>
+</h1>
+
+<p>
+Join clubs, meet students, attend events and build your campus network through futuristic student communities made for your college.
+</p>
+
+<div class="hero-buttons">
+    <a href="#clubs" class="primary-btn">Explore Clubs</a>
+    <a href="#events" class="secondary-btn">Upcoming Events</a>
+</div>
+
+</div>
+
+<div class="hero-card" data-aos="zoom-in">
+
+<h2>Select Your College</h2>
+
+<select class="select-box" id="collegeSelect">
+    <option value="Bankura College">Bankura College</option>
+    <option value="IIT Delhi">IIT Delhi</option>
+    <option value="St Xavier's">St Xavier's</option>
+    <option value="Tech University">Tech University</option>
+</select>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+    <h3 id="clubCount">12</h3>
+    <span>Clubs</span>
+</div>
+
+<div class="stat-box">
+    <h3 id="memberCount">4.2K</h3>
+    <span>Students</span>
+</div>
+
+<div class="stat-box">
+    <h3 id="eventCount">38</h3>
+    <span>Events</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CLUBS -->
+<section class="section" id="clubs">
+
+<div class="section-title" data-aos="fade-up">
+    <h2 id="collegeHeading">Bankura College Clubs</h2>
+    <p>Exclusive student communities for your campus.</p>
+</div>
+
+<div class="club-container" id="clubContainer">
+</div>
+
+</section>
+
+<!-- EVENTS -->
+<section class="section" id="events">
+
+<div class="section-title" data-aos="fade-up">
+    <h2>Trending Club Events</h2>
+    <p>Campus activities happening this week.</p>
+</div>
+
+<div class="events-grid">
+
+<div class="event-card" data-aos="zoom-in">
+    <div class="event-image">
+        <i class="fa-solid fa-code"></i>
+    </div>
+
+    <div class="event-content">
+        <h3>National Hackathon</h3>
+        <p>
+            Collaborate with developers and create innovative solutions in 48 hours.
+        </p>
+
+        <div class="event-meta">
+            <span>June 2</span>
+            <span>Main Auditorium</span>
+        </div>
+    </div>
+</div>
+
+<div class="event-card" data-aos="zoom-in" data-aos-delay="100">
+    <div class="event-image">
+        <i class="fa-solid fa-music"></i>
+    </div>
+
+    <div class="event-content">
+        <h3>Campus Music Night</h3>
+        <p>
+            Open mic, DJ battles and student band performances under neon lights.
+        </p>
+
+        <div class="event-meta">
+            <span>June 5</span>
+            <span>Central Lawn</span>
+        </div>
+    </div>
+</div>
+
+<div class="event-card" data-aos="zoom-in" data-aos-delay="200">
+    <div class="event-image">
+        <i class="fa-solid fa-trophy"></i>
+    </div>
+
+    <div class="event-content">
+        <h3>Esports Championship</h3>
+        <p>
+            Valorant and BGMI campus showdown with live audience and leaderboard.
+        </p>
+
+        <div class="event-meta">
+            <span>June 9</span>
+            <span>Tech Hall</span>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</section>
+
+<!-- CTA -->
+<section class="cta" id="join" data-aos="fade-up">
+
+<h2>Create Your Own Club</h2>
+
+<p>
+Start a coding community, gaming clan, startup circle or photography society and grow your campus network inside CampusHub.
+</p>
+
+<button class="create-btn">Launch Club</button>
+
+</section>
+
+<!-- FOOTER -->
+<footer id="community">
+
+<p>© 2026 CampusHub • Student Communities Reimagined</p>
+
+<div class="socials">
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-discord"></i></a>
+    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+</div>
+
+</footer>
+
+<!-- AOS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- ANIME JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+<script>
+
+AOS.init({
+    duration:1000,
+    once:true
+});
+
+const colleges = {
+
+    "Bankura College": {
+        clubs:[
+            {
+                icon:'fa-code',
+                name:'Dev Society',
+                desc:'Coding community for hackathons, AI projects and app development.',
+                members:'1.4K Members'
+            },
+            {
+                icon:'fa-music',
+                name:'Music Crew',
+                desc:'Open mic sessions, campus concerts and music collaborations.',
+                members:'900 Members'
+            },
+            {
+                icon:'fa-gamepad',
+                name:'Gaming Arena',
+                desc:'Competitive gaming tournaments and esports communities.',
+                members:'1.1K Members'
+            }
+        ],
+        stats:{
+            clubs:'12',
+            members:'4.2K',
+            events:'38'
+        }
+    },
+
+    "IIT Delhi": {
+        clubs:[
+            {
+                icon:'fa-robot',
+                name:'AI Robotics Club',
+                desc:'Machine learning, robotics and automation workshops.',
+                members:'2.8K Members'
+            },
+            {
+                icon:'fa-lightbulb',
+                name:'Startup Circle',
+                desc:'Pitch ideas, build startups and meet founders.',
+                members:'1.7K Members'
+            },
+            {
+                icon:'fa-microchip',
+                name:'Tech Innovators',
+                desc:'Deep tech projects and innovation challenges.',
+                members:'1.3K Members'
+            }
+        ],
+        stats:{
+            clubs:'20',
+            members:'8.1K',
+            events:'62'
+        }
+    },
+
+    "St Xavier's": {
+        clubs:[
+            {
+                icon:'fa-camera',
+                name:'Photography Club',
+                desc:'Street photography, editing and visual storytelling.',
+                members:'700 Members'
+            },
+            {
+                icon:'fa-film',
+                name:'Film Makers',
+                desc:'Short films, reels and campus media production.',
+                members:'850 Members'
+            },
+            {
+                icon:'fa-palette',
+                name:'Creative Arts',
+                desc:'Digital art, sketching and creative design workshops.',
+                members:'650 Members'
+            }
+        ],
+        stats:{
+            clubs:'10',
+            members:'3.5K',
+            events:'24'
+        }
+    },
+
+    "Tech University": {
+        clubs:[
+            {
+                icon:'fa-globe',
+                name:'Cyber Club',
+                desc:'Cybersecurity challenges and ethical hacking sessions.',
+                members:'1.1K Members'
+            },
+            {
+                icon:'fa-vr-cardboard',
+                name:'AR VR Club',
+                desc:'Virtual reality experiences and futuristic projects.',
+                members:'750 Members'
+            },
+            {
+                icon:'fa-chart-line',
+                name:'Finance League',
+                desc:'Stock market discussions and business competitions.',
+                members:'980 Members'
+            }
+        ],
+        stats:{
+            clubs:'16',
+            members:'5.4K',
+            events:'41'
+        }
+    }
+
+};
+
+const clubContainer = document.getElementById('clubContainer');
+const collegeSelect = document.getElementById('collegeSelect');
+const collegeHeading = document.getElementById('collegeHeading');
+
+function renderCollege(collegeName){
+
+    const data = colleges[collegeName];
+
+    clubContainer.innerHTML = '';
+
+    collegeHeading.innerText = collegeName + ' Clubs';
+
+    document.getElementById('clubCount').innerText = data.stats.clubs;
+    document.getElementById('memberCount').innerText = data.stats.members;
+    document.getElementById('eventCount').innerText = data.stats.events;
+
+    data.clubs.forEach(club => {
+
+        clubContainer.innerHTML += `
+        <div class="club-card" data-aos="fade-up">
+
+            <div class="club-banner">
+                <i class="fa-solid ${club.icon}"></i>
+            </div>
+
+            <h3>${club.name}</h3>
+
+            <p>${club.desc}</p>
+
+            <div class="club-footer">
+                <span class="members">${club.members}</span>
+                <button class="join-btn">Join Club</button>
+            </div>
+
+        </div>
+        `;
+
+    });
+
+}
+
+renderCollege('Bankura College');
+
+collegeSelect.addEventListener('change', function(){
+    renderCollege(this.value);
+});
+
+anime({
+    targets:'.blob',
+    translateX:function(){
+        return anime.random(-40,40);
+    },
+    translateY:function(){
+        return anime.random(-40,40);
+    },
+    duration:4000,
+    direction:'alternate',
+    easing:'easeInOutSine',
+    loop:true
+});
+
+anime({
+    targets:'.hero-text h1 span',
+    scale:[0.8,1],
+    opacity:[0,1],
+    duration:1500,
+    easing:'easeOutElastic(1,.6)'
+});
+
+anime({
+    targets:'.club-card',
+    translateY:[50,0],
+    opacity:[0,1],
+    delay:anime.stagger(120),
+    duration:1200,
+    easing:'easeOutExpo'
+});
+
+</script>
+
+</body>
+</html>
