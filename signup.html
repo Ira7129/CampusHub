@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>CampusHub Signup</title>
 
@@ -350,20 +350,10 @@ body{
 }
 
 .strength-bar{
-    width:70%;
+    width:0%;
     height:100%;
-    background:linear-gradient(to right,#00ffff,#0077ff);
     border-radius:10px;
-    animation:strength 3s infinite alternate;
-}
-
-@keyframes strength{
-    from{
-        width:40%;
-    }
-    to{
-        width:90%;
-    }
+    transition:0.4s;
 }
 
 /* ========================= */
@@ -472,6 +462,29 @@ body{
 }
 
 /* ========================= */
+/* MESSAGE */
+/* ========================= */
+
+.message{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:14px;
+    display:none;
+    padding:12px;
+    border-radius:12px;
+}
+
+.success{
+    background:rgba(0,255,120,0.15);
+    color:#00ffae;
+}
+
+.error{
+    background:rgba(255,0,0,0.15);
+    color:#ff7b7b;
+}
+
+/* ========================= */
 /* ANIMATIONS */
 /* ========================= */
 
@@ -549,10 +562,11 @@ body{
 
 </style>
 </head>
+
 <body>
 
 <!-- BACK BUTTON -->
-<button class="back-btn" onclick="window.location.href='index.html'">
+<button class="back-btn" onclick="goBack()">
     <i class="fa-solid fa-arrow-left"></i>
 </button>
 
@@ -620,13 +634,14 @@ body{
 
             <h2>CampusHub</h2>
 
-            <p>
-                Create Your Account
-            </p>
+            <p>Create Your Account</p>
 
         </div>
 
-        <!-- WORKING FORM -->
+        <!-- MESSAGE -->
+        <div id="message" class="message"></div>
+
+        <!-- FORM -->
         <form id="signupForm">
 
             <div class="input-group">
@@ -634,6 +649,7 @@ body{
                 <div class="input-box">
 
                     <input type="text"
+                    id="firstName"
                     placeholder="First Name"
                     required>
 
@@ -644,6 +660,7 @@ body{
                 <div class="input-box">
 
                     <input type="text"
+                    id="lastName"
                     placeholder="Last Name"
                     required>
 
@@ -656,6 +673,7 @@ body{
             <div class="input-box">
 
                 <input type="email"
+                id="email"
                 placeholder="Email Address"
                 required>
 
@@ -666,6 +684,7 @@ body{
             <div class="input-box">
 
                 <input type="tel"
+                id="phone"
                 placeholder="Phone Number"
                 required>
 
@@ -675,21 +694,21 @@ body{
 
             <div class="input-box">
 
-                <select required>
+                <select id="campus" required>
 
                     <option value="">
                         Select Campus
                     </option>
 
-                    <option>
+                    <option value="School">
                         School
                     </option>
 
-                    <option>
+                    <option value="College">
                         College
                     </option>
 
-                    <option>
+                    <option value="University">
                         University
                     </option>
 
@@ -712,7 +731,7 @@ body{
 
             <!-- PASSWORD STRENGTH -->
             <div class="password-strength">
-                <div class="strength-bar"></div>
+                <div class="strength-bar" id="strengthBar"></div>
             </div>
 
             <div class="input-box">
@@ -729,7 +748,9 @@ body{
             <!-- TERMS -->
             <div class="terms">
 
-                <input type="checkbox" required>
+                <input type="checkbox"
+                id="terms"
+                required>
 
                 <p>
                     I agree to the
@@ -740,7 +761,7 @@ body{
 
             </div>
 
-            <!-- WORKING BUTTON -->
+            <!-- BUTTON -->
             <button type="submit" class="signup-btn">
                 Create Account
             </button>
@@ -787,32 +808,172 @@ body{
 <script>
 
 /* ========================= */
+/* BACK BUTTON */
+/* ========================= */
+
+function goBack(){
+    window.location.href = "index.html";
+}
+
+/* ========================= */
+/* MESSAGE FUNCTION */
+/* ========================= */
+
+function showMessage(text,type){
+
+    const message =
+    document.getElementById("message");
+
+    message.style.display = "block";
+
+    message.className =
+    "message " + type;
+
+    message.innerHTML = text;
+
+}
+
+/* ========================= */
+/* PASSWORD STRENGTH */
+/* ========================= */
+
+const passwordInput =
+document.getElementById("password");
+
+const strengthBar =
+document.getElementById("strengthBar");
+
+passwordInput.addEventListener("input",()=>{
+
+    const password = passwordInput.value;
+
+    let strength = 0;
+
+    if(password.length >= 6) strength += 25;
+    if(password.match(/[A-Z]/)) strength += 25;
+    if(password.match(/[0-9]/)) strength += 25;
+    if(password.match(/[^A-Za-z0-9]/)) strength += 25;
+
+    strengthBar.style.width = strength + "%";
+
+    if(strength <= 25){
+        strengthBar.style.background = "red";
+    }
+    else if(strength <= 50){
+        strengthBar.style.background = "orange";
+    }
+    else if(strength <= 75){
+        strengthBar.style.background = "yellow";
+    }
+    else{
+        strengthBar.style.background =
+        "linear-gradient(to right,#00ffff,#0077ff)";
+    }
+
+});
+
+/* ========================= */
 /* SIGNUP FORM */
 /* ========================= */
 
 document.getElementById("signupForm")
-.addEventListener("submit", function(e){
+.addEventListener("submit",function(e){
 
     e.preventDefault();
 
-    let password =
+    const firstName =
+    document.getElementById("firstName").value.trim();
+
+    const lastName =
+    document.getElementById("lastName").value.trim();
+
+    const email =
+    document.getElementById("email").value.trim();
+
+    const phone =
+    document.getElementById("phone").value.trim();
+
+    const campus =
+    document.getElementById("campus").value;
+
+    const password =
     document.getElementById("password").value;
 
-    let confirmPassword =
+    const confirmPassword =
     document.getElementById("confirmPassword").value;
+
+    const terms =
+    document.getElementById("terms").checked;
+
+    /* VALIDATION */
+
+    if(firstName === "" || lastName === ""){
+
+        showMessage(
+        "Please enter your full name.",
+        "error");
+
+        return;
+    }
+
+    if(password.length < 6){
+
+        showMessage(
+        "Password must be at least 6 characters.",
+        "error");
+
+        return;
+    }
 
     if(password !== confirmPassword){
 
-        alert("Passwords do not match!");
-        return;
+        showMessage(
+        "Passwords do not match!",
+        "error");
 
+        return;
     }
 
-    /* REDIRECT TO LOGIN PAGE */
+    if(!terms){
 
-    alert("Account Created Successfully!");
+        showMessage(
+        "Please accept Terms & Conditions.",
+        "error");
 
-    window.location.href = "login.html";
+        return;
+    }
+
+    /* SAVE USER */
+
+    const userData = {
+
+        firstName:firstName,
+        lastName:lastName,
+        email:email,
+        phone:phone,
+        campus:campus,
+        password:password
+
+    };
+
+    localStorage.setItem(
+    "campusHubUser",
+    JSON.stringify(userData)
+    );
+
+    showMessage(
+    "Account Created Successfully! Redirecting...",
+    "success"
+    );
+
+    /* REDIRECT */
+
+    setTimeout(()=>{
+
+        window.location.href =
+        "login.html";
+
+    },2000);
 
 });
 
