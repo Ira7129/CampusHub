@@ -757,6 +757,26 @@ footer{
     color:inherit;
     display:block;
 }
+.feature-link{
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+
+.feature-link .card{
+    cursor:pointer;
+    transition:0.5s;
+}
+
+.feature-link:hover .card{
+
+    transform:translateY(-12px) scale(1.04);
+
+    box-shadow:
+    0 0 25px rgba(0,255,255,0.25),
+    0 0 50px rgba(140,82,255,0.18);
+
+}
 
 </style>
 </head>
@@ -899,13 +919,21 @@ footer{
             </p>
         </div>
 
-        <div class="card" data-aos="zoom-in">
-            <i class="fa-solid fa-location-dot"></i>
-            <h2>Lost & Found</h2>
-            <p>
-                Quickly discover and recover lost items around campus.
-            </p>
-        </div>
+        <a href="lost & found.html" class="feature-link">
+
+<div class="card" data-aos="zoom-in">
+
+    <i class="fa-solid fa-location-dot"></i>
+
+    <h2>Lost & Found</h2>
+
+    <p>
+        Quickly discover and recover lost items around campus.
+    </p>
+
+</div>
+
+</a>
 
         <div class="card" data-aos="zoom-in">
             <i class="fa-solid fa-calendar"></i>
