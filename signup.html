@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CampusHub Signup</title>
+
+<!-- FONT AWESOME -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- ANIME JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#050816;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+/* ========================= */
+/* BACK BUTTON */
+/* ========================= */
+
+.back-btn{
+    position:fixed;
+    top:25px;
+    left:25px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    color:#00ffff;
+    font-size:22px;
+    cursor:pointer;
+    z-index:999;
+    transition:0.4s;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 0 20px rgba(0,255,255,0.15);
+}
+
+.back-btn:hover{
+    transform:translateX(-5px) scale(1.08);
+    background:#00ffff;
+    color:black;
+    box-shadow:0 0 30px rgba(0,255,255,0.5);
+}
+
+/* ========================= */
+/* BACKGROUND */
+/* ========================= */
+
+.bg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(0,255,255,0.08);
+    animation:float 10s infinite ease-in-out;
+}
+
+.circle:nth-child(1){
+    width:320px;
+    height:320px;
+    top:-80px;
+    left:-80px;
+}
+
+.circle:nth-child(2){
+    width:250px;
+    height:250px;
+    bottom:-70px;
+    right:-60px;
+    animation-delay:2s;
+}
+
+.circle:nth-child(3){
+    width:180px;
+    height:180px;
+    top:55%;
+    left:50%;
+    animation-delay:4s;
+}
+
+.circle:nth-child(4){
+    width:120px;
+    height:120px;
+    top:15%;
+    right:20%;
+    animation-delay:1s;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(0px) rotate(0deg);
+    }
+    50%{
+        transform:translateY(-30px) rotate(180deg);
+    }
+    100%{
+        transform:translateY(0px) rotate(360deg);
+    }
+}
+
+/* ========================= */
+/* PARTICLES */
+/* ========================= */
+
+.particle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:#00ffff;
+    border-radius:50%;
+    opacity:0.5;
+    animation:particleMove linear infinite;
+}
+
+.particle:nth-child(5){left:10%;animation-duration:8s;}
+.particle:nth-child(6){left:20%;animation-duration:10s;}
+.particle:nth-child(7){left:30%;animation-duration:7s;}
+.particle:nth-child(8){left:40%;animation-duration:9s;}
+.particle:nth-child(9){left:50%;animation-duration:12s;}
+.particle:nth-child(10){left:60%;animation-duration:8s;}
+.particle:nth-child(11){left:70%;animation-duration:11s;}
+.particle:nth-child(12){left:80%;animation-duration:9s;}
+.particle:nth-child(13){left:90%;animation-duration:13s;}
+
+@keyframes particleMove{
+    0%{
+        transform:translateY(100vh);
+    }
+    100%{
+        transform:translateY(-100vh);
+    }
+}
+
+/* ========================= */
+/* CONTAINER */
+/* ========================= */
+
+.container{
+    width:100%;
+    max-width:1300px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:60px;
+    padding:20px;
+}
+
+/* ========================= */
+/* LEFT SECTION */
+/* ========================= */
+
+.left-section{
+    flex:1;
+    animation:fadeLeft 1.5s ease;
+}
+
+.left-section h1{
+    font-size:75px;
+    line-height:1.1;
+    margin-bottom:25px;
+    background:linear-gradient(to right,#00ffff,#8c52ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.left-section p{
+    font-size:20px;
+    line-height:1.8;
+    color:#d0d0d0;
+    max-width:560px;
+}
+
+.stats{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.stat-box{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:22px;
+    padding:25px;
+    text-align:center;
+    backdrop-filter:blur(10px);
+    transition:0.4s;
+}
+
+.stat-box:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 25px rgba(0,255,255,0.2);
+}
+
+.stat-box h2{
+    color:#00ffff;
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+/* ========================= */
+/* SIGNUP CARD */
+/* ========================= */
+
+.signup-card{
+    width:470px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:35px;
+    padding:45px;
+    backdrop-filter:blur(18px);
+    box-shadow:0 0 40px rgba(0,255,255,0.12);
+    position:relative;
+    overflow:hidden;
+    animation:fadeUp 1.5s ease;
+}
+
+.signup-card::before{
+    content:'';
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:linear-gradient(
+    45deg,
+    transparent,
+    rgba(0,255,255,0.08),
+    transparent
+    );
+    top:-50%;
+    left:-50%;
+    transform:rotate(25deg);
+    animation:shine 6s linear infinite;
+}
+
+@keyframes shine{
+    0%{
+        left:-120%;
+    }
+    100%{
+        left:120%;
+    }
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo h2{
+    font-size:42px;
+    color:#00ffff;
+}
+
+.logo p{
+    color:#cfcfcf;
+    margin-top:8px;
+}
+
+/* ========================= */
+/* INPUTS */
+/* ========================= */
+
+.input-group{
+    display:flex;
+    gap:15px;
+}
+
+.input-box{
+    position:relative;
+    margin-bottom:22px;
+    width:100%;
+}
+
+.input-box input,
+.input-box select{
+    width:100%;
+    padding:18px 55px 18px 20px;
+    border:none;
+    outline:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    font-size:16px;
+    transition:0.4s;
+}
+
+.input-box select{
+    appearance:none;
+}
+
+.input-box input:focus,
+.input-box select:focus{
+    background:rgba(255,255,255,0.12);
+    box-shadow:0 0 20px rgba(0,255,255,0.3);
+}
+
+.input-box i{
+    position:absolute;
+    right:20px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#00ffff;
+}
+
+.input-box select option{
+    background:#111;
+}
+
+/* ========================= */
+/* PASSWORD STRENGTH */
+/* ========================= */
+
+.password-strength{
+    width:100%;
+    height:6px;
+    background:rgba(255,255,255,0.08);
+    border-radius:10px;
+    margin-top:-10px;
+    margin-bottom:20px;
+    overflow:hidden;
+}
+
+.strength-bar{
+    width:70%;
+    height:100%;
+    background:linear-gradient(to right,#00ffff,#0077ff);
+    border-radius:10px;
+    animation:strength 3s infinite alternate;
+}
+
+@keyframes strength{
+    from{
+        width:40%;
+    }
+    to{
+        width:90%;
+    }
+}
+
+/* ========================= */
+/* CHECKBOX */
+/* ========================= */
+
+.terms{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-bottom:25px;
+    color:#d0d0d0;
+    font-size:14px;
+}
+
+.terms a{
+    color:#00ffff;
+    text-decoration:none;
+}
+
+/* ========================= */
+/* BUTTON */
+/* ========================= */
+
+.signup-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(45deg,#00ffff,#0077ff);
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.4s;
+    margin-bottom:25px;
+}
+
+.signup-btn:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 30px rgba(0,255,255,0.5);
+}
+
+/* ========================= */
+/* DIVIDER */
+/* ========================= */
+
+.divider{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+    color:#aaa;
+}
+
+.divider::before,
+.divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:rgba(255,255,255,0.1);
+}
+
+/* ========================= */
+/* SOCIAL LOGIN */
+/* ========================= */
+
+.social-login{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.social-btn{
+    width:52px;
+    height:52px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    cursor:pointer;
+    transition:0.4s;
+    font-size:18px;
+}
+
+.social-btn:hover{
+    background:#00ffff;
+    color:black;
+    transform:translateY(-5px);
+}
+
+/* ========================= */
+/* LOGIN */
+/* ========================= */
+
+.login{
+    text-align:center;
+    color:#d0d0d0;
+}
+
+.login a{
+    color:#00ffff;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* ========================= */
+/* ANIMATIONS */
+/* ========================= */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(60px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes fadeLeft{
+    from{
+        opacity:0;
+        transform:translateX(-60px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media(max-width:1100px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .left-section{
+        text-align:center;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .left-section h1{
+        font-size:55px;
+    }
+
+}
+
+@media(max-width:550px){
+
+    body{
+        overflow-y:auto;
+    }
+
+    .signup-card{
+        width:100%;
+        padding:35px 25px;
+    }
+
+    .left-section h1{
+        font-size:42px;
+    }
+
+    .left-section p{
+        font-size:17px;
+    }
+
+    .input-group{
+        flex-direction:column;
+        gap:0;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- BACK BUTTON -->
+<button class="back-btn" onclick="window.location.href='index.html'">
+    <i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<!-- BACKGROUND -->
+<div class="bg">
+
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+    <!-- LEFT -->
+    <div class="left-section">
+
+        <h1 class="title">
+            Join The Campus Revolution
+        </h1>
+
+        <p>
+            Create your CampusHub account and unlock the future
+            of student communities, events, collaboration,
+            marketplace and social interaction.
+        </p>
+
+        <div class="stats">
+
+            <div class="stat-box">
+                <h2>50K+</h2>
+                <p>Students</p>
+            </div>
+
+            <div class="stat-box">
+                <h2>200+</h2>
+                <p>Campuses</p>
+            </div>
+
+            <div class="stat-box">
+                <h2>10K+</h2>
+                <p>Events</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SIGNUP CARD -->
+    <div class="signup-card">
+
+        <div class="logo">
+
+            <h2>CampusHub</h2>
+
+            <p>
+                Create Your Account
+            </p>
+
+        </div>
+
+        <!-- WORKING FORM -->
+        <form id="signupForm">
+
+            <div class="input-group">
+
+                <div class="input-box">
+
+                    <input type="text"
+                    placeholder="First Name"
+                    required>
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <div class="input-box">
+
+                    <input type="text"
+                    placeholder="Last Name"
+                    required>
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+            </div>
+
+            <div class="input-box">
+
+                <input type="email"
+                placeholder="Email Address"
+                required>
+
+                <i class="fa-solid fa-envelope"></i>
+
+            </div>
+
+            <div class="input-box">
+
+                <input type="tel"
+                placeholder="Phone Number"
+                required>
+
+                <i class="fa-solid fa-phone"></i>
+
+            </div>
+
+            <div class="input-box">
+
+                <select required>
+
+                    <option value="">
+                        Select Campus
+                    </option>
+
+                    <option>
+                        School
+                    </option>
+
+                    <option>
+                        College
+                    </option>
+
+                    <option>
+                        University
+                    </option>
+
+                </select>
+
+                <i class="fa-solid fa-building-columns"></i>
+
+            </div>
+
+            <div class="input-box">
+
+                <input type="password"
+                id="password"
+                placeholder="Create Password"
+                required>
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+            <!-- PASSWORD STRENGTH -->
+            <div class="password-strength">
+                <div class="strength-bar"></div>
+            </div>
+
+            <div class="input-box">
+
+                <input type="password"
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                required>
+
+                <i class="fa-solid fa-shield"></i>
+
+            </div>
+
+            <!-- TERMS -->
+            <div class="terms">
+
+                <input type="checkbox" required>
+
+                <p>
+                    I agree to the
+                    <a href="#">Terms & Conditions</a>
+                    and
+                    <a href="#">Privacy Policy</a>
+                </p>
+
+            </div>
+
+            <!-- WORKING BUTTON -->
+            <button type="submit" class="signup-btn">
+                Create Account
+            </button>
+
+        </form>
+
+        <!-- DIVIDER -->
+        <div class="divider">
+            OR SIGNUP WITH
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="social-login">
+
+            <button type="button" class="social-btn">
+                <i class="fa-brands fa-google"></i>
+            </button>
+
+            <button type="button" class="social-btn">
+                <i class="fa-brands fa-facebook-f"></i>
+            </button>
+
+            <button type="button" class="social-btn">
+                <i class="fa-brands fa-github"></i>
+            </button>
+
+        </div>
+
+        <!-- LOGIN -->
+        <div class="login">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ========================= */
+/* SIGNUP FORM */
+/* ========================= */
+
+document.getElementById("signupForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    let password =
+    document.getElementById("password").value;
+
+    let confirmPassword =
+    document.getElementById("confirmPassword").value;
+
+    if(password !== confirmPassword){
+
+        alert("Passwords do not match!");
+        return;
+
+    }
+
+    /* REDIRECT TO LOGIN PAGE */
+
+    alert("Account Created Successfully!");
+
+    window.location.href = "login.html";
+
+});
+
+/* ========================= */
+/* TITLE */
+/* ========================= */
+
+anime({
+    targets:'.title',
+    translateY:[80,0],
+    opacity:[0,1],
+    duration:1800,
+    easing:'easeOutExpo'
+});
+
+/* ========================= */
+/* CARD */
+/* ========================= */
+
+anime({
+    targets:'.signup-card',
+    scale:[0.8,1],
+    opacity:[0,1],
+    duration:1800,
+    easing:'easeOutElastic(1, .8)'
+});
+
+/* ========================= */
+/* FLOAT STATS */
+/* ========================= */
+
+anime({
+    targets:'.stat-box',
+    translateY:[
+        {value:-10,duration:2000},
+        {value:0,duration:2000}
+    ],
+    delay:anime.stagger(200),
+    loop:true,
+    easing:'easeInOutSine'
+});
+
+/* ========================= */
+/* BUTTON */
+/* ========================= */
+
+anime({
+    targets:'.signup-btn',
+    scale:[
+        {value:1.03,duration:1200},
+        {value:1,duration:1200}
+    ],
+    loop:true,
+    easing:'easeInOutQuad'
+});
+
+/* ========================= */
+/* BACK BUTTON */
+/* ========================= */
+
+anime({
+    targets:'.back-btn',
+    translateX:[
+        {value:-8,duration:1200},
+        {value:0,duration:1200}
+    ],
+    loop:true,
+    easing:'easeInOutSine'
+});
+
+</script>
+
+</body>
+</html>

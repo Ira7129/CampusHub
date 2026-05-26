@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CampusHub Login</title>
+
+<!-- FONT AWESOME -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- ANIME JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#050816;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+/* ========================= */
+/* BACK BUTTON */
+/* ========================= */
+
+.back-btn{
+    position:absolute;
+    top:30px;
+    left:30px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 24px;
+    border:2px solid rgba(0,255,255,0.4);
+    border-radius:35px;
+    background:rgba(255,255,255,0.05);
+    color:#00ffff;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    transition:all 0.4s ease-in-out;
+    z-index:1000;
+}
+
+.back-btn:hover{
+    background:#00ffff;
+    color:black;
+    transform:translateX(-10px) scale(1.1);
+    box-shadow:0 0 30px rgba(0,255,255,0.8);
+}
+
+.back-btn:active{
+    transform:translateX(-5px) scale(1.05);
+}
+
+.back-btn i{
+    font-size:14px;
+}
+
+/* ========================= */
+/* BACKGROUND */
+/* ========================= */
+
+.bg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(0,255,255,0.08);
+    animation:float 10s infinite ease-in-out;
+}
+
+.circle:nth-child(1){
+    width:320px;
+    height:320px;
+    top:-80px;
+    left:-80px;
+}
+
+.circle:nth-child(2){
+    width:250px;
+    height:250px;
+    bottom:-70px;
+    right:-60px;
+    animation-delay:2s;
+}
+
+.circle:nth-child(3){
+    width:180px;
+    height:180px;
+    top:55%;
+    left:50%;
+    animation-delay:4s;
+}
+
+.circle:nth-child(4){
+    width:120px;
+    height:120px;
+    top:15%;
+    right:20%;
+    animation-delay:1s;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(0px) rotate(0deg);
+    }
+    50%{
+        transform:translateY(-30px) rotate(180deg);
+    }
+    100%{
+        transform:translateY(0px) rotate(360deg);
+    }
+}
+
+/* ========================= */
+/* PARTICLES */
+/* ========================= */
+
+.particle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:#00ffff;
+    border-radius:50%;
+    opacity:0.5;
+    animation:particleMove linear infinite;
+}
+
+.particle:nth-child(5){left:10%;animation-duration:8s;}
+.particle:nth-child(6){left:20%;animation-duration:10s;}
+.particle:nth-child(7){left:30%;animation-duration:7s;}
+.particle:nth-child(8){left:40%;animation-duration:9s;}
+.particle:nth-child(9){left:50%;animation-duration:12s;}
+.particle:nth-child(10){left:60%;animation-duration:8s;}
+.particle:nth-child(11){left:70%;animation-duration:11s;}
+.particle:nth-child(12){left:80%;animation-duration:9s;}
+.particle:nth-child(13){left:90%;animation-duration:13s;}
+
+@keyframes particleMove{
+    0%{
+        transform:translateY(100vh);
+    }
+    100%{
+        transform:translateY(-100vh);
+    }
+}
+
+/* ========================= */
+/* MAIN CONTAINER */
+/* ========================= */
+
+.container{
+    width:100%;
+    max-width:1200px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:60px;
+    padding:20px;
+}
+
+/* ========================= */
+/* LEFT SECTION */
+/* ========================= */
+
+.left-section{
+    flex:1;
+    animation:fadeLeft 1.5s ease;
+}
+
+.left-section h1{
+    font-size:75px;
+    line-height:1.1;
+    margin-bottom:25px;
+    background:linear-gradient(to right,#00ffff,#8c52ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.left-section p{
+    font-size:20px;
+    line-height:1.8;
+    color:#d0d0d0;
+    max-width:550px;
+}
+
+.feature-boxes{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.feature{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:22px;
+    padding:20px;
+    backdrop-filter:blur(10px);
+    transition:all 0.4s ease-in-out;
+}
+
+.feature:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 25px rgba(0,255,255,0.2);
+}
+
+.feature i{
+    font-size:28px;
+    color:#00ffff;
+    margin-bottom:15px;
+}
+
+/* ========================= */
+/* LOGIN CARD */
+/* ========================= */
+
+.login-card{
+    width:430px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:35px;
+    padding:45px;
+    backdrop-filter:blur(18px);
+    box-shadow:0 0 40px rgba(0,255,255,0.12);
+    position:relative;
+    overflow:hidden;
+    animation:fadeUp 1.5s ease;
+}
+
+.login-card::before{
+    content:'';
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:linear-gradient(
+    45deg,
+    transparent,
+    rgba(0,255,255,0.08),
+    transparent
+    );
+    top:-50%;
+    left:-50%;
+    transform:rotate(25deg);
+    animation:shine 6s linear infinite;
+}
+
+@keyframes shine{
+    0%{
+        left:-120%;
+    }
+    100%{
+        left:120%;
+    }
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo h2{
+    font-size:42px;
+    color:#00ffff;
+}
+
+/* ========================= */
+/* LOGIN TOGGLE */
+/* ========================= */
+
+.login-toggle{
+    display:flex;
+    background:rgba(255,255,255,0.05);
+    border-radius:15px;
+    padding:5px;
+    margin-bottom:25px;
+}
+
+.toggle-btn{
+    flex:1;
+    padding:12px;
+    border:2px solid rgba(0,255,255,0.3);
+    background:transparent;
+    color:white;
+    cursor:pointer;
+    border-radius:12px;
+    transition:all 0.4s ease-in-out;
+    font-weight:bold;
+}
+
+/* EMAIL TOGGLE - CYAN PULSE */
+.email-toggle{
+    border:2px solid rgba(0,255,255,0.5);
+    animation:emailPulse 2s infinite;
+}
+
+.email-toggle:hover{
+    border-color:#00ffff;
+    box-shadow:0 0 20px rgba(0,255,255,0.8);
+}
+
+.email-toggle.active{
+    background:linear-gradient(135deg,#00ffff,#0099ff);
+    border-color:#00ffff;
+    box-shadow:0 0 25px rgba(0,255,255,1),inset 0 0 15px rgba(0,255,255,0.4);
+}
+
+@keyframes emailPulse{
+    0%,100%{
+        box-shadow:0 0 5px rgba(0,255,255,0.5);
+    }
+    50%{
+        box-shadow:0 0 15px rgba(0,255,255,0.8);
+    }
+}
+
+/* PHONE TOGGLE - PURPLE SHAKE */
+.phone-toggle{
+    border:2px solid rgba(200,100,255,0.5);
+}
+
+.phone-toggle:hover{
+    border-color:#c864ff;
+    box-shadow:0 0 20px rgba(200,100,255,0.8);
+    animation:phoneShake 0.5s;
+}
+
+.phone-toggle.active{
+    background:linear-gradient(135deg,#c864ff,#8b3aff);
+    border-color:#c864ff;
+    box-shadow:0 0 25px rgba(200,100,255,1),inset 0 0 15px rgba(200,100,255,0.4);
+}
+
+@keyframes phoneShake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    75%{transform:translateX(5px);}
+}
+
+/* ========================= */
+/* LOGIN FORMS */
+/* ========================= */
+
+#emailLogin,
+#phoneLogin{
+    animation:fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+    }
+    to{
+        opacity:1;
+    }
+}
+
+/* ========================= */
+/* INPUTS */
+/* ========================= */
+
+.input-box{
+    position:relative;
+    margin-bottom:22px;
+}
+
+.input-box input{
+    width:100%;
+    padding:18px 55px 18px 20px;
+    border:none;
+    outline:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    font-size:16px;
+    transition:all 0.4s ease-in-out;
+}
+
+.input-box input:focus{
+    background:rgba(255,255,255,0.12);
+    box-shadow:0 0 20px rgba(0,255,255,0.3);
+}
+
+.input-box i{
+    position:absolute;
+    right:20px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#00ffff;
+}
+
+/* ========================= */
+/* PHONE INPUT */
+/* ========================= */
+
+.phone-box{
+    display:flex;
+    gap:10px;
+}
+
+.country-code{
+    width:90px;
+    border:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    padding:0 10px;
+    outline:none;
+    transition:all 0.4s ease-in-out;
+}
+
+.country-code:hover,
+.country-code:focus{
+    background:rgba(255,255,255,0.12);
+    box-shadow:0 0 10px rgba(0,255,255,0.3);
+}
+
+.country-code option{
+    background:#111;
+}
+
+/* ========================= */
+/* OPTIONS */
+/* ========================= */
+
+.options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    font-size:14px;
+}
+
+.options a{
+    color:#00ffff;
+    text-decoration:none;
+}
+
+.options label{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+/* ========================= */
+/* BUTTON */
+/* ========================= */
+
+.login-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:18px;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:all 0.4s ease-in-out;
+    margin-bottom:25px;
+}
+
+/* LOGIN EMAIL BUTTON - BLUE SCALE */
+.login-email-btn{
+    background:linear-gradient(135deg,#00d4ff,#0099ff);
+    box-shadow:0 0 20px rgba(0,212,255,0.4);
+}
+
+.login-email-btn:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 35px rgba(0,212,255,0.8);
+}
+
+.login-email-btn:active{
+    transform:scale(0.95);
+}
+
+/* LOGIN PHONE BUTTON - GREEN SLIDE */
+.login-phone-btn{
+    background:linear-gradient(135deg,#00ff88,#00cc66);
+    box-shadow:0 0 20px rgba(0,255,136,0.4);
+}
+
+.login-phone-btn:hover{
+    transform:translateX(8px);
+    box-shadow:0 0 35px rgba(0,255,136,0.8);
+}
+
+.login-phone-btn:active{
+    transform:translateX(3px);
+}
+
+/* ========================= */
+/* DIVIDER */
+/* ========================= */
+
+.divider{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+    color:#aaa;
+}
+
+.divider::before,
+.divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:rgba(255,255,255,0.1);
+}
+
+/* ========================= */
+/* SOCIAL LOGIN */
+/* ========================= */
+
+.social-login{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.social-btn{
+    width:52px;
+    height:52px;
+    border:2px solid rgba(255,255,255,0.2);
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    cursor:pointer;
+    transition:all 0.4s ease-in-out;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* GOOGLE BUTTON - RED ROTATE */
+.google-btn{
+    border-color:rgba(234,67,53,0.5);
+}
+
+.google-btn:hover{
+    background:linear-gradient(135deg,#ea4335,#ff6b6b);
+    border-color:#ea4335;
+    box-shadow:0 0 20px rgba(234,67,53,0.8);
+    transform:rotate(360deg) scale(1.2);
+    animation:none;
+}
+
+/* FACEBOOK BUTTON - BLUE BOUNCE */
+.facebook-btn{
+    border-color:rgba(59,89,152,0.5);
+}
+
+.facebook-btn:hover{
+    background:linear-gradient(135deg,#3b5998,#4267b2);
+    border-color:#3b5998;
+    box-shadow:0 0 20px rgba(59,89,152,0.8);
+    animation:bounce 0.6s;
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    25%{transform:translateY(-10px);}
+    75%{transform:translateY(10px);}
+}
+
+/* GITHUB BUTTON - DARK FLIP */
+.github-btn{
+    border-color:rgba(255,255,255,0.3);
+}
+
+.github-btn:hover{
+    background:linear-gradient(135deg,#1f1f1f,#333333);
+    border-color:#ffffff;
+    box-shadow:0 0 20px rgba(255,255,255,0.6);
+    transform:perspective(600px) rotateY(360deg);
+    color:#00ffff;
+}
+
+@keyframes flip{
+    0%{transform:perspective(600px) rotateY(0deg);}
+    100%{transform:perspective(600px) rotateY(360deg);}
+}
+
+/* ========================= */
+/* SIGNUP */
+/* ========================= */
+
+.signup{
+    text-align:center;
+    color:#d0d0d0;
+}
+
+.signup a{
+    color:#00ffff;
+    text-decoration:none;
+    font-weight:bold;
+    transition:all 0.4s ease-in-out;
+    position:relative;
+    background:linear-gradient(90deg,#ffb700,#ffd700,#ffb700);
+    background-size:200% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+.signup a:hover{
+    text-shadow:0 0 10px rgba(0,255,255,0.8);
+    animation:goldWave 0.8s ease-in-out;
+}
+
+@keyframes goldWave{
+    0%{letter-spacing:0;}
+    50%{letter-spacing:2px;}
+    100%{letter-spacing:0;}
+}
+
+/* ========================= */
+/* ANIMATIONS */
+/* ========================= */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(60px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes fadeLeft{
+    from{
+        opacity:0;
+        transform:translateX(-60px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media(max-width:1000px){
+
+    .container{
+        flex-direction:column;
+        padding-top:100px;
+    }
+
+    .left-section{
+        text-align:center;
+    }
+
+    .feature-boxes{
+        grid-template-columns:1fr;
+    }
+
+    .left-section h1{
+        font-size:55px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .login-card{
+        width:100%;
+        padding:35px 25px;
+    }
+
+    .left-section h1{
+        font-size:42px;
+    }
+
+    .left-section p{
+        font-size:17px;
+    }
+
+    .back-btn{
+        top:20px;
+        left:20px;
+        padding:12px 18px;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- BACK BUTTON -->
+<button class="back-btn" onclick="history.back()">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back
+</button>
+
+<!-- BACKGROUND -->
+<div class="bg">
+
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+    <!-- LEFT -->
+    <div class="left-section">
+
+        <h1 class="title">
+            Welcome Back To CampusHub
+        </h1>
+
+        <p>
+            Login to access your campus community, discover events,
+            connect with students, share notes and experience
+            the future of student networking.
+        </p>
+
+        <div class="feature-boxes">
+
+            <div class="feature">
+                <i class="fa-solid fa-book"></i>
+                <h3>Notes Sharing</h3>
+                <p>Access study materials instantly.</p>
+            </div>
+
+            <div class="feature">
+                <i class="fa-solid fa-calendar"></i>
+                <h3>Events</h3>
+                <p>Stay updated with campus activities.</p>
+            </div>
+
+            <div class="feature">
+                <i class="fa-solid fa-users"></i>
+                <h3>Student Clubs</h3>
+                <p>Join amazing student communities.</p>
+            </div>
+
+            <div class="feature">
+                <i class="fa-solid fa-user-secret"></i>
+                <h3>Confessions</h3>
+                <p>Express yourself anonymously.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- LOGIN CARD -->
+    <div class="login-card">
+
+        <div class="logo">
+            <h2>CampusHub</h2>
+        </div>
+
+        <!-- TOGGLE -->
+        <div class="login-toggle">
+
+            <button class="toggle-btn email-toggle active"
+            onclick="showEmailLogin()"
+            id="emailBtn">
+                Email Login
+            </button>
+
+            <button class="toggle-btn phone-toggle"
+            onclick="showPhoneLogin()"
+            id="phoneBtn">
+                Phone Login
+            </button>
+
+        </div>
+
+        <!-- EMAIL LOGIN -->
+        <div id="emailLogin">
+
+            <form>
+
+                <div class="input-box">
+                    <input type="email"
+                    placeholder="Enter Email"
+                    required>
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+
+                <div class="input-box">
+                    <input type="password"
+                    placeholder="Enter Password"
+                    required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+
+                <div class="options">
+
+                    <label>
+                        <input type="checkbox">
+                        Remember me
+                    </label>
+
+                    <a href="#">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+                <button class="login-btn login-email-btn">
+                    Login With Email
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- PHONE LOGIN -->
+        <div id="phoneLogin" style="display:none;">
+
+            <form>
+
+                <div class="phone-box">
+
+                    <select class="country-code">
+                        <option>+91</option>
+                        <option>+1</option>
+                        <option>+44</option>
+                        <option>+61</option>
+                    </select>
+
+                    <div class="input-box" style="flex:1;">
+
+                        <input type="tel"
+                        placeholder="Phone Number"
+                        required>
+
+                        <i class="fa-solid fa-phone"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="input-box">
+                    <input type="password"
+                    placeholder="Enter Password / OTP"
+                    required>
+
+                    <i class="fa-solid fa-key"></i>
+                </div>
+
+                <button class="login-btn login-phone-btn">
+                    Login With Phone
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- DIVIDER -->
+        <div class="divider">
+            OR
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="social-login">
+
+            <button class="social-btn google-btn">
+                <i class="fa-brands fa-google"></i>
+            </button>
+
+            <button class="social-btn facebook-btn">
+                <i class="fa-brands fa-facebook-f"></i>
+            </button>
+
+            <button class="social-btn github-btn">
+                <i class="fa-brands fa-github"></i>
+            </button>
+
+        </div>
+
+        <!-- SIGNUP -->
+        <div class="signup">
+            Don't have an account?
+            <a href="signup.html" class="signup-link">
+                Sign Up
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ========================= */
+/* LOGIN SWITCH */
+/* ========================= */
+
+function showEmailLogin(){
+    const emailDiv = document.getElementById("emailLogin");
+    const phoneDiv = document.getElementById("phoneLogin");
+
+    phoneDiv.style.display = "none";
+    emailDiv.style.display = "block";
+    emailDiv.offsetHeight; // trigger reflow
+    emailDiv.style.opacity = "1";
+
+    document.getElementById("emailBtn").classList.add("active");
+    document.getElementById("phoneBtn").classList.remove("active");
+}
+
+function showPhoneLogin(){
+    const emailDiv = document.getElementById("emailLogin");
+    const phoneDiv = document.getElementById("phoneLogin");
+
+    emailDiv.style.display = "none";
+    phoneDiv.style.display = "block";
+    phoneDiv.offsetHeight; // trigger reflow
+    phoneDiv.style.opacity = "1";
+
+    document.getElementById("phoneBtn").classList.add("active");
+    document.getElementById("emailBtn").classList.remove("active");
+}
+
+/* TITLE */
+
+anime({
+    targets:'.title',
+    translateY:[80,0],
+    opacity:[0,1],
+    duration:1800,
+    easing:'easeOutExpo'
+});
+
+/* LOGIN CARD */
+
+anime({
+    targets:'.login-card',
+    scale:[0.8,1],
+    opacity:[0,1],
+    duration:1800,
+    easing:'easeOutElastic(1, .8)'
+});
+
+/* FLOAT FEATURES */
+
+anime({
+    targets:'.feature',
+    translateY:[
+        {value:-10,duration:2000},
+        {value:0,duration:2000}
+    ],
+    delay:anime.stagger(200),
+    loop:true,
+    easing:'easeInOutSine'
+});
+
+/* BUTTON PULSE */
+
+anime({
+    targets:'.login-btn',
+    scale:[
+        {value:1.03,duration:1200},
+        {value:1,duration:1200}
+    ],
+    loop:true,
+    easing:'easeInOutQuad'
+});
+
+/* BACK BUTTON ANIMATION */
+
+anime({
+    targets:'.back-btn',
+    translateX:[-50,0],
+    opacity:[0,1],
+    duration:1500,
+    easing:'easeOutExpo'
+});
+
+</script>
+
+</body>
+</html>
