@@ -1,1133 +1,1464 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>CampusHub Lost & Found X</title>
-
-<!-- GOOGLE FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-<!-- FONT AWESOME -->
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
-<!-- ANIME JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost & Found — CampusHub 🔍</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* ================= ROOT ================= */
-
-:root{
-
---bg:#060816;
---text:#ffffff;
---card:rgba(255,255,255,0.08);
---border:rgba(255,255,255,0.1);
---nav:rgba(8,10,20,0.45);
-
---primary:#00ffe5;
---secondary:#8b5cf6;
---third:#ff4fd8;
-
---gradient:
-linear-gradient(135deg,#00ffe5,#8b5cf6,#ff4fd8);
-
---shadow:
-0 0 40px rgba(139,92,246,0.35);
-
-}
-
-body.light{
-
---bg:#f4f8ff;
---text:#101828;
---card:rgba(255,255,255,0.75);
---border:rgba(0,0,0,0.08);
---nav:rgba(255,255,255,0.7);
-
---primary:#2563eb;
---secondary:#7c3aed;
---third:#ec4899;
-
---gradient:
-linear-gradient(135deg,#2563eb,#7c3aed,#ec4899);
-
---shadow:
-0 0 35px rgba(37,99,235,0.25);
-
-}
-
-/* ================= GLOBAL ================= */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
-body{
-background:var(--bg);
-color:var(--text);
-overflow-x:hidden;
-transition:0.5s;
-min-height:100vh;
-}
-
-/* ================= BACKGROUND ================= */
-
-.bg{
-position:fixed;
-width:100%;
-height:100%;
-overflow:hidden;
-z-index:-10;
-}
-
-.blur{
-position:absolute;
-border-radius:50%;
-filter:blur(120px);
-opacity:0.22;
-animation:float 12s infinite alternate ease-in-out;
-}
-
-.blur1{
-width:500px;
-height:500px;
-background:#00ffe5;
-top:-100px;
-left:-120px;
-}
-
-.blur2{
-width:450px;
-height:450px;
-background:#8b5cf6;
-right:-120px;
-bottom:-120px;
-animation-delay:2s;
-}
-
-.blur3{
-width:350px;
-height:350px;
-background:#ff4fd8;
-top:40%;
-left:50%;
-transform:translate(-50%,-50%);
-animation-delay:4s;
-}
-
-@keyframes float{
-100%{
-transform:translateY(80px) translateX(60px);
-}
-}
-
-/* ================= PARTICLES ================= */
-
-.particle{
-position:absolute;
-width:8px;
-height:8px;
-border-radius:50%;
-background:white;
-opacity:0.4;
-animation:particle 15s linear infinite;
-}
-
-@keyframes particle{
-
-from{
-transform:translateY(100vh) scale(0);
-}
-
-to{
-transform:translateY(-120vh) scale(1.4);
-}
-
-}
-
-/* ================= NAVBAR ================= */
-
-.navbar{
-width:100%;
-padding:20px 7%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:fixed;
-top:0;
-z-index:999;
-background:var(--nav);
-backdrop-filter:blur(20px);
-border-bottom:1px solid var(--border);
-}
-
-.logo{
-font-size:34px;
-font-weight:800;
-background:var(--gradient);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.nav-right{
-display:flex;
-align-items:center;
-gap:20px;
-}
-
-.back-btn{
-width:50px;
-height:50px;
-border-radius:50%;
-border:none;
-background:var(--card);
-color:var(--text);
-font-size:18px;
-cursor:pointer;
-transition:0.4s;
-border:1px solid var(--border);
-}
-
-.back-btn:hover{
-transform:scale(1.1);
-}
-
-/* ================= TOGGLE ================= */
-
-.toggle{
-width:75px;
-height:38px;
-background:var(--card);
-border-radius:50px;
-position:relative;
-cursor:pointer;
-border:1px solid var(--border);
-display:flex;
-align-items:center;
-padding:5px;
-transition:0.4s;
-}
-
-.toggle-circle{
-width:28px;
-height:28px;
-background:var(--gradient);
-border-radius:50%;
-position:absolute;
-left:5px;
-transition:0.4s;
-box-shadow:var(--shadow);
-}
-
-body.light .toggle-circle{
-left:40px;
-}
-
-/* ================= HERO ================= */
-
-.hero{
-width:100%;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-text-align:center;
-padding:120px 20px;
-position:relative;
-}
-
-.hero-badge{
-padding:12px 24px;
-border-radius:50px;
-background:var(--card);
-border:1px solid var(--border);
-backdrop-filter:blur(12px);
-margin-bottom:30px;
-animation:floatBadge 4s infinite ease-in-out;
-}
-
-@keyframes floatBadge{
-50%{
-transform:translateY(-10px);
-}
-}
-
-.hero h1{
-font-size:90px;
-line-height:1.05;
-max-width:1100px;
-font-weight:800;
-}
-
-.hero h1 span{
-background:var(--gradient);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.hero p{
-margin-top:30px;
-font-size:18px;
-max-width:850px;
-line-height:1.9;
-opacity:0.9;
-}
-
-.hero-btns{
-margin-top:45px;
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.btn{
-padding:18px 34px;
-border:none;
-border-radius:60px;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-transition:0.4s;
-overflow:hidden;
-}
-
-.primary{
-background:var(--gradient);
-color:white;
-box-shadow:var(--shadow);
-}
-
-.secondary{
-background:var(--card);
-backdrop-filter:blur(12px);
-color:var(--text);
-border:1px solid var(--border);
-}
-
-.btn:hover{
-transform:translateY(-7px) scale(1.05);
-}
-
-/* ================= FLOATING CARDS ================= */
-
-.float-card{
-position:absolute;
-padding:18px 24px;
-border-radius:24px;
-background:var(--card);
-border:1px solid var(--border);
-backdrop-filter:blur(18px);
-display:flex;
-align-items:center;
-gap:14px;
-animation:floatCard 5s infinite ease-in-out;
-}
-
-.float-card i{
-font-size:22px;
-background:var(--gradient);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.card1{
-top:25%;
-left:7%;
-}
-
-.card2{
-right:8%;
-top:30%;
-animation-delay:1s;
-}
-
-.card3{
-bottom:15%;
-left:18%;
-animation-delay:2s;
-}
-
-@keyframes floatCard{
-50%{
-transform:translateY(-20px);
-}
-}
-
-/* ================= SECTIONS ================= */
-
-.features,
-.feed,
-.interaction-section{
-padding:120px 7%;
-}
-
-.section-title{
-text-align:center;
-margin-bottom:70px;
-}
-
-.section-title h2{
-font-size:60px;
-margin-bottom:18px;
-}
-
-.section-title span{
-background:var(--gradient);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.section-title p{
-opacity:0.8;
-}
-
-/* ================= FEATURES ================= */
-
-.feature-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:35px;
-}
-
-.feature-card{
-padding:40px;
-border-radius:30px;
-background:var(--card);
-backdrop-filter:blur(16px);
-border:1px solid var(--border);
-transition:0.5s;
-position:relative;
-overflow:hidden;
-}
-
-.feature-card::before{
-content:'';
-position:absolute;
-width:180px;
-height:180px;
-background:var(--gradient);
-border-radius:50%;
-top:-80px;
-right:-80px;
-opacity:0.15;
-}
-
-.feature-card:hover{
-transform:translateY(-15px) rotate(-1deg);
-}
-
-.feature-card i{
-font-size:45px;
-margin-bottom:20px;
-background:var(--gradient);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.feature-card h3{
-margin-bottom:15px;
-font-size:25px;
-}
-
-.feature-card p{
-line-height:1.8;
-opacity:0.9;
-}
-
-/* ================= INTERACTION ================= */
-
-.interaction-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:35px;
-}
-
-.interaction-card{
-background:var(--card);
-border:1px solid var(--border);
-backdrop-filter:blur(18px);
-padding:28px;
-border-radius:30px;
-position:relative;
-overflow:hidden;
-transition:0.5s;
-}
-
-.interaction-card::before{
-content:'';
-position:absolute;
-width:180px;
-height:180px;
-background:var(--gradient);
-border-radius:50%;
-top:-90px;
-right:-90px;
-opacity:0.12;
-}
-
-.interaction-card:hover{
-transform:translateY(-12px) scale(1.03);
-}
-
-.interaction-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
-
-.user-info{
-display:flex;
-align-items:center;
-gap:14px;
-}
-
-.user-info img{
-width:55px;
-height:55px;
-border-radius:50%;
-object-fit:cover;
-}
-
-.user-info h4{
-font-size:17px;
-}
-
-.user-info span{
-font-size:13px;
-opacity:0.7;
-}
-
-.status{
-width:12px;
-height:12px;
-border-radius:50%;
-background:#22c55e;
-box-shadow:0 0 15px #22c55e;
-}
-
-.interaction-text{
-line-height:1.9;
-font-size:15px;
-opacity:0.92;
-margin-bottom:24px;
-}
-
-.interaction-actions{
-display:flex;
-gap:12px;
-margin-top:24px;
-}
-
-.interaction-actions button{
-flex:1;
-padding:14px;
-border:none;
-border-radius:16px;
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.08);
-color:var(--text);
-cursor:pointer;
-transition:0.4s;
-font-weight:600;
+/* ══ TOKENS (DARK) ══ */
+:root, [data-theme="dark"] {
+  --bg:      #0b0a14;
+  --bg2:     #13122a;
+  --paper:   #1a1830;
+  --card:    #201e38;
+  --card2:   #282545;
+  --border:  rgba(255,255,255,0.06);
+  --b2:      rgba(255,255,255,0.1);
+  --text:    #f0eeff;
+  --muted:   rgba(200,190,255,0.42);
+  --purple:  #7c6af7;
+  --pink:    #ff4d8d;
+  --yellow:  #ffe14d;
+  --teal:    #3dffd0;
+  --orange:  #ff8c42;
+  --green:   #4ade80;
+  --red:     #f87171;
+  --nav-bg:  rgba(20,18,40,.75);
+  --nav-blur: rgba(10,9,20,.92);
+  --modal-bg: rgba(10,9,20,.97);
+  --input-bg: rgba(255,255,255,.05);
+  --input-border: rgba(255,255,255,.1);
+}
+[data-theme="light"] {
+  --bg:      #f4f2ff;
+  --bg2:     #ebe8ff;
+  --paper:   #ffffff;
+  --card:    #ffffff;
+  --card2:   #f7f5ff;
+  --border:  rgba(100,80,200,0.1);
+  --b2:      rgba(100,80,200,0.15);
+  --text:    #1a1535;
+  --muted:   rgba(80,60,160,0.55);
+  --purple:  #6150e8;
+  --pink:    #e8005a;
+  --yellow:  #c98a00;
+  --teal:    #009980;
+  --orange:  #d05800;
+  --green:   #1a8a4a;
+  --red:     #dc2626;
+  --nav-bg:  rgba(255,255,255,.85);
+  --nav-blur: rgba(255,255,255,.95);
+  --modal-bg: rgba(240,238,255,.98);
+  --input-bg: rgba(100,80,200,.05);
+  --input-border: rgba(100,80,200,.2);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+  transition: background .35s, color .35s;
+  min-height: 100vh;
+}
+body::before {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ══ CURSOR ══ */
+#cur-dot, #cur-ring {
+  position:fixed; border-radius:50%; pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+}
+#cur-dot  { width:9px; height:9px; background:var(--yellow); mix-blend-mode:screen; }
+#cur-ring {
+  width:40px; height:40px;
+  border:1.5px solid rgba(255,225,77,.4);
+  transition:width .25s,height .25s,border-color .25s,background .25s;
+}
+#cur-ring.hover { width:60px;height:60px;border-color:var(--yellow);background:rgba(255,225,77,.04); }
+#cur-ring.click { width:28px;height:28px;border-color:var(--orange);background:rgba(255,140,66,.15); }
+
+/* ══ CANVAS ══ */
+#bg-canvas { position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none; }
+
+/* ══ NAV ══ */
+nav {
+  position:fixed; top:14px; left:50%; transform:translateX(-50%);
+  z-index:600;
+  display:flex; align-items:center; gap:0;
+  padding:7px 10px 7px 20px;
+  background:var(--nav-bg);
+  backdrop-filter:blur(32px) saturate(200%);
+  border:1px solid rgba(124,106,247,.18);
+  border-radius:60px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 10px 50px rgba(0,0,0,.5),0 0 80px rgba(124,106,247,.07);
+  opacity:0;
+  max-width:calc(100vw - 32px);
+  animation: navIn .7s .2s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes navIn { to { opacity:1; } }
+.nav-logo {
+  font-family:'Fredoka One',sans-serif; font-size:24px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  text-decoration:none; margin-right:10px; cursor:none; flex-shrink:0;
+}
+.nav-center { display:flex; align-items:center; gap:2px; flex:1; justify-content:center; }
+.nav-right  { display:flex; align-items:center; gap:6px; margin-left:8px; flex-shrink:0; }
+.nav-pill {
+  font-size:12.5px; font-weight:600; color:var(--muted);
+  padding:7px 13px; border-radius:40px; text-decoration:none;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1); cursor:none;
+  position:relative; white-space:nowrap;
+}
+.nav-pill::before {
+  content:''; position:absolute; inset:0; border-radius:40px;
+  background:rgba(124,106,247,.12); opacity:0; transform:scale(.85);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.nav-pill:hover { color:var(--text); }
+.nav-pill:hover::before { opacity:1; transform:scale(1); }
+.nav-pill.active { color:var(--yellow); }
+.nav-pill.active::before { opacity:1; transform:scale(1); background:rgba(255,225,77,.08); }
+.nav-sep { width:1px; height:16px; background:rgba(255,255,255,.08); margin:0 4px; flex-shrink:0; }
+.nav-theme {
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(255,255,255,.05); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center; font-size:15px; cursor:none;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.nav-theme:hover { background:rgba(255,225,77,.1); border-color:rgba(255,225,77,.3); transform:rotate(20deg) scale(1.1); }
+.nav-notif { position:relative; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:15px; cursor:none; transition:all .25s; }
+.nav-notif:hover { background:rgba(124,106,247,.15); border-color:rgba(124,106,247,.3); }
+.notif-badge { position:absolute; top:-3px; right:-3px; width:16px; height:16px; border-radius:50%; background:var(--pink); font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; color:#fff; border:2px solid var(--bg); }
+.nav-cta {
+  display:flex; align-items:center; gap:7px;
+  font-size:13px; font-weight:700; padding:9px 20px; border-radius:40px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff; border:none; cursor:none; text-decoration:none;
+  box-shadow:0 4px 20px rgba(124,106,247,.4);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  position:relative; overflow:hidden; white-space:nowrap;
+}
+.nav-cta::after { content:''; position:absolute; top:0; left:-80%; width:50%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent); animation:shimmer 2.5s infinite; }
+@keyframes shimmer { to { left:140%; } }
+.nav-cta:hover { transform:scale(1.05); box-shadow:0 8px 32px rgba(124,106,247,.55); }
+
+/* ══ HERO ══ */
+.page-hero {
+  position:relative; z-index:2;
+  padding:130px 24px 56px;
+  text-align:center; overflow:hidden;
+}
+.hero-blobs { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.hblob { position:absolute; border-radius:50%; filter:blur(90px); animation:blobDrift ease-in-out infinite alternate; }
+.hb1 { width:460px;height:460px;background:rgba(255,225,77,.11);top:-120px;left:-80px;animation-duration:15s; }
+.hb2 { width:340px;height:340px;background:rgba(255,140,66,.1);bottom:-60px;right:-60px;animation-duration:19s;animation-delay:-6s; }
+.hb3 { width:220px;height:220px;background:rgba(124,106,247,.1);top:30%;right:15%;animation-duration:11s;animation-delay:-3s; }
+@keyframes blobDrift { from{transform:translate(0,0)scale(1);}to{transform:translate(28px,22px)scale(1.1);} }
+
+/* Rings */
+.hero-ring { position:absolute; border-radius:50%; border:1px solid; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; }
+.hr1 { width:300px;height:300px;border-color:rgba(255,225,77,.06);animation:ringSpin 22s linear infinite; }
+.hr2 { width:500px;height:500px;border-color:rgba(255,140,66,.04);animation:ringSpin 34s linear infinite reverse; }
+.hr3 { width:720px;height:720px;border-color:rgba(255,225,77,.025);animation:ringSpin 50s linear infinite; }
+@keyframes ringSpin { to { transform:translate(-50%,-50%) rotate(360deg); } }
+
+.hero-inner { position:relative; z-index:2; max-width:700px; margin:0 auto; }
+.page-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--yellow); border:1px solid rgba(255,225,77,.22); background:rgba(255,225,77,.07);
+  padding:7px 18px; border-radius:40px; margin-bottom:24px;
+  opacity:0; animation:fadeUp .6s .5s forwards;
+}
+.badge-pulse { width:7px;height:7px;border-radius:50%;background:var(--yellow);animation:yPulse 2s infinite; }
+@keyframes yPulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,225,77,.5);}50%{opacity:.6;box-shadow:0 0 0 6px rgba(255,225,77,0);} }
+
+.page-title {
+  font-family:'Fredoka One',sans-serif;
+  font-size:clamp(50px,9.5vw,108px);
+  line-height:.88; letter-spacing:-1px; margin-bottom:18px;
+  opacity:0; animation:fadeUp .7s .65s forwards;
+}
+.pt-line1 { display:block; color:transparent; -webkit-text-stroke:2px rgba(255,255,255,.12); }
+[data-theme="light"] .pt-line1 { -webkit-text-stroke:2px rgba(80,60,0,.12); }
+.pt-line2 {
+  display:block;
+  background:linear-gradient(135deg,var(--yellow) 0%,var(--orange) 50%,var(--pink) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-size:200%; animation:gradShift 4s ease infinite;
+}
+@keyframes gradShift { 0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;} }
+
+.page-sub {
+  font-size:16px; font-weight:300; color:var(--muted); line-height:1.8;
+  opacity:0; animation:fadeUp .6s .8s forwards;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;} }
+
+/* Hero stats */
+.hero-stats {
+  display:flex; gap:0; justify-content:center; margin:36px auto 0;
+  max-width:520px; background:var(--card); border:1.5px solid var(--border);
+  border-radius:20px; overflow:hidden;
+  opacity:0; animation:fadeUp .6s .95s forwards;
+}
+.hs-item { flex:1; padding:18px 14px; text-align:center; border-right:1px solid var(--border); transition:background .25s; cursor:default; }
+.hs-item:last-child { border-right:none; }
+.hs-item:hover { background:var(--card2); }
+.hs-num { font-family:'Fredoka One',sans-serif; font-size:26px; line-height:1; }
+.hs-label { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+
+/* ══ MAIN LAYOUT ══ */
+.main-wrap { max-width:1220px; margin:0 auto; padding:0 24px 90px; position:relative; z-index:2; }
+
+/* ══ MODE TOGGLE (Lost / Found / All) ══ */
+.mode-toggle {
+  display:flex; gap:0; justify-content:center; margin-bottom:32px;
+  background:var(--card); border:1.5px solid var(--border); border-radius:50px;
+  padding:5px; width:fit-content; margin:0 auto 28px;
+  opacity:0; animation:fadeUp .5s 1.05s forwards;
+}
+.mode-btn {
+  font-size:13px; font-weight:700; padding:10px 28px; border-radius:40px;
+  border:none; background:transparent; color:var(--muted); cursor:none;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1); display:flex; align-items:center; gap:7px;
+  white-space:nowrap;
+}
+.mode-btn.lost.active  { background:linear-gradient(135deg,var(--red),var(--orange)); color:#fff; box-shadow:0 4px 18px rgba(248,113,113,.35); }
+.mode-btn.found.active { background:linear-gradient(135deg,var(--green),var(--teal)); color:#fff; box-shadow:0 4px 18px rgba(74,222,128,.35); }
+.mode-btn.all.active   { background:linear-gradient(135deg,var(--yellow),var(--orange)); color:#fff; box-shadow:0 4px 18px rgba(255,225,77,.3); }
+.mode-btn:not(.active):hover { color:var(--text); background:rgba(255,255,255,.05); }
+
+/* ══ TOOLBAR ══ */
+.toolbar {
+  display:flex; align-items:center; gap:12px; margin-bottom:28px; flex-wrap:wrap;
+  opacity:0; animation:fadeUp .5s 1.12s forwards;
+}
+.filter-scroll { display:flex; gap:6px; flex:1; flex-wrap:wrap; }
+.filter-btn {
+  font-size:12px; font-weight:700; padding:8px 16px; border-radius:30px;
+  border:1.5px solid var(--border); background:transparent; color:var(--muted);
+  cursor:none; transition:all .25s cubic-bezier(.34,1.56,.64,1); white-space:nowrap;
+}
+.filter-btn:hover { border-color:rgba(255,225,77,.3); color:var(--text); background:rgba(255,225,77,.06); }
+.filter-btn.active { background:rgba(255,225,77,.1); border-color:rgba(255,225,77,.35); color:var(--yellow); }
+.search-wrap {
+  display:flex; align-items:center; gap:10px;
+  background:var(--card); border:1.5px solid var(--border); border-radius:30px;
+  padding:8px 16px; transition:border-color .25s; min-width:210px;
+}
+.search-wrap:focus-within { border-color:rgba(255,225,77,.4); }
+.search-wrap input { background:none; border:none; outline:none; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; color:var(--text); width:100%; cursor:none; }
+.search-wrap input::placeholder { color:var(--muted); }
+
+/* ══ GRID ══ */
+.lf-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+
+/* ══ ITEM CARD ══ */
+.lf-card {
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:20px; overflow:hidden; position:relative;
+  cursor:pointer; transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  display:flex; flex-direction:column;
+}
+.lf-card:hover { transform:translateY(-6px); box-shadow:0 22px 60px rgba(0,0,0,.35); background:var(--card2); }
+.lf-card.lost-card  { border-color:rgba(248,113,113,.12); }
+.lf-card.found-card { border-color:rgba(74,222,128,.12); }
+.lf-card.lost-card:hover  { border-color:rgba(248,113,113,.3); }
+.lf-card.found-card:hover { border-color:rgba(74,222,128,.3); }
+
+/* Top accent bar */
+.lf-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2.5px;
+  background:var(--lc-accent);
+  transform:scaleX(0); transform-origin:left; transition:transform .4s;
+}
+.lf-card:hover::before { transform:scaleX(1); }
+/* Glow orb */
+.lf-card::after {
+  content:''; position:absolute; width:180px; height:180px; border-radius:50%;
+  filter:blur(50px); pointer-events:none;
+  background:var(--lc-glow);
+  bottom:-70px; right:-50px; opacity:0; transition:opacity .4s;
+}
+.lf-card:hover::after { opacity:1; }
+
+/* Image / emoji area */
+.lf-img {
+  width:100%; height:160px; position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--lc-img-bg);
+}
+.lf-img-emoji { font-size:72px; line-height:1; filter:drop-shadow(0 8px 24px rgba(0,0,0,.3)); transition:transform .4s cubic-bezier(.34,1.56,.64,1); }
+.lf-card:hover .lf-img-emoji { transform:scale(1.15) rotate(-5deg); }
+.lf-img-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, transparent 50%, var(--card) 100%); }
+[data-theme="light"] .lf-img-overlay { background:linear-gradient(to bottom, transparent 50%, var(--paper) 100%); }
+
+/* Status badge */
+.lf-status {
+  position:absolute; top:12px; left:12px; z-index:2;
+  display:flex; align-items:center; gap:5px;
+  font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  padding:5px 12px; border-radius:20px;
+  backdrop-filter:blur(10px);
+}
+.lf-status.lost  { background:rgba(248,113,113,.2); color:var(--red); border:1px solid rgba(248,113,113,.3); }
+.lf-status.found { background:rgba(74,222,128,.15); color:var(--green); border:1px solid rgba(74,222,128,.25); }
+.status-dot { width:5px;height:5px;border-radius:50%;background:currentColor;animation:sPulse 2s infinite; }
+@keyframes sPulse { 0%,100%{opacity:1;}50%{opacity:.4;} }
+
+/* Resolved stamp */
+.lf-resolved {
+  position:absolute; top:12px; right:12px; z-index:2;
+  font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  padding:5px 10px; border-radius:20px;
+  background:rgba(61,255,208,.12); color:var(--teal); border:1px solid rgba(61,255,208,.2);
+}
+
+/* Card body */
+.lf-body { padding:20px 20px 0; flex:1; }
+.lf-title { font-family:'Fredoka One',sans-serif; font-size:20px; letter-spacing:-.2px; margin-bottom:6px; }
+.lf-meta { display:flex; gap:10px; flex-wrap:wrap; font-size:11px; color:var(--muted); margin-bottom:10px; font-weight:500; }
+.lf-meta span { display:flex; align-items:center; gap:4px; }
+.lf-desc { font-size:13px; font-weight:300; color:var(--muted); line-height:1.75; margin-bottom:14px; }
+
+/* Tags */
+.lf-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+.lf-tag {
+  font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:var(--muted);
+}
+
+/* Card footer */
+.lf-foot {
+  padding:14px 20px; border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px;
+}
+.lf-poster { display:flex; align-items:center; gap:8px; }
+.lf-av { width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0; }
+.lf-poster-name { font-size:12px; font-weight:600; }
+.lf-time { font-size:11px; color:var(--muted); }
+.lf-actions { display:flex; gap:6px; }
+.lf-btn {
+  font-size:11px; font-weight:700; padding:6px 14px; border-radius:20px;
+  border:1.5px solid; cursor:none; transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  display:flex; align-items:center; gap:4px; white-space:nowrap;
+}
+.lf-btn.contact { border-color:rgba(124,106,247,.3); color:var(--purple); background:rgba(124,106,247,.07); }
+.lf-btn.contact:hover { background:rgba(124,106,247,.15); border-color:var(--purple); transform:translateY(-1px); }
+.lf-btn.claim { border-color:rgba(74,222,128,.3); color:var(--green); background:rgba(74,222,128,.07); }
+.lf-btn.claim:hover { background:rgba(74,222,128,.15); border-color:var(--green); transform:translateY(-1px); }
+.lf-btn.resolve { border-color:rgba(61,255,208,.3); color:var(--teal); background:rgba(61,255,208,.06); }
+.lf-btn.resolve:hover { background:rgba(61,255,208,.12); border-color:var(--teal); }
+
+/* Urgency banner */
+.lf-urgent {
+  margin:0 20px 12px; padding:8px 12px; border-radius:10px;
+  background:rgba(248,113,113,.07); border:1px solid rgba(248,113,113,.2);
+  font-size:11px; font-weight:700; color:var(--red);
+  display:flex; align-items:center; gap:6px;
+}
+
+/* ══ FEATURED (wide) card ══ */
+.lf-card.wide { grid-column:span 2; }
+.lf-card.wide .lf-img { height:200px; }
+
+/* ══ POST MODAL ══ */
+.modal-overlay {
+  position:fixed; inset:0; z-index:2000;
+  background:rgba(0,0,0,.75); backdrop-filter:blur(12px);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .3s;
+  padding:20px;
+}
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal {
+  background:var(--modal-bg); border:1.5px solid rgba(255,225,77,.15);
+  border-radius:24px; padding:0; width:100%; max-width:520px;
+  position:relative; overflow:hidden;
+  transform:translateY(30px) scale(.96);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 32px 80px rgba(0,0,0,.6);
+  max-height:90vh; overflow-y:auto;
+}
+.modal-overlay.open .modal { transform:none; }
+.modal::before { content:''; position:absolute; top:0; left:0; right:0; height:2.5px; background:linear-gradient(90deg,var(--yellow),var(--orange),var(--pink)); }
+.modal-header {
+  padding:28px 28px 0;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+}
+.modal-title-group {}
+.modal-emoji { font-size:36px; margin-bottom:6px; display:block; }
+.modal-title { font-family:'Fredoka One',sans-serif; font-size:26px; margin-bottom:4px; }
+.modal-sub { font-size:13px; color:var(--muted); font-weight:300; }
+.modal-close {
+  width:34px; height:34px; border-radius:50%; flex-shrink:0;
+  background:rgba(255,255,255,.06); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; cursor:none; transition:all .25s; color:var(--muted);
+}
+.modal-close:hover { background:rgba(255,77,141,.15); color:var(--pink); transform:rotate(90deg); }
+.modal-body { padding:24px 28px 28px; }
+
+/* Type toggle inside modal */
+.modal-type-row { display:flex; gap:8px; margin-bottom:22px; }
+.type-toggle {
+  flex:1; padding:12px; border-radius:14px; text-align:center;
+  border:2px solid var(--border); background:transparent; cursor:none;
+  font-size:14px; font-weight:700; color:var(--muted);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.type-toggle.lost.active  { border-color:rgba(248,113,113,.5); background:rgba(248,113,113,.1); color:var(--red); }
+.type-toggle.found.active { border-color:rgba(74,222,128,.5); background:rgba(74,222,128,.1); color:var(--green); }
+.type-toggle:not(.active):hover { border-color:var(--border); background:rgba(255,255,255,.04); color:var(--text); }
+
+.field { margin-bottom:18px; }
+.field label { display:block; font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); margin-bottom:7px; }
+.field input, .field textarea, .field select {
+  width:100%; padding:12px 16px; border-radius:12px;
+  background:var(--input-bg); border:1.5px solid var(--input-border);
+  color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px;
+  outline:none; transition:all .25s; cursor:none;
+}
+.field textarea { min-height:90px; resize:vertical; line-height:1.65; }
+.field select { appearance:none; }
+.field input:focus, .field textarea:focus, .field select:focus {
+  border-color:rgba(255,225,77,.4); background:rgba(255,225,77,.04);
+  box-shadow:0 0 0 3px rgba(255,225,77,.08);
+}
+.field input::placeholder, .field textarea::placeholder { color:var(--muted); }
+
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+/* emoji picker */
+.emoji-grid { display:flex; gap:8px; flex-wrap:wrap; }
+.emoji-opt {
+  width:48px; height:48px; border-radius:12px; font-size:24px;
+  background:rgba(255,255,255,.04); border:2px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  cursor:none; transition:all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.emoji-opt:hover { transform:scale(1.1) rotate(-5deg); background:rgba(255,225,77,.08); border-color:rgba(255,225,77,.3); }
+.emoji-opt.selected { background:rgba(255,225,77,.12); border-color:rgba(255,225,77,.45); transform:scale(1.08); }
+
+.modal-submit {
+  width:100%; padding:14px; border-radius:40px;
+  background:linear-gradient(135deg,var(--yellow),var(--orange));
+  color:var(--bg); font-size:15px; font-weight:800; border:none; cursor:none;
+  box-shadow:0 6px 24px rgba(255,225,77,.3);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  position:relative; overflow:hidden;
+}
+.modal-submit:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(255,225,77,.45); }
+
+/* ══ SIDEBAR ══ */
+.page-layout { display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start; }
+.feed-col {}
+.side-col { display:flex; flex-direction:column; gap:16px; position:sticky; top:90px; }
+
+.side-card {
+  background:var(--card); border:1.5px solid var(--border); border-radius:20px; padding:22px;
+  position:relative; overflow:hidden;
+  opacity:0; animation:fadeUp .5s 1.2s forwards;
+}
+.side-card:nth-child(2) { animation-delay:1.3s; }
+.side-card:nth-child(3) { animation-delay:1.4s; }
+.side-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--sc-accent,linear-gradient(90deg,var(--yellow),var(--orange))); }
+.sc-title { font-family:'Fredoka One',sans-serif; font-size:16px; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+
+/* Recent activity */
+.activity-list { display:flex; flex-direction:column; gap:8px; }
+.act-item {
+  display:flex; gap:10px; padding:10px; border-radius:12px;
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.04);
+  cursor:none; transition:all .25s;
+}
+.act-item:hover { background:rgba(255,225,77,.05); border-color:rgba(255,225,77,.12); transform:translateX(3px); }
+.act-emoji { font-size:20px; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.act-body { flex:1; min-width:0; }
+.act-title { font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.act-meta { font-size:10px; color:var(--muted); margin-top:2px; }
+.act-dot { width:7px;height:7px;border-radius:50%;background:var(--ad-color,var(--yellow));flex-shrink:0;margin-top:6px; }
+
+/* Stats mini */
+.stats-mini { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.sm-item { padding:14px 12px; border-radius:14px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.05); text-align:center; transition:background .25s; cursor:default; }
+.sm-item:hover { background:rgba(255,225,77,.06); }
+.sm-num { font-family:'Fredoka One',sans-serif; font-size:24px; line-height:1; }
+.sm-label { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; margin-top:3px; }
+
+/* Tips */
+.tips-list { display:flex; flex-direction:column; gap:10px; }
+.tip-item { display:flex; gap:10px; align-items:flex-start; font-size:12.5px; color:var(--muted); line-height:1.6; }
+.tip-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+
+/* ══ POST BUTTON (FAB) ══ */
+.fab {
+  position:fixed; bottom:32px; right:32px; z-index:500;
+  width:60px; height:60px; border-radius:50%;
+  background:linear-gradient(135deg,var(--yellow),var(--orange));
+  border:none; cursor:none;
+  display:flex; align-items:center; justify-content:center; font-size:26px;
+  box-shadow:0 8px 28px rgba(255,225,77,.4);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  opacity:0; animation:fadeUp .5s 1.5s forwards;
+}
+.fab:hover { transform:scale(1.15) rotate(15deg); box-shadow:0 14px 40px rgba(255,225,77,.55); }
+.fab-label {
+  position:absolute; right:70px; top:50%; transform:translateY(-50%);
+  background:var(--card2); border:1px solid rgba(255,225,77,.2);
+  padding:6px 14px; border-radius:20px;
+  font-size:12px; font-weight:700; color:var(--yellow);
+  white-space:nowrap; pointer-events:none;
+  opacity:0; transition:opacity .2s; backdrop-filter:blur(10px);
+}
+.fab:hover .fab-label { opacity:1; }
+
+/* ══ TOAST ══ */
+.toast {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px);
+  background:var(--card2); border:1.5px solid rgba(255,225,77,.25); border-radius:40px;
+  padding:12px 24px; font-size:13px; font-weight:700;
+  display:flex; align-items:center; gap:9px;
+  box-shadow:0 12px 40px rgba(0,0,0,.4);
+  z-index:3000; transition:transform .4s cubic-bezier(.34,1.56,.64,1), opacity .4s;
+  opacity:0; pointer-events:none; backdrop-filter:blur(20px); white-space:nowrap;
+}
+.toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+
+/* ══ LOAD MORE ══ */
+.load-more {
+  display:flex; align-items:center; justify-content:center; gap:10px; margin:36px 0 0;
+  padding:16px; background:var(--card); border:1.5px dashed rgba(255,225,77,.2);
+  border-radius:16px; font-size:13px; font-weight:600; color:var(--muted);
+  cursor:none; transition:all .3s; opacity:0; animation:fadeUp .5s 1.6s forwards;
+}
+.load-more:hover { border-color:rgba(255,225,77,.4); color:var(--yellow); background:rgba(255,225,77,.04); }
+
+/* ══ EMPTY STATE ══ */
+.empty-state {
+  grid-column:span 3; text-align:center; padding:60px 20px;
+  display:none;
+}
+.empty-state.show { display:block; }
+.empty-emoji { font-size:64px; margin-bottom:16px; }
+.empty-title { font-family:'Fredoka One',sans-serif; font-size:24px; margin-bottom:8px; }
+.empty-sub { font-size:14px; color:var(--muted); }
+
+/* ══ REVEAL ══ */
+.rev { opacity:0; transform:translateY(28px); transition:opacity .6s ease,transform .65s cubic-bezier(.34,1.56,.64,1); }
+.rev.on { opacity:1; transform:none; }
+.d1{transition-delay:.06s;} .d2{transition-delay:.12s;} .d3{transition-delay:.18s;}
+.d4{transition-delay:.24s;} .d5{transition-delay:.30s;} .d6{transition-delay:.36s;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1040px){
+  .page-layout { grid-template-columns:1fr; }
+  .side-col { display:grid; grid-template-columns:1fr 1fr; position:static; }
+  .lf-grid  { grid-template-columns:1fr 1fr; }
+  .lf-card.wide { grid-column:span 2; }
 }
-
-.interaction-actions button:hover{
-background:var(--gradient);
-color:white;
-transform:translateY(-5px);
-}
-
-.voice-wave{
-display:flex;
-align-items:flex-end;
-gap:6px;
-height:40px;
-margin-top:15px;
-}
-
-.voice-wave div{
-width:6px;
-background:var(--gradient);
-border-radius:20px;
-animation:wave 1s infinite ease-in-out;
-}
-
-.voice-wave div:nth-child(1){height:18px;}
-.voice-wave div:nth-child(2){height:35px;}
-.voice-wave div:nth-child(3){height:22px;}
-.voice-wave div:nth-child(4){height:38px;}
-.voice-wave div:nth-child(5){height:26px;}
-
-@keyframes wave{
-50%{
-transform:scaleY(1.7);
-opacity:0.7;
-}
-}
-
-/* ================= POSTS ================= */
-
-.feed-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
-gap:35px;
-}
-
-.feed-card{
-border-radius:30px;
-overflow:hidden;
-background:var(--card);
-border:1px solid var(--border);
-backdrop-filter:blur(16px);
-transition:0.5s;
-}
-
-.feed-card:hover{
-transform:translateY(-12px) scale(1.02);
-}
-
-.feed-card img{
-width:100%;
-height:240px;
-object-fit:cover;
-}
-
-.feed-content{
-padding:28px;
-}
-
-.tag{
-padding:8px 18px;
-border-radius:40px;
-background:var(--gradient);
-color:white;
-font-size:13px;
-}
-
-.feed-content h3{
-margin:20px 0 14px;
-font-size:28px;
-}
-
-.feed-content p{
-line-height:1.8;
-opacity:0.9;
-}
-
-.card-actions{
-margin-top:25px;
-display:flex;
-gap:15px;
-}
-
-.ping-btn,
-.chat-btn{
-flex:1;
-padding:15px;
-border:none;
-border-radius:16px;
-font-weight:600;
-cursor:pointer;
-transition:0.4s;
-}
-
-.ping-btn{
-background:var(--gradient);
-color:white;
-}
-
-.chat-btn{
-background:rgba(255,255,255,0.08);
-color:var(--text);
-border:1px solid var(--border);
-}
-
-.ping-btn:hover,
-.chat-btn:hover{
-transform:translateY(-5px);
-}
-
-/* ================= FOOTER ================= */
-
-footer{
-padding:40px;
-text-align:center;
-border-top:1px solid var(--border);
-opacity:0.7;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:900px){
-
-.hero h1{
-font-size:55px;
-}
-
-.section-title h2{
-font-size:42px;
-}
-
-.float-card{
-display:none;
-}
-
-}
-
 @media(max-width:768px){
-
-.hero h1{
-font-size:44px;
+  .lf-grid { grid-template-columns:1fr; }
+  .lf-card.wide { grid-column:span 1; }
+  .side-col { grid-template-columns:1fr; }
+  .field-row { grid-template-columns:1fr; }
+  .nav-center .nav-pill:not(.active):not(:nth-child(-n+2)){ display:none; }
+  .fab { bottom:24px; right:20px; }
 }
-
-.hero-btns{
-flex-direction:column;
-}
-
-.section-title h2{
-font-size:35px;
-}
-
+@media(max-width:480px){
+  .page-title { font-size:clamp(42px,15vw,76px); }
+  .mode-toggle { width:100%; }
+  .mode-btn { flex:1; padding:10px 14px; font-size:11px; }
+  .nav-center { display:none; }
 }
 
 </style>
 </head>
-
 <body>
 
-<!-- BACKGROUND -->
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<canvas id="bg-canvas"></canvas>
 
-<div class="bg">
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast">✅ Posted successfully!</div>
 
-<div class="blur blur1"></div>
-<div class="blur blur2"></div>
-<div class="blur blur3"></div>
+<!-- ══ POST MODAL ══ -->
+<div class="modal-overlay" id="postModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="modal-emoji" id="modalEmoji">🔍</span>
+        <div class="modal-title">Report an Item</div>
+        <div class="modal-sub">Help reunite someone with their belongings</div>
+      </div>
+      <div class="modal-close" id="closeModal">✕</div>
+    </div>
+    <div class="modal-body">
+      <!-- Lost / Found toggle -->
+      <div class="modal-type-row">
+        <button class="type-toggle lost active" id="typeLost" onclick="setType('lost')">🔴 I Lost Something</button>
+        <button class="type-toggle found" id="typeFound" onclick="setType('found')">🟢 I Found Something</button>
+      </div>
 
-<div class="particle" style="left:10%; animation-duration:12s;"></div>
-<div class="particle" style="left:25%; animation-duration:16s;"></div>
-<div class="particle" style="left:45%; animation-duration:14s;"></div>
-<div class="particle" style="left:65%; animation-duration:18s;"></div>
-<div class="particle" style="left:80%; animation-duration:11s;"></div>
+      <div class="field">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="e.g. Black AirPods Pro Case">
+      </div>
 
+      <div class="field">
+        <label>Choose Item Icon</label>
+        <div class="emoji-grid" id="emojiGrid">
+          <div class="emoji-opt selected" data-emoji="🎒">🎒</div>
+          <div class="emoji-opt" data-emoji="📱">📱</div>
+          <div class="emoji-opt" data-emoji="🎧">🎧</div>
+          <div class="emoji-opt" data-emoji="💻">💻</div>
+          <div class="emoji-opt" data-emoji="🔑">🔑</div>
+          <div class="emoji-opt" data-emoji="💙">💙</div>
+          <div class="emoji-opt" data-emoji="👓">👓</div>
+          <div class="emoji-opt" data-emoji="⌚">⌚</div>
+          <div class="emoji-opt" data-emoji="📗">📗</div>
+          <div class="emoji-opt" data-emoji="🃏">🃏</div>
+          <div class="emoji-opt" data-emoji="💼">💼</div>
+          <div class="emoji-opt" data-emoji="🪪">🪪</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Location</label>
+          <input type="text" id="itemLocation" placeholder="e.g. Library 2nd Floor">
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="itemDate">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <select id="itemCategory">
+          <option value="">Select a category</option>
+          <option>Electronics</option>
+          <option>Accessories</option>
+          <option>Books & Stationery</option>
+          <option>Clothing</option>
+          <option>ID & Cards</option>
+          <option>Keys</option>
+          <option>Bags</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea id="itemDesc" placeholder="Describe the item — colour, brand, distinctive features..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Your Contact (shown only to matched users)</label>
+        <input type="text" id="itemContact" placeholder="WhatsApp number or college email">
+      </div>
+
+      <button class="modal-submit" id="submitPost">🔍 Post to Lost & Found Board</button>
+    </div>
+  </div>
 </div>
 
-<!-- NAVBAR -->
-
-<nav class="navbar">
-
-<div class="logo">
-CampusHub
-</div>
-
-<div class="nav-right">
-
-<button class="back-btn" onclick="history.back()">
-<i class="fa-solid fa-arrow-left"></i>
-</button>
-
-<div class="toggle" id="themeToggle">
-<div class="toggle-circle"></div>
-</div>
-
-</div>
-
+<!-- ══ NAV ══ -->
+<nav id="navbar">
+  <a class="nav-logo" href="index.html">CampusHub 🎓</a>
+  <div class="nav-sep"></div>
+  <div class="nav-center">
+    <a class="nav-pill" href="index.html#features">Features</a>
+    <a class="nav-pill active" href="lost-and-found.html">🔍 Lost & Found</a>
+    <a class="nav-pill" href="confession.html">🤫 Confessions</a>
+    <a class="nav-pill" href="notes.html">📚 Notes</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-theme" id="themeToggle">☀️</div>
+    <div class="nav-notif">🔔<div class="notif-badge">3</div></div>
+    <div class="nav-sep"></div>
+    <a class="nav-cta" href="#">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Sign Up
+    </a>
+  </div>
 </nav>
 
-<!-- HERO -->
-
-<section class="hero">
-
-<div class="hero-badge">
-✨ Smart AI Campus Recovery System
-</div>
-
-<h1>
-Lost Something?
-<span>Get It Back Fast.</span>
-</h1>
-
-<p>
-Ultra modern lost & found platform with image sharing,
-voice reports, ping alerts, floating futuristic UI and colorful dual themes.
-Designed for next generation campuses.
-</p>
-
-<div class="hero-btns">
-
-<button class="btn primary">
-<i class="fa-solid fa-magnifying-glass"></i>
- Report Lost Item
-</button>
-
-<button class="btn secondary">
-<i class="fa-solid fa-box-open"></i>
- Found Something
-</button>
-
-</div>
-
-<div class="float-card card1">
-<i class="fa-solid fa-image"></i>
-Image Sharing
-</div>
-
-<div class="float-card card2">
-<i class="fa-solid fa-microphone"></i>
-Voice Notes
-</div>
-
-<div class="float-card card3">
-<i class="fa-solid fa-bell"></i>
-Instant Ping
-</div>
-
+<!-- ══ HERO ══ -->
+<section class="page-hero">
+  <div class="hero-blobs">
+    <div class="hblob hb1"></div>
+    <div class="hblob hb2"></div>
+    <div class="hblob hb3"></div>
+  </div>
+  <div class="hero-ring hr1"></div>
+  <div class="hero-ring hr2"></div>
+  <div class="hero-ring hr3"></div>
+  <div class="hero-inner">
+    <div class="page-badge"><span class="badge-pulse"></span> 2,400+ Items Reunited</div>
+    <h1 class="page-title">
+      <span class="pt-line1">LOST &</span>
+      <span class="pt-line2">FOUND</span>
+    </h1>
+    <p class="page-sub">Lost something on campus? Found something? Post it here and help your campus community reunite with their belongings.</p>
+    <div class="hero-stats">
+      <div class="hs-item">
+        <div class="hs-num" style="color:var(--red);">847</div>
+        <div class="hs-label">Active Lost</div>
+      </div>
+      <div class="hs-item">
+        <div class="hs-num" style="color:var(--green);">312</div>
+        <div class="hs-label">Found Items</div>
+      </div>
+      <div class="hs-item">
+        <div class="hs-num" style="color:var(--teal);">2.4K</div>
+        <div class="hs-label">Reunited</div>
+      </div>
+      <div class="hs-item">
+        <div class="hs-num" style="color:var(--yellow);">94%</div>
+        <div class="hs-label">Success Rate</div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- FEATURES -->
+<!-- ══ MAIN ══ -->
+<div class="main-wrap">
 
-<section class="features">
+  <!-- MODE TOGGLE -->
+  <div class="mode-toggle">
+    <button class="mode-btn all active" id="modeAll">🔍 All Items</button>
+    <button class="mode-btn lost" id="modeLost">🔴 Lost</button>
+    <button class="mode-btn found" id="modeFound">🟢 Found</button>
+  </div>
 
-<div class="section-title">
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="filter-scroll" id="filterGroup">
+      <button class="filter-btn active" data-cat="All">All</button>
+      <button class="filter-btn" data-cat="Electronics">📱 Electronics</button>
+      <button class="filter-btn" data-cat="Accessories">🎒 Accessories</button>
+      <button class="filter-btn" data-cat="Books">📗 Books</button>
+      <button class="filter-btn" data-cat="Keys">🔑 Keys</button>
+      <button class="filter-btn" data-cat="ID & Cards">🪪 ID & Cards</button>
+      <button class="filter-btn" data-cat="Clothing">👕 Clothing</button>
+    </div>
+    <div class="search-wrap">
+      <span style="font-size:14px;opacity:.5;">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search items...">
+    </div>
+  </div>
 
-<h2>
-Amazing <span>Features</span>
-</h2>
+  <div class="page-layout">
+    <!-- ══ FEED ══ -->
+    <div class="feed-col">
+      <div class="lf-grid" id="lfGrid">
 
-<p>
-Beautiful colorful futuristic experience with smooth animations.
-</p>
+        <!-- FEATURED LOST — wide -->
+        <div class="lf-card lost-card wide rev" data-type="lost" data-cat="Electronics"
+          style="--lc-accent:linear-gradient(90deg,var(--red),var(--orange));--lc-glow:rgba(248,113,113,.1);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(248,113,113,.08),rgba(255,140,66,.06));">
+            <div class="lf-img-emoji">💻</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status lost"><span class="status-dot"></span> LOST</div>
+          <div class="lf-body">
+            <div class="lf-urgent">⚡ Urgent — contains semester project files!</div>
+            <div class="lf-title">Dell Inspiron 15 Laptop — Charcoal Grey</div>
+            <div class="lf-meta">
+              <span>📍 Main Auditorium</span>
+              <span>🕒 Today, 2:30 PM</span>
+              <span>💻 Electronics</span>
+            </div>
+            <div class="lf-desc">Left on seat row C during the Hackathon briefing. Has a CampusHub sticker on the lid and a small scratch on the bottom-left corner. Sticker that says "DO NOT STEAL" (clearly didn't work).</div>
+            <div class="lf-tags">
+              <span class="lf-tag">Dell</span>
+              <span class="lf-tag">Laptop</span>
+              <span class="lf-tag">Silver sticker</span>
+              <span class="lf-tag">15 inch</span>
+            </div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(248,113,113,.15);color:var(--red);">A</div>
+              <div><div class="lf-poster-name">Arjun Mehta</div><div class="lf-time">28 min ago</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn contact">📞 Contact</div>
+              <div class="lf-btn resolve">✓ I Found It</div>
+            </div>
+          </div>
+        </div>
 
-</div>
+        <!-- FOUND -->
+        <div class="lf-card found-card rev d1" data-type="found" data-cat="Accessories"
+          style="--lc-accent:linear-gradient(90deg,var(--green),var(--teal));--lc-glow:rgba(74,222,128,.08);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(74,222,128,.08),rgba(61,255,208,.05));">
+            <div class="lf-img-emoji">🔑</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status found"><span class="status-dot"></span> FOUND</div>
+          <div class="lf-resolved">✓ Safe with Admin</div>
+          <div class="lf-body">
+            <div class="lf-title">Key Bunch — 3 Keys + Fox Keychain</div>
+            <div class="lf-meta">
+              <span>📍 Canteen Block A</span>
+              <span>🕒 1 hr ago</span>
+              <span>🔑 Keys</span>
+            </div>
+            <div class="lf-desc">Found near table 7. Has a cute orange fox keychain attached. Currently with the canteen counter staff.</div>
+            <div class="lf-tags"><span class="lf-tag">Keys</span><span class="lf-tag">Fox keychain</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(74,222,128,.15);color:var(--green);">P</div>
+              <div><div class="lf-poster-name">Priya Nair</div><div class="lf-time">1 hr ago</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn claim">🙋 It's Mine!</div>
+            </div>
+          </div>
+        </div>
 
-<div class="feature-grid">
+        <!-- LOST -->
+        <div class="lf-card lost-card rev d2" data-type="lost" data-cat="Electronics"
+          style="--lc-accent:linear-gradient(90deg,var(--red),var(--pink));--lc-glow:rgba(248,113,113,.1);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(255,77,141,.08),rgba(124,106,247,.06));">
+            <div class="lf-img-emoji">🎧</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status lost"><span class="status-dot"></span> LOST</div>
+          <div class="lf-body">
+            <div class="lf-title">Sony WH-1000XM5 Headphones</div>
+            <div class="lf-meta">
+              <span>📍 Library</span>
+              <span>🕒 3 hrs ago</span>
+              <span>🎧 Electronics</span>
+            </div>
+            <div class="lf-desc">Matte black. Left in a black pouch on the study table on the 3rd floor near the window seats.</div>
+            <div class="lf-tags"><span class="lf-tag">Sony</span><span class="lf-tag">Black pouch</span><span class="lf-tag">XM5</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(255,77,141,.12);color:var(--pink);">S</div>
+              <div><div class="lf-poster-name">Sneha K.</div><div class="lf-time">3 hrs ago</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn contact">📞 Contact</div>
+              <div class="lf-btn resolve">✓ I Found It</div>
+            </div>
+          </div>
+        </div>
 
-<div class="feature-card">
-<i class="fa-solid fa-image"></i>
-<h3>Image Reports</h3>
-<p>Upload clear item photos for faster recovery.</p>
-</div>
+        <!-- FOUND -->
+        <div class="lf-card found-card rev d3" data-type="found" data-cat="ID & Cards"
+          style="--lc-accent:linear-gradient(90deg,var(--teal),var(--purple));--lc-glow:rgba(61,255,208,.08);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(61,255,208,.07),rgba(124,106,247,.06));">
+            <div class="lf-img-emoji">🪪</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status found"><span class="status-dot"></span> FOUND</div>
+          <div class="lf-body">
+            <div class="lf-title">Student ID Card — ECE Department</div>
+            <div class="lf-meta">
+              <span>📍 Sports Ground</span>
+              <span>🕒 Yesterday</span>
+              <span>🪪 ID & Cards</span>
+            </div>
+            <div class="lf-desc">Found near the cricket net. Name starts with "R" — photo visible. Deposited at the Sports Office.</div>
+            <div class="lf-tags"><span class="lf-tag">ECE</span><span class="lf-tag">ID Card</span><span class="lf-tag">Sports Office</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(61,255,208,.1);color:var(--teal);">V</div>
+              <div><div class="lf-poster-name">Vikram D.</div><div class="lf-time">Yesterday</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn claim">🙋 It's Mine!</div>
+            </div>
+          </div>
+        </div>
 
-<div class="feature-card">
-<i class="fa-solid fa-wave-square"></i>
-<h3>Voice Reporting</h3>
-<p>Send voice descriptions instead of long text typing.</p>
-</div>
+        <!-- LOST -->
+        <div class="lf-card lost-card rev d4" data-type="lost" data-cat="Accessories"
+          style="--lc-accent:linear-gradient(90deg,var(--orange),var(--yellow));--lc-glow:rgba(255,140,66,.1);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(255,140,66,.08),rgba(255,225,77,.06));">
+            <div class="lf-img-emoji">🎒</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status lost"><span class="status-dot"></span> LOST</div>
+          <div class="lf-body">
+            <div class="lf-title">Olive Green Jansport Backpack</div>
+            <div class="lf-meta">
+              <span>📍 Seminar Hall B</span>
+              <span>🕒 5 hrs ago</span>
+              <span>🎒 Accessories</span>
+            </div>
+            <div class="lf-desc">Has a small NASA patch on the front pocket. Contains textbooks and a grey water bottle. Please contact if found!</div>
+            <div class="lf-tags"><span class="lf-tag">Jansport</span><span class="lf-tag">Olive Green</span><span class="lf-tag">NASA patch</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(255,140,66,.12);color:var(--orange);">D</div>
+              <div><div class="lf-poster-name">Dev Sharma</div><div class="lf-time">5 hrs ago</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn contact">📞 Contact</div>
+              <div class="lf-btn resolve">✓ I Found It</div>
+            </div>
+          </div>
+        </div>
 
-<div class="feature-card">
-<i class="fa-solid fa-location-dot"></i>
-<h3>Smart Tracking</h3>
-<p>Mention exact campus location where item was found.</p>
-</div>
+        <!-- FOUND -->
+        <div class="lf-card found-card rev d5" data-type="found" data-cat="Electronics"
+          style="--lc-accent:linear-gradient(90deg,var(--green),var(--yellow));--lc-glow:rgba(74,222,128,.08);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(74,222,128,.08),rgba(255,225,77,.05));">
+            <div class="lf-img-emoji">📱</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status found"><span class="status-dot"></span> FOUND</div>
+          <div class="lf-body">
+            <div class="lf-title">iPhone 14 — Starlight, No Case</div>
+            <div class="lf-meta">
+              <span>📍 Exam Hall 3</span>
+              <span>🕒 6 hrs ago</span>
+              <span>📱 Electronics</span>
+            </div>
+            <div class="lf-desc">Found on the exam desk after the afternoon session. Screen shows a notification from "Mom 📞". Handed to the exam department office.</div>
+            <div class="lf-tags"><span class="lf-tag">iPhone 14</span><span class="lf-tag">Starlight</span><span class="lf-tag">Exam Office</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(74,222,128,.12);color:var(--green);">R</div>
+              <div><div class="lf-poster-name">Rahul V.</div><div class="lf-time">6 hrs ago</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn claim">🙋 It's Mine!</div>
+            </div>
+          </div>
+        </div>
 
-<div class="feature-card">
-<i class="fa-solid fa-bell"></i>
-<h3>Live Ping Alerts</h3>
-<p>Finder can instantly notify the original owner.</p>
-</div>
+        <!-- LOST -->
+        <div class="lf-card lost-card rev d1" data-type="lost" data-cat="Books"
+          style="--lc-accent:linear-gradient(90deg,var(--purple),var(--pink));--lc-glow:rgba(124,106,247,.1);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(124,106,247,.08),rgba(255,77,141,.06));">
+            <div class="lf-img-emoji">📗</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status lost"><span class="status-dot"></span> LOST</div>
+          <div class="lf-body">
+            <div class="lf-title">Tanenbaum OS Textbook + Notes</div>
+            <div class="lf-meta">
+              <span>📍 CS Block Reading Room</span>
+              <span>🕒 Yesterday</span>
+              <span>📗 Books</span>
+            </div>
+            <div class="lf-desc">Has my name on the inside cover: "Meera S." with extensive handwritten margin notes. Exam is in 3 days — please help!</div>
+            <div class="lf-tags"><span class="lf-tag">Tanenbaum</span><span class="lf-tag">OS</span><span class="lf-tag">Handwritten notes</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(124,106,247,.12);color:var(--purple);">M</div>
+              <div><div class="lf-poster-name">Meera S.</div><div class="lf-time">Yesterday</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn contact">📞 Contact</div>
+              <div class="lf-btn resolve">✓ I Found It</div>
+            </div>
+          </div>
+        </div>
 
-</div>
+        <!-- FOUND — wide -->
+        <div class="lf-card found-card wide rev d2" data-type="found" data-cat="Accessories"
+          style="--lc-accent:linear-gradient(90deg,var(--green),var(--teal));--lc-glow:rgba(74,222,128,.09);">
+          <div class="lf-img" style="height:180px;--lc-img-bg:linear-gradient(135deg,rgba(74,222,128,.07),rgba(61,255,208,.05));">
+            <div class="lf-img-emoji">👓</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status found"><span class="status-dot"></span> FOUND</div>
+          <div class="lf-body">
+            <div class="lf-title">Round Black Frame Glasses — Prescription</div>
+            <div class="lf-meta">
+              <span>📍 Library Café</span>
+              <span>🕒 2 days ago</span>
+              <span>👓 Accessories</span>
+              <span>🏢 Still with finder</span>
+            </div>
+            <div class="lf-desc">Round black acetate frames, appears to be a strong prescription. Found on the window ledge table near the coffee counter on Monday afternoon. Still with me — DM to arrange pickup on campus.</div>
+            <div class="lf-tags"><span class="lf-tag">Glasses</span><span class="lf-tag">Round frame</span><span class="lf-tag">Prescription</span><span class="lf-tag">Black acetate</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(74,222,128,.12);color:var(--green);">N</div>
+              <div><div class="lf-poster-name">Nikhil P.</div><div class="lf-time">2 days ago</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn contact">📞 Contact</div>
+              <div class="lf-btn claim">🙋 It's Mine!</div>
+            </div>
+          </div>
+        </div>
 
-</section>
+        <!-- LOST -->
+        <div class="lf-card lost-card rev d3" data-type="lost" data-cat="Keys"
+          style="--lc-accent:linear-gradient(90deg,var(--yellow),var(--orange));--lc-glow:rgba(255,225,77,.08);">
+          <div class="lf-img" style="--lc-img-bg:linear-gradient(135deg,rgba(255,225,77,.08),rgba(255,140,66,.06));">
+            <div class="lf-img-emoji">⌚</div>
+            <div class="lf-img-overlay"></div>
+          </div>
+          <div class="lf-status lost"><span class="status-dot"></span> LOST</div>
+          <div class="lf-body">
+            <div class="lf-title">Casio G-Shock — Yellow Strap</div>
+            <div class="lf-meta">
+              <span>📍 Gym / Sports Complex</span>
+              <span>🕒 3 days ago</span>
+              <span>⌚ Accessories</span>
+            </div>
+            <div class="lf-desc">Bright yellow strap, digital face. Might have slipped off during basketball practice. It was a gift so I'm really hoping to find it.</div>
+            <div class="lf-tags"><span class="lf-tag">G-Shock</span><span class="lf-tag">Yellow</span><span class="lf-tag">Digital</span></div>
+          </div>
+          <div class="lf-foot">
+            <div class="lf-poster">
+              <div class="lf-av" style="background:rgba(255,225,77,.12);color:var(--yellow);">K</div>
+              <div><div class="lf-poster-name">Karan B.</div><div class="lf-time">3 days ago</div></div>
+            </div>
+            <div class="lf-actions">
+              <div class="lf-btn contact">📞 Contact</div>
+              <div class="lf-btn resolve">✓ I Found It</div>
+            </div>
+          </div>
+        </div>
 
-<!-- INTERACTION -->
+        <!-- Empty state -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-emoji">🔍</div>
+          <div class="empty-title">Nothing found here yet</div>
+          <div class="empty-sub">Try a different filter or be the first to post!</div>
+        </div>
 
-<section class="interaction-section">
+      </div><!-- /lf-grid -->
 
-<div class="section-title">
+      <div class="load-more" id="loadMore">
+        🔍 Load more items &nbsp;<span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--yellow);">1,159 total active</span>
+      </div>
+    </div><!-- /feed-col -->
 
-<h2>
-Campus <span>Interactions</span>
-</h2>
+    <!-- ══ SIDEBAR ══ -->
+    <div class="side-col">
 
-<p>
-Students can interact and help each other recover items faster.
-</p>
+      <!-- Recent activity -->
+      <div class="side-card" style="--sc-accent:linear-gradient(90deg,var(--yellow),var(--orange));">
+        <div class="sc-title">⚡ Recent Activity</div>
+        <div class="activity-list">
+          <div class="act-item">
+            <div class="act-emoji" style="background:rgba(74,222,128,.1);">✅</div>
+            <div class="act-body">
+              <div class="act-title">AirPods Pro — REUNITED!</div>
+              <div class="act-meta">CS Dept · 12 min ago</div>
+            </div>
+            <div class="act-dot" style="--ad-color:var(--green);background:var(--green);"></div>
+          </div>
+          <div class="act-item">
+            <div class="act-emoji" style="background:rgba(248,113,113,.1);">🔴</div>
+            <div class="act-body">
+              <div class="act-title">New Lost: Purple Umbrella</div>
+              <div class="act-meta">ECE Block · 34 min ago</div>
+            </div>
+            <div class="act-dot" style="background:var(--red);"></div>
+          </div>
+          <div class="act-item">
+            <div class="act-emoji" style="background:rgba(74,222,128,.1);">🟢</div>
+            <div class="act-body">
+              <div class="act-title">New Found: Blue Bottle</div>
+              <div class="act-meta">Canteen · 1 hr ago</div>
+            </div>
+            <div class="act-dot" style="background:var(--green);"></div>
+          </div>
+          <div class="act-item">
+            <div class="act-emoji" style="background:rgba(74,222,128,.1);">✅</div>
+            <div class="act-body">
+              <div class="act-title">Wallet — REUNITED!</div>
+              <div class="act-meta">MBA Block · 2 hrs ago</div>
+            </div>
+            <div class="act-dot" style="background:var(--green);"></div>
+          </div>
+        </div>
+      </div>
 
-</div>
+      <!-- Stats -->
+      <div class="side-card" style="--sc-accent:linear-gradient(90deg,var(--teal),var(--green)); animation-delay:1.3s;">
+        <div class="sc-title">📊 Board Stats</div>
+        <div class="stats-mini">
+          <div class="sm-item"><div class="sm-num" style="color:var(--red);">847</div><div class="sm-label">Active Lost</div></div>
+          <div class="sm-item"><div class="sm-num" style="color:var(--green);">312</div><div class="sm-label">Found Items</div></div>
+          <div class="sm-item"><div class="sm-num" style="color:var(--teal);">2.4K</div><div class="sm-label">Reunited</div></div>
+          <div class="sm-item"><div class="sm-num" style="color:var(--yellow);">18h</div><div class="sm-label">Avg. Resolve</div></div>
+        </div>
+      </div>
 
-<div class="interaction-grid">
+      <!-- Tips -->
+      <div class="side-card" style="--sc-accent:linear-gradient(90deg,var(--purple),var(--pink)); animation-delay:1.4s;">
+        <div class="sc-title">💡 Tips to Get Found</div>
+        <div class="tips-list">
+          <div class="tip-item"><span class="tip-icon">📸</span><span>Add a clear photo of the item when posting.</span></div>
+          <div class="tip-item"><span class="tip-icon">📍</span><span>Be specific about the exact location — floor, room, table.</span></div>
+          <div class="tip-item"><span class="tip-icon">🏷️</span><span>Label your belongings with your student ID.</span></div>
+          <div class="tip-item"><span class="tip-icon">⏱️</span><span>Post within the first hour — success rate doubles!</span></div>
+          <div class="tip-item"><span class="tip-icon">🔒</span><span>Never share contact info publicly in descriptions.</span></div>
+        </div>
+      </div>
 
-<div class="interaction-card">
+    </div><!-- /side-col -->
+  </div><!-- /page-layout -->
+</div><!-- /main-wrap -->
 
-<div class="interaction-top">
-
-<div class="user-info">
-
-<img src="https://randomuser.me/api/portraits/women/44.jpg">
-
-<div>
-<h4>Sarah Johnson</h4>
-<span>2 mins ago</span>
-</div>
-
-</div>
-
-<div class="status"></div>
-
-</div>
-
-<p class="interaction-text">
-I think I saw this wallet near Block C classroom hallway.
-Please check there once.
-</p>
-
-<div class="interaction-actions">
-
-<button>
-<i class="fa-solid fa-heart"></i> 24
+<!-- FAB -->
+<button class="fab" id="fabBtn" title="Post an item">
+  <span class="fab-label">Post Item</span>
+  +
 </button>
-
-<button>
-<i class="fa-solid fa-comment"></i> Reply
-</button>
-
-<button>
-<i class="fa-solid fa-share"></i> Share
-</button>
-
-</div>
-
-</div>
-
-<div class="interaction-card">
-
-<div class="interaction-top">
-
-<div class="user-info">
-
-<img src="https://randomuser.me/api/portraits/men/32.jpg">
-
-<div>
-<h4>Alex Carter</h4>
-<span>5 mins ago</span>
-</div>
-
-</div>
-
-<div class="status"></div>
-
-</div>
-
-<p class="interaction-text">
-Found a black wireless earbud case near cafeteria.
-Ping me if it's yours.
-</p>
-
-<div class="voice-wave">
-<div></div>
-<div></div>
-<div></div>
-<div></div>
-<div></div>
-</div>
-
-<div class="interaction-actions">
-
-<button>
-<i class="fa-solid fa-heart"></i> 41
-</button>
-
-<button>
-<i class="fa-solid fa-bell"></i> Ping
-</button>
-
-<button>
-<i class="fa-solid fa-paper-plane"></i> Message
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- POSTS -->
-
-<section class="feed">
-
-<div class="section-title">
-
-<h2>
-Recent <span>Reports</span>
-</h2>
-
-<p>
-Recover items quickly with instant communication.
-</p>
-
-</div>
-
-<div class="feed-grid">
-
-<div class="feed-card">
-
-<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop">
-
-<div class="feed-content">
-
-<span class="tag">Found Item</span>
-
-<h3>iPhone 15 Pro</h3>
-
-<p>
-Found near cafeteria around 1 PM.
-Owner can verify wallpaper to claim.
-</p>
-
-<div class="card-actions">
-
-<button class="ping-btn">
-<i class="fa-solid fa-bell"></i>
- Ping Owner
-</button>
-
-<button class="chat-btn">
-<i class="fa-solid fa-message"></i>
- Chat
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="feed-card">
-
-<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
-
-<div class="feed-content">
-
-<span class="tag">Lost Item</span>
-
-<h3>Red Nike Shoes</h3>
-
-<p>
-Lost after football practice near sports complex.
-</p>
-
-<div class="card-actions">
-
-<button class="ping-btn">
-Notify
-</button>
-
-<button class="chat-btn">
-Contact
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<footer>
-CampusHub Lost & Found © 2026 • Future Campus Experience
-</footer>
 
 <script>
+/* ── CURSOR ── */
+const dot = document.getElementById('cur-dot');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+(function lp(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(lp); })();
+const hoverEls = 'a,button,.lf-card,.filter-btn,.mode-btn,.lf-btn,.act-item,.sm-item,.tip-item,.emoji-opt,.type-toggle,.nav-theme,.nav-notif,.fab,.load-more,.side-card,.modal-close';
+document.querySelectorAll(hoverEls).forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+});
+document.addEventListener('mousedown', () => ring.classList.add('click'));
+document.addEventListener('mouseup', () => ring.classList.remove('click'));
 
-/* ================= THEME TOGGLE ================= */
+/* ── CANVAS ── */
+(function(){
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let W, H, mouse = {x:-999,y:-999};
+  const resize = () => { W=c.width=window.innerWidth; H=c.height=window.innerHeight; };
+  resize(); window.addEventListener('resize', resize);
+  document.addEventListener('mousemove', e => { mouse.x=e.clientX; mouse.y=e.clientY; });
+  const EMOJIS = ['🔍','🔑','📱','🎒','💙','👓','⌚','📗','🪪','💻','🎧','✅','❓','📍'];
+  const COLORS = ['rgba(255,225,77,','rgba(255,140,66,','rgba(74,222,128,','rgba(61,255,208,','rgba(124,106,247,'];
+  class P {
+    constructor(){ this.reset(true); }
+    reset(init){
+      this.x=Math.random()*W; this.y=init?Math.random()*H:H+60;
+      this.type=Math.random()<.3?'emoji':'shape';
+      this.emoji=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      this.color=COLORS[Math.floor(Math.random()*COLORS.length)];
+      this.size=this.type==='emoji'?10+Math.random()*16:1.5+Math.random()*4;
+      this.vx=(Math.random()-.5)*.3; this.vy=-(0.2+Math.random()*.5);
+      this.alpha=.03+Math.random()*.07; this.baseAlpha=this.alpha;
+      this.shape=['circle','rect','triangle'][Math.floor(Math.random()*3)];
+      this.rot=Math.random()*Math.PI*2; this.rotV=(Math.random()-.5)*.008;
+    }
+    update(){
+      const dx=this.x-mouse.x, dy=this.y-mouse.y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){ const f=(120-d)/120; this.vx+=dx/d*f*.5; this.vy+=dy/d*f*.5; this.alpha=Math.min(this.baseAlpha*4,this.alpha+.012); }
+      else { this.alpha+=(this.baseAlpha-this.alpha)*.04; }
+      this.vx*=.975; this.vy*=.975; this.x+=this.vx; this.y+=this.vy; this.rot+=this.rotV;
+      if(this.y<-80||this.x<-60||this.x>W+60) this.reset();
+    }
+    draw(){
+      ctx.save(); ctx.globalAlpha=this.alpha; ctx.translate(this.x,this.y); ctx.rotate(this.rot);
+      if(this.type==='emoji'){ ctx.font=this.size+'px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(this.emoji,0,0); }
+      else {
+        ctx.fillStyle=this.color+'.9)';
+        if(this.shape==='circle'){ ctx.beginPath(); ctx.arc(0,0,this.size,0,Math.PI*2); ctx.fill(); }
+        else if(this.shape==='rect'){ ctx.fillRect(-this.size,-this.size,this.size*2,this.size*2); }
+        else { ctx.beginPath(); ctx.moveTo(0,-this.size); ctx.lineTo(this.size,this.size); ctx.lineTo(-this.size,this.size); ctx.closePath(); ctx.fill(); }
+      }
+      ctx.restore();
+    }
+  }
+  const particles = [];
+  for(let i=0;i<70;i++) particles.push(new P());
+  (function frame(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{ p.update(); p.draw(); }); requestAnimationFrame(frame); })();
+})();
 
-const toggle=document.getElementById('themeToggle');
-
-toggle.addEventListener('click',()=>{
-
-document.body.classList.toggle('light');
-
+/* ── THEME ── */
+const themeToggle = document.getElementById('themeToggle');
+let isDark = true;
+themeToggle.addEventListener('click', () => {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeToggle.textContent = isDark ? '☀️' : '🌙';
 });
 
-/* ================= ANIMATIONS ================= */
-
-anime({
-targets:'.hero-badge',
-translateY:[-40,0],
-opacity:[0,1],
-duration:1500,
-easing:'easeOutExpo'
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.background = window.scrollY > 50 ? 'var(--nav-blur)' : 'var(--nav-bg)';
 });
 
-anime({
-targets:'.hero h1',
-translateY:[100,0],
-opacity:[0,1],
-duration:1800,
-easing:'easeOutExpo'
+/* ── SCROLL REVEAL ── */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const parent = e.target.parentElement;
+      const sibs = [...parent.children].filter(c=>c.classList.contains('rev'));
+      const idx = sibs.indexOf(e.target);
+      setTimeout(()=> e.target.classList.add('on'), idx * 70);
+    }
+  });
+}, { threshold:.08, rootMargin:'0px 0px -30px 0px' });
+document.querySelectorAll('.rev').forEach(el => revObs.observe(el));
+
+/* ── MODE TOGGLE ── */
+let currentMode = 'all';
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.id.replace('mode','').toLowerCase();
+    filterCards();
+  });
 });
 
-anime({
-targets:'.hero p',
-translateY:[50,0],
-opacity:[0,1],
-delay:500,
-duration:1500,
-easing:'easeOutExpo'
+/* ── CATEGORY FILTER ── */
+let currentCat = 'All';
+document.querySelectorAll('#filterGroup .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#filterGroup .filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    filterCards();
+  });
 });
 
-anime({
-targets:'.btn',
-scale:[0.6,1],
-opacity:[0,1],
-delay:anime.stagger(200,{start:900}),
-easing:'easeOutElastic(1,.6)'
+/* ── SEARCH ── */
+document.getElementById('searchInput').addEventListener('input', function(){ filterCards(this.value); });
+
+function filterCards(searchQ = document.getElementById('searchInput').value){
+  const q = searchQ.toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('.lf-card:not(.empty-state)').forEach(card => {
+    const type = card.dataset.type;
+    const cat  = card.dataset.cat || '';
+    const text = card.innerText.toLowerCase();
+    const modeMatch = currentMode === 'all' || type === currentMode;
+    const catMatch  = currentCat === 'All' || cat.toLowerCase().includes(currentCat.toLowerCase().replace(/[^a-z]/g,''));
+    const qMatch    = !q || text.includes(q);
+    const show = modeMatch && catMatch && qMatch;
+    card.style.display = show ? '' : 'none';
+    card.style.opacity = show ? '' : '0';
+    if(show) visible++;
+  });
+  const empty = document.getElementById('emptyState');
+  empty.classList.toggle('show', visible === 0);
+  if(visible === 0) empty.style.display = 'block';
+}
+
+/* ── CARD TILT ── */
+document.querySelectorAll('.lf-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX-r.left)/r.width-.5)*7;
+    const y = ((e.clientY-r.top)/r.height-.5)*7;
+    card.style.transform = `translateY(-6px) perspective(900px) rotateX(${-y}deg) rotateY(${x}deg) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform .5s cubic-bezier(.34,1.56,.64,1)';
+    card.style.transform = '';
+    setTimeout(() => card.style.transition = '', 500);
+  });
 });
 
-anime({
-targets:'.float-card',
-translateY:[20,-20],
-direction:'alternate',
-loop:true,
-duration:3000,
-delay:anime.stagger(400),
-easing:'easeInOutSine'
+/* ── MODAL ── */
+const modal = document.getElementById('postModal');
+const fabBtn = document.getElementById('fabBtn');
+let selectedType = 'lost';
+let selectedEmoji = '🎒';
+
+function openModal(){ modal.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModalFn(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+
+fabBtn.addEventListener('click', openModal);
+document.getElementById('closeModal').addEventListener('click', closeModalFn);
+modal.addEventListener('click', e => { if(e.target===modal) closeModalFn(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModalFn(); });
+
+function setType(t){
+  selectedType = t;
+  document.getElementById('typeLost').classList.toggle('active', t==='lost');
+  document.getElementById('typeFound').classList.toggle('active', t==='found');
+  document.getElementById('modalEmoji').textContent = t==='lost' ? '🔴' : '🟢';
+}
+
+document.querySelectorAll('.emoji-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.emoji-opt').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    selectedEmoji = opt.dataset.emoji;
+  });
 });
 
-anime({
-targets:'.feature-card,.interaction-card,.feed-card',
-translateY:[120,0],
-opacity:[0,1],
-delay:anime.stagger(200),
-duration:1600,
-easing:'easeOutExpo'
+/* ── SUBMIT ── */
+document.getElementById('submitPost').addEventListener('click', () => {
+  const name     = document.getElementById('itemName').value.trim();
+  const location = document.getElementById('itemLocation').value.trim();
+  const desc     = document.getElementById('itemDesc').value.trim();
+
+  if(!name){ showToast('✍️ Please enter an item name!'); return; }
+  if(!location){ showToast('📍 Please enter a location!'); return; }
+  if(!desc){ showToast('📝 Add a description to help people recognise it!'); return; }
+
+  const isLost = selectedType === 'lost';
+  const accentColor = isLost
+    ? 'linear-gradient(90deg,var(--red),var(--orange))'
+    : 'linear-gradient(90deg,var(--green),var(--teal))';
+  const glowColor = isLost ? 'rgba(248,113,113,.1)' : 'rgba(74,222,128,.08)';
+  const imgBg = isLost
+    ? 'linear-gradient(135deg,rgba(248,113,113,.08),rgba(255,140,66,.06))'
+    : 'linear-gradient(135deg,rgba(74,222,128,.08),rgba(61,255,208,.06))';
+  const avColor = isLost ? 'rgba(248,113,113,.15)' : 'rgba(74,222,128,.15)';
+  const avText  = isLost ? 'var(--red)' : 'var(--green)';
+  const cat = document.getElementById('itemCategory').value || 'Other';
+
+  const card = document.createElement('div');
+  card.className = `lf-card ${isLost?'lost-card':'found-card'} rev`;
+  card.dataset.type = selectedType;
+  card.dataset.cat  = cat;
+  card.style.cssText = `--lc-accent:${accentColor};--lc-glow:${glowColor};`;
+  card.innerHTML = `
+    <div class="lf-img" style="--lc-img-bg:${imgBg};">
+      <div class="lf-img-emoji">${selectedEmoji}</div>
+      <div class="lf-img-overlay"></div>
+    </div>
+    <div class="lf-status ${selectedType}"><span class="status-dot"></span>${isLost?'LOST':'FOUND'}</div>
+    <div class="lf-body">
+      <div class="lf-title">${name}</div>
+      <div class="lf-meta">
+        <span>📍 ${location}</span>
+        <span>🕒 Just now</span>
+        <span>${cat}</span>
+      </div>
+      <div class="lf-desc">${desc}</div>
+    </div>
+    <div class="lf-foot">
+      <div class="lf-poster">
+        <div class="lf-av" style="background:${avColor};color:${avText};">Y</div>
+        <div><div class="lf-poster-name">You</div><div class="lf-time">Just now</div></div>
+      </div>
+      <div class="lf-actions">
+        ${isLost
+          ? `<div class="lf-btn contact">📞 Contact</div><div class="lf-btn resolve">✓ I Found It</div>`
+          : `<div class="lf-btn claim">🙋 It's Mine!</div>`}
+      </div>
+    </div>`;
+
+  const grid = document.getElementById('lfGrid');
+  grid.insertBefore(card, grid.firstChild);
+  setTimeout(() => card.classList.add('on'), 60);
+  bindCardHover(card);
+
+  // Reset
+  ['itemName','itemLocation','itemDesc','itemContact','itemDate'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('itemCategory').value = '';
+  document.querySelectorAll('.emoji-opt').forEach(o=>o.classList.remove('selected'));
+  document.querySelector('.emoji-opt[data-emoji="🎒"]').classList.add('selected');
+  selectedEmoji = '🎒';
+
+  closeModalFn();
+  showToast(isLost ? '🔴 Lost item posted to the board!' : '🟢 Found item posted — thank you!');
 });
 
-/* ================= PING BUTTON ================= */
-
-const pingBtns=document.querySelectorAll('.ping-btn');
-
-pingBtns.forEach(btn=>{
-
-btn.addEventListener('click',()=>{
-
-btn.innerHTML='<i class="fa-solid fa-check"></i> Ping Sent';
-
-btn.style.background='linear-gradient(135deg,#22c55e,#16a34a)';
-
+/* ── BUTTON ACTIONS ── */
+document.querySelectorAll('.lf-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if(btn.classList.contains('contact')){
+      showToast('📞 Contact info shared securely!');
+    } else if(btn.classList.contains('claim')){
+      showToast('🙋 Claim request sent to poster!');
+    } else if(btn.classList.contains('resolve')){
+      const card = btn.closest('.lf-card');
+      card.style.opacity = '.5';
+      card.style.transform = 'scale(.97)';
+      card.style.transition = 'all .5s';
+      showToast('✅ Marked as reunited! 🎉');
+      setTimeout(() => { card.style.opacity = '.3'; }, 600);
+    }
+  });
 });
 
+/* ── HOVER BIND HELPER ── */
+function bindCardHover(card){
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX-r.left)/r.width-.5)*7;
+    const y = ((e.clientY-r.top)/r.height-.5)*7;
+    card.style.transform = `translateY(-6px) perspective(900px) rotateX(${-y}deg) rotateY(${x}deg) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform .5s cubic-bezier(.34,1.56,.64,1)';
+    card.style.transform = '';
+    setTimeout(() => card.style.transition = '', 500);
+  });
+  card.querySelectorAll('.lf-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    btn.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if(btn.classList.contains('contact')) showToast('📞 Contact info shared securely!');
+      else if(btn.classList.contains('claim')) showToast('🙋 Claim request sent!');
+      else if(btn.classList.contains('resolve')) showToast('✅ Marked as reunited! 🎉');
+    });
+  });
+}
+
+/* ── LOAD MORE ── */
+document.getElementById('loadMore').addEventListener('click', () => {
+  const lm = document.getElementById('loadMore');
+  lm.textContent = '⏳ Loading more items...';
+  setTimeout(() => {
+    lm.innerHTML = '🔍 Load more items &nbsp;<span style="font-family:\'Space Mono\',monospace;font-size:11px;color:var(--yellow);">1,159 total active</span>';
+    showToast('✅ 6 more items loaded!');
+  }, 1100);
 });
 
+/* ── TOAST ── */
+const toast = document.getElementById('toast');
+let toastTimer;
+function showToast(msg){
+  toast.innerHTML = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+/* ── RIPPLE ── */
+document.querySelectorAll('.modal-submit,.nav-cta,.fab').forEach(btn => {
+  btn.addEventListener('click', function(e){
+    const r = document.createElement('span');
+    const rect = this.getBoundingClientRect();
+    const s = Math.max(rect.width,rect.height)*2;
+    r.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,.25);width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px;pointer-events:none;animation:rp .55s ease-out forwards;`;
+    this.style.position='relative'; this.style.overflow='hidden';
+    this.appendChild(r); setTimeout(()=>r.remove(),600);
+  });
+});
+const rs = document.createElement('style');
+rs.textContent = '@keyframes rp{to{transform:scale(2.5);opacity:0;}}';
+document.head.appendChild(rs);
 </script>
-
 </body>
 </html>
