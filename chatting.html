@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusHub Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09080f;--bg2:#110f1e;--panel:#161428;--card:#1e1b35;--card2:#252243;
+  --border:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.12);
+  --text:#f0eeff;--muted:rgba(200,190,255,0.42);--muted2:rgba(200,190,255,0.25);
+  --purple:#7c6af7;--pink:#ff4d8d;--teal:#3dffd0;--yellow:#ffe14d;
+  --orange:#ff8c42;--green:#4ade80;--red:#f87171;--blue:#60a5fa;
+  --gp:rgba(124,106,247,0.3);--gpk:rgba(255,77,141,0.25);
+  --msg-out:linear-gradient(135deg,#7c6af7,#a855f7);
+  --msg-in:rgba(30,27,53,0.95);
+  --sidebar-w:72px;--contacts-w:300px;--chat-w:1fr;--right-w:300px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);color:var(--text);
+  cursor:none;
+}
+/* NOISE */
+body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
+/* CURSOR */
+#cur-d,#cur-r{position:fixed;border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);}
+#cur-d{width:8px;height:8px;background:var(--purple);box-shadow:0 0 8px var(--purple);}
+#cur-r{width:34px;height:34px;border:1.5px solid rgba(124,106,247,.5);transition:width .2s,height .2s,border-color .2s,background .2s;}
+#cur-r.h{width:52px;height:52px;border-color:var(--purple);background:rgba(124,106,247,.06);}
+/* MESH BG */
+.bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.2;animation:bDrift ease-in-out infinite alternate;}
+.b1{width:600px;height:600px;background:rgba(124,106,247,.2);top:-150px;left:-100px;animation-duration:18s;}
+.b2{width:500px;height:500px;background:rgba(255,77,141,.14);bottom:-100px;right:-80px;animation-duration:24s;animation-delay:-8s;}
+.b3{width:300px;height:300px;background:rgba(61,255,208,.1);top:40%;left:40%;animation-duration:14s;animation-delay:-4s;}
+@keyframes bDrift{from{transform:translate(0,0)scale(1);}to{transform:translate(35px,25px)scale(1.1);}}
+
+/* ═══ APP LAYOUT ═══ */
+.app{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:var(--sidebar-w) var(--contacts-w) 1fr var(--right-w);
+  height:100vh;
+  overflow:hidden;
+}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{
+  background:rgba(9,8,15,0.9);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px 0;gap:6px;
+  position:relative;z-index:2;
+  backdrop-filter:blur(20px);
+}
+.sb-logo{
+  font-family:'Fredoka One',sans-serif;font-size:20px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:12px;cursor:none;
+}
+.sb-btn{
+  width:46px;height:46px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;position:relative;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  background:transparent;border:none;color:var(--muted);
+}
+.sb-btn:hover,.sb-btn.active{background:rgba(124,106,247,.15);color:var(--purple);transform:scale(1.08);}
+.sb-btn.active{box-shadow:0 0 0 2px rgba(124,106,247,.3);}
+.sb-badge{
+  position:absolute;top:4px;right:4px;
+  min-width:16px;height:16px;border-radius:8px;
+  background:var(--pink);color:#fff;
+  font-size:9px;font-weight:700;font-family:'Space Mono',monospace;
+  display:flex;align-items:center;justify-content:center;padding:0 3px;
+}
+.sb-divider{width:32px;height:1px;background:var(--border);margin:4px 0;}
+.sb-av{
+  width:40px;height:40px;border-radius:50%;margin-top:auto;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;
+  border:2px solid rgba(255,255,255,.1);cursor:pointer;position:relative;
+}
+.sb-av::after{content:'';position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;background:var(--green);border:2px solid var(--bg);}
+.sb-tooltip{
+  position:absolute;left:60px;background:var(--card2);border:1px solid var(--border);
+  border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);z-index:100;
+}
+.sb-btn:hover .sb-tooltip{opacity:1;}
+
+/* ═══ CONTACTS PANEL ═══ */
+.contacts{
+  background:rgba(13,12,24,0.85);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  backdrop-filter:blur(20px);
+  overflow:hidden;
+}
+.contacts-header{
+  padding:18px 16px 12px;
+  border-bottom:1px solid var(--border);
+}
+.ch-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ch-title{font-family:'Fredoka One',sans-serif;font-size:22px;}
+.ch-btns{display:flex;gap:6px;}
+.icon-btn{
+  width:32px;height:32px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;cursor:pointer;color:var(--muted);
+  transition:all .25s;
+}
+.icon-btn:hover{background:rgba(124,106,247,.15);color:var(--purple);}
+/* Search */
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:12px;padding:9px 14px;
+  transition:border-color .25s,box-shadow .25s;
+}
+.search-bar:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,106,247,.1);}
+.search-bar input{
+  background:none;border:none;outline:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;
+  color:var(--text);caret-color:var(--purple);width:100%;
+}
+.search-bar input::placeholder{color:var(--muted2);}
+/* Status row */
+.status-row{
+  display:flex;gap:12px;padding:14px 16px;overflow-x:auto;
+  border-bottom:1px solid var(--border);scrollbar-width:none;
+}
+.status-row::-webkit-scrollbar{display:none;}
+.status-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer;}
+.status-ring{
+  width:48px;height:48px;border-radius:50%;padding:2px;
+  background:linear-gradient(135deg,var(--purple),var(--pink),var(--teal));
+  position:relative;
+}
+.status-ring.unseen{background:linear-gradient(135deg,var(--purple),var(--pink));}
+.status-ring.seen{background:var(--card);border:2px solid rgba(255,255,255,.1);}
+.status-ring.add-new{background:var(--card2);}
+.status-av{
+  width:100%;height:100%;border-radius:50%;
+  background:var(--card);border:2.5px solid var(--bg2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;overflow:hidden;
+}
+.status-name{font-size:10px;font-weight:600;color:var(--muted);white-space:nowrap;max-width:52px;overflow:hidden;text-overflow:ellipsis;}
+/* Tab bar */
+.tab-bar{display:flex;padding:8px 12px 0;gap:4px;}
+.tab{
+  flex:1;text-align:center;padding:8px 0;border-radius:10px 10px 0 0;
+  font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;transition:all .25s;border:none;background:none;
+}
+.tab.active{color:var(--purple);background:rgba(124,106,247,.1);}
+/* Contact list */
+.contact-list{flex:1;overflow-y:auto;padding:4px 8px 8px;scrollbar-width:thin;scrollbar-color:rgba(124,106,247,.2) transparent;}
+.contact-list::-webkit-scrollbar{width:4px;}
+.contact-list::-webkit-scrollbar-thumb{background:rgba(124,106,247,.2);border-radius:2px;}
+.contact-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 10px;border-radius:14px;
+  cursor:pointer;transition:all .25s;position:relative;
+  margin-bottom:2px;
+}
+.contact-item:hover{background:rgba(124,106,247,.08);}
+.contact-item.active{background:rgba(124,106,247,.14);border:1px solid rgba(124,106,247,.15);}
+.ci-av{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:700;position:relative;
+}
+.ci-av.group{border-radius:14px;}
+.online-dot{position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;border:2px solid var(--panel);}
+.od-green{background:var(--green);}
+.od-yellow{background:var(--yellow);}
+.od-red{background:var(--red);}
+.od-gray{background:rgba(255,255,255,.2);}
+.ci-body{flex:1;min-width:0;}
+.ci-top{display:flex;align-items:center;justify-content:space-between;}
+.ci-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ci-time{font-size:10px;color:var(--muted2);white-space:nowrap;font-family:'Space Mono',monospace;}
+.ci-preview{display:flex;align-items:center;gap:4px;}
+.ci-msg{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
+.ci-unread{
+  min-width:18px;height:18px;border-radius:9px;
+  background:var(--purple);color:#fff;
+  font-size:10px;font-weight:700;font-family:'Space Mono',monospace;
+  display:flex;align-items:center;justify-content:center;padding:0 4px;
+  flex-shrink:0;
+}
+.ci-unread.pink{background:var(--pink);}
+/* Section headers */
+.section-hdr{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted2);padding:10px 12px 4px;
+}
+
+/* ═══ CHAT AREA ═══ */
+.chat-area{
+  display:flex;flex-direction:column;
+  background:rgba(11,10,20,0.7);
+  backdrop-filter:blur(10px);
+  overflow:hidden;
+  position:relative;
+}
+/* Chat header */
+.chat-header{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 20px;
+  background:rgba(15,13,28,0.9);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  position:relative;z-index:10;
+  flex-shrink:0;
+}
+.chd-av{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:700;position:relative;cursor:pointer;
+}
+.chd-av.group-av{border-radius:12px;}
+.chd-info{flex:1;min-width:0;}
+.chd-name{font-family:'Fredoka One',sans-serif;font-size:18px;letter-spacing:-.3px;}
+.chd-status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.chd-status .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:dotPulse 2s infinite;}
+@keyframes dotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.7);}}
+.chd-actions{display:flex;gap:6px;}
+.chd-btn{
+  width:38px;height:38px;border-radius:11px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;cursor:pointer;color:var(--muted);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.chd-btn:hover{background:rgba(124,106,247,.15);color:var(--purple);transform:scale(1.06);}
+.chd-btn.call-btn:hover{background:rgba(74,222,128,.15);color:var(--green);}
+.chd-btn.video-btn:hover{background:rgba(96,165,250,.15);color:var(--blue);}
+.chd-btn.music-btn{background:rgba(255,77,141,.1);color:var(--pink);border-color:rgba(255,77,141,.2);}
+.chd-btn.music-btn.playing{animation:musicPulse 1.5s ease-in-out infinite;color:var(--pink);background:rgba(255,77,141,.18);}
+@keyframes musicPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,77,141,.4);}50%{box-shadow:0 0 0 6px rgba(255,77,141,0);}}
+.chd-btn-label{position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;white-space:nowrap;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:3px 7px;opacity:0;transition:opacity .2s;pointer-events:none;color:var(--text);}
+.chd-btn:hover .chd-btn-label{opacity:1;}
+
+/* Messages container */
+.messages{
+  flex:1;overflow-y:auto;
+  padding:20px;
+  display:flex;flex-direction:column;gap:2px;
+  scrollbar-width:thin;scrollbar-color:rgba(124,106,247,.15) transparent;
+}
+.messages::-webkit-scrollbar{width:4px;}
+.messages::-webkit-scrollbar-thumb{background:rgba(124,106,247,.15);border-radius:2px;}
+
+/* Date divider */
+.date-div{
+  display:flex;align-items:center;gap:12px;
+  margin:12px 0;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);
+}
+.date-div::before,.date-div::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Message rows */
+.msg-row{display:flex;gap:8px;margin-bottom:4px;align-items:flex-end;}
+.msg-row.out{flex-direction:row-reverse;}
+.msg-row.cont-in{padding-left:40px;}
+.msg-row.cont-out{padding-right:40px;}
+.msg-av{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;align-self:flex-end;
+}
+.msg-bubble{
+  max-width:68%;position:relative;
+}
+.bubble-inner{
+  padding:10px 14px;border-radius:18px;
+  position:relative;overflow:hidden;
+  transition:transform .2s;
+}
+.bubble-inner:hover{transform:scale(1.01);}
+.msg-row.out .bubble-inner{
+  background:var(--msg-out);
+  border-radius:18px 18px 4px 18px;
+  box-shadow:0 4px 20px rgba(124,106,247,.3);
+}
+.msg-row.in .bubble-inner{
+  background:var(--msg-in);
+  border:1px solid var(--border);
+  border-radius:18px 18px 18px 4px;
+}
+.msg-text{font-size:14px;font-weight:400;line-height:1.55;word-break:break-word;}
+.msg-time{font-size:10px;font-family:'Space Mono',monospace;opacity:.5;margin-top:3px;text-align:right;}
+.msg-row.in .msg-time{text-align:left;}
+/* Status ticks */
+.msg-ticks{display:inline-flex;align-items:center;gap:1px;font-size:12px;margin-left:4px;}
+.tick-read{color:var(--teal);}
+.tick-sent{color:rgba(255,255,255,.4);}
+/* Reactions */
+.msg-reactions{
+  display:flex;gap:3px;margin-top:4px;
+  flex-wrap:wrap;
+}
+.reaction{
+  display:inline-flex;align-items:center;gap:3px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:2px 7px;font-size:12px;cursor:pointer;
+  transition:all .2s;
+}
+.reaction:hover,.reaction.own{background:rgba(124,106,247,.15);border-color:rgba(124,106,247,.3);}
+/* Voice message bubble */
+.voice-msg{
+  display:flex;align-items:center;gap:10px;
+  min-width:200px;
+}
+.voice-play{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;cursor:pointer;flex-shrink:0;
+  transition:all .25s;
+}
+.voice-play:hover{background:rgba(255,255,255,.35);transform:scale(1.08);}
+.voice-wave{flex:1;display:flex;align-items:center;gap:2px;height:30px;}
+.wave-bar{
+  width:3px;background:rgba(255,255,255,.4);border-radius:2px;
+  animation:waveAnim ease-in-out infinite alternate;
+}
+.msg-row.out .wave-bar{background:rgba(255,255,255,.5);}
+@keyframes waveAnim{from{transform:scaleY(.2);}to{transform:scaleY(1);}}
+.voice-dur{font-size:11px;font-family:'Space Mono',monospace;opacity:.6;white-space:nowrap;}
+/* Image message */
+.img-msg{border-radius:14px;overflow:hidden;max-width:260px;cursor:pointer;position:relative;}
+.img-msg img{width:100%;display:block;}
+.img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:32px;opacity:0;transition:opacity .25s;}
+.img-msg:hover .img-overlay{opacity:1;}
+/* Video message */
+.vid-msg{
+  border-radius:14px;overflow:hidden;max-width:260px;cursor:pointer;position:relative;
+  background:rgba(0,0,0,.6);
+}
+.vid-thumb{
+  width:100%;aspect-ratio:16/9;
+  background:linear-gradient(135deg,rgba(124,106,247,.2),rgba(255,77,141,.15));
+  display:flex;align-items:center;justify-content:center;font-size:40px;
+}
+.vid-play-btn{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
+.vid-play-circle{
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(255,255,255,.2);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+/* Reply indicator */
+.reply-ref{
+  background:rgba(255,255,255,.06);border-left:3px solid var(--purple);
+  border-radius:8px;padding:6px 10px;margin-bottom:5px;font-size:12px;cursor:pointer;
+}
+.reply-ref.in{border-left-color:var(--pink);}
+.rr-name{font-weight:700;color:var(--purple);margin-bottom:2px;font-size:11px;}
+.rr-text{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* Message hover menu */
+.msg-bubble:hover .msg-actions{opacity:1;}
+.msg-actions{
+  position:absolute;top:-36px;
+  display:flex;gap:3px;opacity:0;transition:opacity .2s;
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:10px;padding:4px;z-index:10;
+}
+.msg-row.out .msg-actions{right:0;}
+.msg-row.in .msg-actions{left:0;}
+.ma-btn{
+  width:26px;height:26px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;transition:background .2s;
+}
+.ma-btn:hover{background:rgba(124,106,247,.2);}
+/* System message */
+.sys-msg{text-align:center;font-size:12px;color:var(--muted2);padding:8px 16px;font-style:italic;}
+
+/* ═══ INPUT BAR ═══ */
+.input-bar{
+  padding:12px 16px;
+  background:rgba(15,13,28,0.9);
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  flex-shrink:0;
+}
+/* Reply preview strip */
+.reply-strip{
+  display:none;align-items:center;gap:10px;
+  background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.15);
+  border-radius:10px;padding:8px 12px;margin-bottom:8px;
+}
+.reply-strip.show{display:flex;}
+.rs-line{width:3px;height:32px;background:var(--purple);border-radius:2px;flex-shrink:0;}
+.rs-body{flex:1;min-width:0;}
+.rs-name{font-size:11px;font-weight:700;color:var(--purple);}
+.rs-text{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rs-close{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;color:var(--muted);}
+.rs-close:hover{background:rgba(255,77,141,.15);color:var(--pink);}
+/* Main input row */
+.input-row{display:flex;align-items:flex-end;gap:8px;}
+.input-left{display:flex;gap:4px;}
+.in-btn{
+  width:38px;height:38px;border-radius:11px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;cursor:pointer;color:var(--muted);
+  transition:all .25s;flex-shrink:0;
+}
+.in-btn:hover{background:rgba(124,106,247,.15);color:var(--purple);}
+.in-btn.rec{background:rgba(255,77,141,.15);color:var(--pink);border-color:rgba(255,77,141,.25);}
+.in-btn.rec.recording{animation:recPulse 1s infinite;color:var(--pink);}
+@keyframes recPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,77,141,.5);}50%{box-shadow:0 0 0 8px rgba(255,77,141,0);}}
+.input-wrap{
+  flex:1;display:flex;align-items:flex-end;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:8px 14px;gap:8px;
+  transition:border-color .25s,box-shadow .25s;
+  min-height:42px;
+}
+.input-wrap:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,106,247,.1);}
+.chat-input{
+  flex:1;background:none;border:none;outline:none;resize:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:400;
+  color:var(--text);caret-color:var(--purple);
+  min-height:22px;max-height:120px;overflow-y:auto;
+  scrollbar-width:none;
+}
+.chat-input::placeholder{color:var(--muted2);}
+.emoji-btn,.input-attach{
+  font-size:20px;cursor:pointer;line-height:1;
+  transition:transform .25s;color:var(--muted);
+}
+.emoji-btn:hover,.input-attach:hover{transform:scale(1.2);}
+.send-btn{
+  width:42px;height:42px;border-radius:13px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  border:none;display:flex;align-items:center;justify-content:center;
+  font-size:18px;cursor:pointer;color:#fff;
+  box-shadow:0 4px 16px rgba(124,106,247,.4);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.send-btn:hover{transform:scale(1.08);box-shadow:0 8px 28px rgba(124,106,247,.6);}
+.send-btn:active{transform:scale(.95);}
+/* Typing indicator */
+.typing-ind{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--muted);font-style:italic;
+  padding:4px 0 0;height:20px;
+}
+.typing-dots{display:flex;gap:3px;align-items:center;}
+.td{width:5px;height:5px;border-radius:50%;background:var(--purple);animation:typDot 1.2s ease-in-out infinite;}
+.td:nth-child(2){animation-delay:.2s;}
+.td:nth-child(3){animation-delay:.4s;}
+@keyframes typDot{0%,100%{transform:translateY(0);opacity:.4;}50%{transform:translateY(-4px);opacity:1;}}
+
+/* ═══ RIGHT PANEL ═══ */
+.right-panel{
+  background:rgba(13,12,24,0.85);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  backdrop-filter:blur(20px);
+  overflow:hidden;
+}
+.rp-header{
+  padding:18px 16px 14px;
+  border-bottom:1px solid var(--border);
+}
+.rp-title{font-family:'Fredoka One',sans-serif;font-size:18px;margin-bottom:12px;}
+.rp-tabs{display:flex;gap:4px;}
+.rp-tab{
+  flex:1;text-align:center;padding:8px 0;border-radius:10px;
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;border:1px solid transparent;
+  transition:all .25s;
+}
+.rp-tab.active{color:var(--purple);background:rgba(124,106,247,.12);border-color:rgba(124,106,247,.2);}
+.rp-body{flex:1;overflow-y:auto;padding:14px;scrollbar-width:thin;scrollbar-color:rgba(124,106,247,.15) transparent;}
+.rp-body::-webkit-scrollbar{width:4px;}
+.rp-body::-webkit-scrollbar-thumb{background:rgba(124,106,247,.15);border-radius:2px;}
+
+/* Profile card */
+.profile-card{text-align:center;padding:20px 0;}
+.pc-av{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;font-weight:700;margin:0 auto 12px;
+  position:relative;border:3px solid rgba(255,255,255,.1);
+}
+.pc-av::after{content:'';position:absolute;bottom:2px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--green);border:2.5px solid var(--panel);}
+.pc-name{font-family:'Fredoka One',sans-serif;font-size:20px;margin-bottom:4px;}
+.pc-handle{font-size:13px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:12px;}
+.pc-bio{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;font-weight:300;}
+.pc-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+.pc-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(124,106,247,.1);color:var(--purple);}
+.pc-actions{display:flex;gap:8px;justify-content:center;}
+.pc-btn{
+  padding:9px 20px;border-radius:10px;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .25s;border:none;
+}
+.pc-btn.solid{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;}
+.pc-btn.solid:hover{box-shadow:0 6px 20px rgba(124,106,247,.4);transform:translateY(-2px);}
+.pc-btn.ghost{background:var(--card);border:1px solid var(--border);color:var(--muted);}
+.pc-btn.ghost:hover{border-color:var(--purple);color:var(--purple);}
+/* Shared media */
+.media-section{margin-top:16px;}
+.ms-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;border-radius:10px;overflow:hidden;}
+.media-thumb{
+  aspect-ratio:1;background:var(--card2);
+  display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.media-thumb:hover{filter:brightness(1.2);}
+/* Music Now Playing */
+.music-panel{margin-top:4px;}
+.np-card{
+  background:linear-gradient(135deg,rgba(255,77,141,.12),rgba(124,106,247,.1));
+  border:1px solid rgba(255,77,141,.2);border-radius:16px;padding:16px;
+  position:relative;overflow:hidden;
+}
+.np-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,77,141,.1);filter:blur(30px);}
+.np-cover{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px;animation:coverSpin 8s linear infinite;animation-play-state:paused;}
+.np-cover.playing{animation-play-state:running;}
+@keyframes coverSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.np-track{font-size:14px;font-weight:700;margin-bottom:2px;}
+.np-artist{font-size:12px;color:var(--muted);}
+.np-progress{height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin:10px 0;cursor:pointer;position:relative;}
+.np-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--pink),var(--purple));width:38%;}
+.np-fill::after{content:'';position:absolute;right:-5px;top:-4px;width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 6px var(--pink);}
+.np-controls{display:flex;align-items:center;justify-content:space-between;}
+.np-btn{font-size:18px;cursor:pointer;color:var(--muted);transition:all .25s;background:none;border:none;padding:4px;}
+.np-btn:hover{color:var(--text);transform:scale(1.12);}
+.np-play{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;
+  box-shadow:0 4px 16px rgba(255,77,141,.4);transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  border:none;color:#fff;
+}
+.np-play:hover{transform:scale(1.1);box-shadow:0 8px 24px rgba(255,77,141,.6);}
+.both-listening{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--muted);margin-top:10px;
+  background:rgba(61,255,208,.06);border:1px solid rgba(61,255,208,.15);
+  border-radius:8px;padding:6px 10px;
+}
+.bl-avatars{display:flex;}
+.bl-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:1.5px solid var(--panel);}
+.bl-av:nth-child(2){margin-left:-6px;}
+/* Playlist */
+.playlist{display:flex;flex-direction:column;gap:4px;margin-top:14px;}
+.pl-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.pl-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:10px;cursor:pointer;
+  transition:background .25s;
+}
+.pl-item:hover,.pl-item.playing{background:rgba(124,106,247,.1);}
+.pl-item.playing .pl-name{color:var(--purple);}
+.pl-num{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted2);width:16px;text-align:center;flex-shrink:0;}
+.pl-thumb{width:36px;height:36px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.pl-info{flex:1;min-width:0;}
+.pl-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pl-artist2{font-size:11px;color:var(--muted);}
+.pl-dur{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted2);}
+.pl-eq{display:flex;gap:2px;align-items:center;height:16px;}
+.eq-bar{width:3px;background:var(--purple);border-radius:1px;animation:eqAnim ease-in-out infinite alternate;}
+.eq-bar:nth-child(2){animation-delay:.15s;}
+.eq-bar:nth-child(3){animation-delay:.3s;}
+@keyframes eqAnim{from{height:3px;}to{height:12px;}}
+
+/* ═══ CALL OVERLAY ═══ */
+.call-overlay{
+  position:fixed;inset:0;z-index:5000;
+  background:rgba(9,8,15,.95);backdrop-filter:blur(20px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+}
+.call-overlay.show{display:flex;}
+.call-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.call-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.3;}
+.cb1{width:400px;height:400px;background:rgba(124,106,247,.3);top:-80px;left:-60px;animation:bDrift 12s ease-in-out infinite alternate;}
+.cb2{width:350px;height:350px;background:rgba(255,77,141,.2);bottom:-60px;right:-40px;animation:bDrift 16s ease-in-out infinite alternate-reverse;}
+.call-av{
+  width:120px;height:120px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;font-weight:700;
+  border:4px solid rgba(255,255,255,.1);
+  box-shadow:0 0 60px rgba(124,106,247,.4);
+  position:relative;z-index:1;
+  animation:callAv 2s ease-in-out infinite;
+}
+@keyframes callAv{0%,100%{box-shadow:0 0 60px rgba(124,106,247,.4),0 0 0 0 rgba(124,106,247,.4);}50%{box-shadow:0 0 80px rgba(124,106,247,.6),0 0 0 20px rgba(124,106,247,0);}}
+.call-name{font-family:'Fredoka One',sans-serif;font-size:28px;position:relative;z-index:1;}
+.call-status{font-size:14px;color:var(--muted);position:relative;z-index:1;}
+.call-timer{font-family:'Space Mono',monospace;font-size:20px;color:var(--teal);position:relative;z-index:1;}
+.call-btns{display:flex;gap:16px;position:relative;z-index:1;}
+.call-btn{
+  width:60px;height:60px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);border:none;
+}
+.call-btn:hover{transform:scale(1.1);}
+.call-btn.end{background:var(--red);box-shadow:0 6px 24px rgba(248,113,113,.5);}
+.call-btn.end:hover{box-shadow:0 10px 36px rgba(248,113,113,.7);}
+.call-btn.mute{background:var(--card2);border:1px solid var(--border);}
+.call-btn.speaker{background:var(--card2);border:1px solid var(--border);}
+.call-btn.cam{background:var(--card2);border:1px solid var(--border);}
+/* Video call */
+.video-call-overlay{
+  position:fixed;inset:0;z-index:5000;
+  background:#000;display:none;
+}
+.video-call-overlay.show{display:flex;flex-direction:column;}
+.vcall-main{flex:1;position:relative;background:#0a0a18;}
+.vcall-remote{
+  width:100%;height:100%;
+  background:linear-gradient(135deg,#1a1830,#0f0e1a);
+  display:flex;align-items:center;justify-content:center;font-size:80px;
+}
+.vcall-self{
+  position:absolute;bottom:20px;right:20px;
+  width:140px;aspect-ratio:9/16;border-radius:16px;overflow:hidden;
+  background:linear-gradient(135deg,#2a2745,#1e1b35);
+  display:flex;align-items:center;justify-content:center;font-size:36px;
+  border:2px solid rgba(255,255,255,.1);box-shadow:0 8px 30px rgba(0,0,0,.6);cursor:pointer;
+}
+.vcall-info{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:10px;}
+.vcall-name{font-family:'Fredoka One',sans-serif;font-size:20px;}
+.vcall-time{font-family:'Space Mono',monospace;font-size:14px;color:var(--teal);}
+.vcall-btns{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;gap:12px;
+}
+.vcall-footer{display:none;}
+
+/* ═══ EMOJI PICKER ═══ */
+.emoji-picker{
+  position:absolute;bottom:80px;left:80px;
+  background:var(--card2);border:1px solid var(--border);border-radius:16px;
+  padding:12px;width:280px;display:none;z-index:100;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.emoji-picker.show{display:block;}
+.ep-cats{display:flex;gap:4px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none;}
+.ep-cats::-webkit-scrollbar{display:none;}
+.ep-cat{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:background .2s;}
+.ep-cat:hover,.ep-cat.active{background:rgba(124,106,247,.2);}
+.ep-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.ep-emoji{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer;border-radius:8px;transition:all .15s;}
+.ep-emoji:hover{background:rgba(124,106,247,.2);transform:scale(1.2);}
+
+/* ═══ STATUS VIEWER OVERLAY ═══ */
+.status-overlay{
+  position:fixed;inset:0;z-index:4000;
+  background:rgba(0,0,0,.9);backdrop-filter:blur(10px);
+  display:none;align-items:center;justify-content:center;
+}
+.status-overlay.show{display:flex;}
+.status-view{
+  width:min(360px,90vw);height:min(640px,90vh);
+  background:linear-gradient(160deg,var(--card),var(--bg2));
+  border-radius:20px;overflow:hidden;position:relative;display:flex;flex-direction:column;
+  border:1px solid var(--border);
+}
+.sv-progress{display:flex;gap:3px;padding:10px 10px 0;}
+.sv-prog-seg{flex:1;height:3px;background:rgba(255,255,255,.25);border-radius:2px;overflow:hidden;}
+.sv-prog-fill{height:100%;background:#fff;width:0%;transition:width linear;}
+.sv-header{display:flex;align-items:center;gap:10px;padding:10px 14px;}
+.sv-close{margin-left:auto;font-size:22px;cursor:pointer;color:rgba(255,255,255,.6);}
+.sv-body{flex:1;display:flex;align-items:center;justify-content:center;font-size:80px;}
+.sv-caption{text-align:center;padding:16px;font-size:15px;color:rgba(255,255,255,.8);}
+
+/* ═══ MUSIC SYNC MODAL ═══ */
+.music-modal{
+  position:fixed;inset:0;z-index:3000;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(16px);
+  display:none;align-items:center;justify-content:center;
+}
+.music-modal.show{display:flex;}
+.mm-card{
+  background:var(--card2);border:1px solid rgba(255,77,141,.2);
+  border-radius:24px;padding:32px;width:min(440px,90vw);
+  position:relative;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 80px rgba(255,77,141,.1);
+}
+.mm-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,77,141,.12);filter:blur(40px);}
+.mm-title{font-family:'Fredoka One',sans-serif;font-size:24px;margin-bottom:4px;}
+.mm-sub{font-size:14px;color:var(--muted);margin-bottom:24px;font-weight:300;}
+.mm-close{position:absolute;top:16px;right:16px;font-size:20px;cursor:pointer;color:var(--muted);background:none;border:none;}
+.mm-now{
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,rgba(255,77,141,.1),rgba(124,106,247,.08));
+  border:1px solid rgba(255,77,141,.2);border-radius:14px;padding:14px;margin-bottom:20px;
+}
+.mm-cover{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.mm-info{flex:1;}
+.mm-track{font-size:15px;font-weight:700;margin-bottom:2px;}
+.mm-artist2{font-size:12px;color:var(--muted);}
+.mm-controls{display:flex;gap:8px;align-items:center;margin-top:8px;}
+.mm-ctrl{font-size:20px;cursor:pointer;transition:transform .2s;background:none;border:none;color:var(--muted);}
+.mm-ctrl:hover{transform:scale(1.15);color:var(--text);}
+.mm-play2{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;border:none;color:#fff;}
+.mm-both{display:flex;align-items:center;gap:8px;background:rgba(61,255,208,.06);border:1px solid rgba(61,255,208,.15);border-radius:10px;padding:10px 12px;margin-bottom:20px;font-size:13px;}
+.mm-pl-label{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.mm-playlist{display:flex;flex-direction:column;gap:3px;max-height:200px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,77,141,.2) transparent;}
+.mm-pl-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:background .2s;}
+.mm-pl-item:hover,.mm-pl-item.active{background:rgba(255,77,141,.08);}
+.mm-pl-item.active .mm-pl-name{color:var(--pink);}
+.mm-pl-cover{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.mm-pl-name{font-size:13px;font-weight:600;flex:1;}
+.mm-pl-dur{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted2);}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1200px){.app{grid-template-columns:var(--sidebar-w) 260px 1fr 260px;}}
+@media(max-width:900px){.right-panel{display:none;}.app{grid-template-columns:var(--sidebar-w) 240px 1fr;}}
+@media(max-width:640px){.contacts{display:none;}.app{grid-template-columns:var(--sidebar-w) 1fr;}}
+</style>
+</head>
+<body>
+
+<div id="cur-d"></div>
+<div id="cur-r"></div>
+<div class="bg-mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<!-- ════════════════ APP ════════════════ -->
+<div class="app">
+
+<!-- ═══ SIDEBAR ═══ -->
+<div class="sidebar">
+  <div class="sb-logo">CH</div>
+  <div class="sb-btn active" title="Chats" onclick="switchSection('chat',this)">
+    💬<span class="sb-badge">5</span>
+    <span class="sb-tooltip">Chats</span>
+  </div>
+  <div class="sb-btn" title="Status" onclick="openStatusFeed()">
+    🟣<span class="sb-tooltip">Status</span>
+  </div>
+  <div class="sb-btn" onclick="switchSection('discover',this)">
+    🔍<span class="sb-tooltip">Discover</span>
+  </div>
+  <div class="sb-btn" onclick="switchSection('calls',this)">
+    📞<span class="sb-badge" style="background:var(--green);">2</span>
+    <span class="sb-tooltip">Calls</span>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-btn" onclick="switchSection('clubs',this)">
+    🎭<span class="sb-tooltip">Clubs</span>
+  </div>
+  <div class="sb-btn" onclick="openMusicModal()">
+    🎵<span class="sb-tooltip">Music Sync</span>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-btn">
+    ⚙️<span class="sb-tooltip">Settings</span>
+  </div>
+  <div class="sb-av" onclick="showProfile()">S</div>
+</div>
+
+<!-- ═══ CONTACTS ═══ -->
+<div class="contacts">
+  <div class="contacts-header">
+    <div class="ch-row">
+      <span class="ch-title">Messages</span>
+      <div class="ch-btns">
+        <div class="icon-btn" onclick="newChat()" title="New chat">✏️</div>
+        <div class="icon-btn" title="New group">👥</div>
+        <div class="icon-btn" title="Filter">⚡</div>
+      </div>
+    </div>
+    <div class="search-bar">
+      <span style="font-size:16px;color:var(--muted);">🔍</span>
+      <input type="text" placeholder="Search chats, people..." id="contactSearch" oninput="filterContacts(this.value)">
+    </div>
+  </div>
+
+  <!-- Status Stories -->
+  <div class="status-row">
+    <div class="status-item" onclick="addStatus()">
+      <div class="status-ring add-new"><div class="status-av" style="background:rgba(124,106,247,.15);color:var(--purple);font-size:20px;">➕</div></div>
+      <span class="status-name">My Status</span>
+    </div>
+    <div class="status-item" onclick="viewStatus('Priya',0)">
+      <div class="status-ring unseen"><div class="status-av" style="background:linear-gradient(135deg,rgba(255,77,141,.3),rgba(124,106,247,.2));color:var(--pink);">P</div></div>
+      <span class="status-name">Priya</span>
+    </div>
+    <div class="status-item" onclick="viewStatus('Rahul',1)">
+      <div class="status-ring unseen"><div class="status-av" style="background:linear-gradient(135deg,rgba(61,255,208,.2),rgba(124,106,247,.2));color:var(--teal);">R</div></div>
+      <span class="status-name">Rahul</span>
+    </div>
+    <div class="status-item" onclick="viewStatus('Shreya',2)">
+      <div class="status-ring unseen"><div class="status-av" style="background:linear-gradient(135deg,rgba(255,225,77,.2),rgba(255,140,66,.2));color:var(--yellow);">S</div></div>
+      <span class="status-name">Shreya</span>
+    </div>
+    <div class="status-item" onclick="viewStatus('Arjun',3)">
+      <div class="status-ring seen"><div class="status-av" style="background:rgba(255,140,66,.15);color:var(--orange);">A</div></div>
+      <span class="status-name">Arjun</span>
+    </div>
+    <div class="status-item" onclick="viewStatus('Meera',4)">
+      <div class="status-ring seen"><div class="status-av" style="background:rgba(74,222,128,.12);color:var(--green);">M</div></div>
+      <span class="status-name">Meera</span>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('all',this)">All</button>
+    <button class="tab" onclick="switchTab('dms',this)">DMs</button>
+    <button class="tab" onclick="switchTab('groups',this)">Groups</button>
+  </div>
+
+  <!-- Contact List -->
+  <div class="contact-list" id="contactList">
+    <div class="section-hdr">Pinned</div>
+
+    <div class="contact-item active" onclick="openChat('priya')" data-name="priya">
+      <div class="ci-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P
+        <div class="online-dot od-green"></div>
+      </div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">Priya Singh 💜</span><span class="ci-time">now</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">🎵 Listening together — Dil Bechara</span>
+          <span class="ci-unread pink">3</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-item" onclick="openChat('cs-dept')" data-name="cs-dept">
+      <div class="ci-av group" style="background:linear-gradient(135deg,rgba(61,255,208,.2),rgba(124,106,247,.15));color:var(--teal);font-size:20px;">🎓
+        <div class="online-dot od-green"></div>
+      </div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">CS Dept 2025 🔥</span><span class="ci-time">2m</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">Rahul: bro the OS exam is wild 💀</span>
+          <span class="ci-unread">12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-hdr">Recent</div>
+
+    <div class="contact-item" onclick="openChat('rahul')" data-name="rahul">
+      <div class="ci-av" style="background:linear-gradient(135deg,rgba(61,255,208,.2),rgba(96,165,250,.15));color:var(--teal);">R
+        <div class="online-dot od-green"></div>
+      </div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">Rahul Mehta</span><span class="ci-time">14m</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">you: ok I'll share the notes tmrw</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-item" onclick="openChat('hackathon')" data-name="hackathon">
+      <div class="ci-av group" style="background:linear-gradient(135deg,rgba(255,225,77,.18),rgba(255,140,66,.15));color:var(--yellow);font-size:20px;">🏆</div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">Hackathon Team 💡</span><span class="ci-time">1h</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">Meera: github link?</span>
+          <span class="ci-unread">4</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-item" onclick="openChat('shreya')" data-name="shreya">
+      <div class="ci-av" style="background:linear-gradient(135deg,rgba(255,225,77,.2),rgba(255,140,66,.15));color:var(--yellow);">S
+        <div class="online-dot od-yellow"></div>
+      </div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">Shreya Kapoor</span><span class="ci-time">3h</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">🎤 Voice message</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-item" onclick="openChat('arjun')" data-name="arjun">
+      <div class="ci-av" style="background:linear-gradient(135deg,rgba(255,140,66,.2),rgba(255,225,77,.1));color:var(--orange);">A
+        <div class="online-dot od-gray"></div>
+      </div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">Arjun Sharma</span><span class="ci-time">5h</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">📹 Video message</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-item" onclick="openChat('techclub')" data-name="techclub">
+      <div class="ci-av group" style="background:linear-gradient(135deg,rgba(96,165,250,.2),rgba(124,106,247,.15));color:var(--blue);font-size:20px;">⚡</div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">TechClub Core</span><span class="ci-time">1d</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">Vikram: event confirmed for Friday</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-item" onclick="openChat('meera')" data-name="meera">
+      <div class="ci-av" style="background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(61,255,208,.1));color:var(--green);">M
+        <div class="online-dot od-green"></div>
+      </div>
+      <div class="ci-body">
+        <div class="ci-top"><span class="ci-name">Meera Iyer</span><span class="ci-time">2d</span></div>
+        <div class="ci-preview">
+          <span class="ci-msg">you: sent the marketplace listing!</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ CHAT AREA ═══ -->
+<div class="chat-area">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chd-av" style="background:linear-gradient(135deg,rgba(255,77,141,.3),rgba(124,106,247,.2));color:var(--pink);" onclick="showRightProfile()">P
+      <div class="online-dot od-green" style="position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;border:2px solid var(--panel);background:var(--green);"></div>
+    </div>
+    <div class="chd-info">
+      <div class="chd-name">Priya Singh 💜</div>
+      <div class="chd-status">
+        <span class="dot"></span>
+        <span>Online now</span>
+        <span style="color:rgba(255,77,141,.6);font-size:11px;margin-left:6px;">🎵 Listening to music with you</span>
+      </div>
+    </div>
+    <div class="chd-actions">
+      <div class="chd-btn music-btn playing" onclick="openMusicModal()">
+        🎵
+        <span class="chd-btn-label">Sync Music</span>
+      </div>
+      <div class="chd-btn call-btn" onclick="startVoiceCall()">
+        📞
+        <span class="chd-btn-label">Voice Call</span>
+      </div>
+      <div class="chd-btn video-btn" onclick="startVideoCall()">
+        📹
+        <span class="chd-btn-label">Video Call</span>
+      </div>
+      <div class="chd-btn" onclick="showRightProfile()">
+        ℹ️
+        <span class="chd-btn-label">Profile</span>
+      </div>
+      <div class="chd-btn">
+        ⋯
+        <span class="chd-btn-label">More</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages" id="messagesContainer">
+    <div class="date-div">Today</div>
+
+    <!-- Incoming -->
+    <div class="msg-row in">
+      <div class="msg-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P</div>
+      <div class="msg-bubble">
+        <div class="msg-actions"><div class="ma-btn" onclick="replyTo('Priya','hey!! did you see the OS notes someone uploaded')">↩️</div><div class="ma-btn">⭐</div><div class="ma-btn">😄</div><div class="ma-btn">⋯</div></div>
+        <div class="bubble-inner">
+          <div class="msg-text">hey!! did you see the OS notes someone uploaded on campushub 😭 literally saved my life fr</div>
+          <div class="msg-time">10:24 AM</div>
+        </div>
+        <div class="msg-reactions"><div class="reaction">😭 2</div><div class="reaction own">💯 4</div></div>
+      </div>
+    </div>
+
+    <!-- Outgoing -->
+    <div class="msg-row out">
+      <div class="msg-bubble">
+        <div class="msg-actions"><div class="ma-btn" onclick="replyTo('You','omg yesss!! i downloaded it last night')">↩️</div><div class="ma-btn">⭐</div><div class="ma-btn">😄</div><div class="ma-btn">⋯</div></div>
+        <div class="bubble-inner">
+          <div class="msg-text">omg yesss!! i downloaded it last night. Shreya literally cooked with those notes 👨‍🍳🔥</div>
+          <div class="msg-time">10:25 AM <span class="msg-ticks tick-read">✓✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Incoming continued -->
+    <div class="msg-row in cont-in">
+      <div class="msg-bubble">
+        <div class="bubble-inner">
+          <div class="msg-text">btw wanna listen to something while we study? been on this playlist all week 🎧</div>
+          <div class="msg-time">10:26 AM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Music sync message -->
+    <div class="msg-row in">
+      <div class="msg-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P</div>
+      <div class="msg-bubble">
+        <div class="bubble-inner" style="background:linear-gradient(135deg,rgba(255,77,141,.15),rgba(124,106,247,.1));border:1px solid rgba(255,77,141,.2);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎵</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;">Dil Bechara</div>
+              <div style="font-size:11px;color:var(--muted);">A.R. Rahman · Lo-fi Chill Mix</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">🔗 Priya invited you to listen together</div>
+          <button onclick="openMusicModal()" style="width:100%;padding:8px;border-radius:10px;background:linear-gradient(135deg,var(--pink),var(--purple));border:none;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">▶ Join Listening Party</button>
+          <div class="msg-time" style="margin-top:6px;">10:27 AM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outgoing with reply -->
+    <div class="msg-row out">
+      <div class="msg-bubble">
+        <div class="reply-ref out">
+          <div class="rr-name">Priya</div>
+          <div class="rr-text">btw wanna listen to something while we study?</div>
+        </div>
+        <div class="bubble-inner">
+          <div class="msg-text">YESS omg!! joining rn 🎶✨</div>
+          <div class="msg-time">10:28 AM <span class="msg-ticks tick-read">✓✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice message incoming -->
+    <div class="msg-row in">
+      <div class="msg-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P</div>
+      <div class="msg-bubble">
+        <div class="bubble-inner">
+          <div class="voice-msg">
+            <button class="voice-play" onclick="playVoice(this)">▶</button>
+            <div class="voice-wave" id="wave1"></div>
+            <span class="voice-dur">0:24</span>
+          </div>
+          <div class="msg-time">10:31 AM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image message -->
+    <div class="msg-row out">
+      <div class="msg-bubble">
+        <div class="bubble-inner" style="padding:6px;">
+          <div class="img-msg">
+            <div style="width:240px;height:160px;background:linear-gradient(135deg,rgba(124,106,247,.3),rgba(255,77,141,.2));display:flex;align-items:center;justify-content:center;font-size:52px;border-radius:12px;">📸</div>
+            <div class="img-overlay">🔍</div>
+          </div>
+          <div class="msg-text" style="margin-top:6px;padding:0 4px;">study vibes rn 📚☕</div>
+          <div class="msg-time" style="padding:0 4px;">10:33 AM <span class="msg-ticks tick-read">✓✓</span></div>
+        </div>
+        <div class="msg-reactions"><div class="reaction">☕ 2</div><div class="reaction">🔥 3</div></div>
+      </div>
+    </div>
+
+    <!-- Video message incoming -->
+    <div class="msg-row in">
+      <div class="msg-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P</div>
+      <div class="msg-bubble">
+        <div class="bubble-inner" style="padding:6px;">
+          <div class="vid-msg" onclick="startVideoCall()">
+            <div class="vid-thumb">🎬</div>
+            <div class="vid-play-btn"><div class="vid-play-circle">▶</div></div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);padding:4px 4px 0;">Video message · 0:18</div>
+          <div class="msg-time" style="padding:0 4px;">10:35 AM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System msg -->
+    <div class="sys-msg">🎵 You two are now listening to the same playlist — enjoy!</div>
+
+    <!-- Incoming new -->
+    <div class="msg-row in">
+      <div class="msg-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P</div>
+      <div class="msg-bubble">
+        <div class="bubble-inner">
+          <div class="msg-text">this song hits different during exams ngl 🥺🎵 also have u started the DBMS assignment yet??</div>
+          <div class="msg-time">10:41 AM</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg-row out">
+      <div class="msg-bubble">
+        <div class="bubble-inner">
+          <div class="msg-text">not even a little bit started lmaooo 💀 we literally have 2 days</div>
+          <div class="msg-time">10:42 AM <span class="msg-ticks tick-sent">✓✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg-row out cont-out">
+      <div class="msg-bubble">
+        <div class="bubble-inner">
+          <div class="msg-text">but fr this playlist is a whole vibe ✨🎶 add me to whatever playlist ur making next too</div>
+          <div class="msg-time">10:42 AM <span class="msg-ticks tick-sent">✓✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Incoming typing -->
+    <div class="msg-row in" id="typingRow">
+      <div class="msg-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P</div>
+      <div class="msg-bubble">
+        <div class="bubble-inner" style="padding:12px 16px;">
+          <div class="typing-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emoji Picker -->
+  <div class="emoji-picker" id="emojiPicker">
+    <div class="ep-cats">
+      <div class="ep-cat active">😊</div><div class="ep-cat">❤️</div><div class="ep-cat">🎉</div>
+      <div class="ep-cat">🎵</div><div class="ep-cat">📚</div><div class="ep-cat">⚡</div>
+    </div>
+    <div class="ep-grid" id="emojiGrid"></div>
+  </div>
+
+  <!-- Input Bar -->
+  <div class="input-bar">
+    <div class="reply-strip" id="replyStrip">
+      <div class="rs-line"></div>
+      <div class="rs-body">
+        <div class="rs-name" id="rsName">Priya</div>
+        <div class="rs-text" id="rsText">hey!! did you see...</div>
+      </div>
+      <div class="rs-close" onclick="closeReply()">✕</div>
+    </div>
+    <div class="input-row">
+      <div class="input-left">
+        <div class="in-btn" onclick="toggleEmoji()">😊</div>
+        <div class="in-btn" onclick="triggerFileUpload()">📎</div>
+      </div>
+      <div class="input-wrap">
+        <textarea class="chat-input" id="chatInput" placeholder="Message Priya..." rows="1" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+        <span class="emoji-btn" onclick="toggleEmoji()">🙂</span>
+      </div>
+      <div class="in-btn rec" id="voiceRecBtn" onclick="toggleVoiceRec()">🎤</div>
+      <button class="send-btn" onclick="sendMessage()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9l13-7-5 7 5 7L2 9z" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="typing-ind" id="typingInd">
+      <div class="typing-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+      Priya is typing...
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RIGHT PANEL ═══ -->
+<div class="right-panel">
+  <div class="rp-header">
+    <div class="rp-title">Priya Singh</div>
+    <div class="rp-tabs">
+      <div class="rp-tab active" onclick="switchRpTab('profile',this)">Profile</div>
+      <div class="rp-tab" onclick="switchRpTab('music',this)">🎵 Music</div>
+      <div class="rp-tab" onclick="switchRpTab('media',this)">Media</div>
+    </div>
+  </div>
+
+  <!-- Profile Tab -->
+  <div class="rp-body" id="rpProfile">
+    <div class="profile-card">
+      <div class="pc-av">P</div>
+      <div class="pc-name">Priya Singh</div>
+      <div class="pc-handle">@priya.singh.cs</div>
+      <div class="pc-bio">CS Sem 5 @ VIT Vellore 🎓 • Notes nerd 📚 • lo-fi girlie 🎵 • procrastinating always 💀</div>
+      <div class="pc-tags">
+        <span class="pc-tag">CS Dept</span>
+        <span class="pc-tag" style="color:var(--pink);background:rgba(255,77,141,.1);">Sem 5</span>
+        <span class="pc-tag" style="color:var(--teal);background:rgba(61,255,208,.08);">Note Sharer</span>
+      </div>
+      <div class="pc-actions">
+        <button class="pc-btn solid" onclick="startVoiceCall()">📞 Call</button>
+        <button class="pc-btn ghost" onclick="startVideoCall()">📹 Video</button>
+        <button class="pc-btn ghost">👤 View</button>
+      </div>
+    </div>
+    <div class="media-section">
+      <div class="ms-title">Shared Media</div>
+      <div class="media-grid">
+        <div class="media-thumb" style="background:linear-gradient(135deg,rgba(124,106,247,.2),rgba(255,77,141,.15));">📸</div>
+        <div class="media-thumb" style="background:linear-gradient(135deg,rgba(61,255,208,.15),rgba(124,106,247,.1));">📄</div>
+        <div class="media-thumb" style="background:linear-gradient(135deg,rgba(255,225,77,.15),rgba(255,140,66,.1));">🎬</div>
+        <div class="media-thumb" style="background:linear-gradient(135deg,rgba(255,77,141,.15),rgba(255,140,66,.1));">📸</div>
+        <div class="media-thumb" style="background:linear-gradient(135deg,rgba(96,165,250,.15),rgba(124,106,247,.1));">📝</div>
+        <div class="media-thumb" style="background:linear-gradient(135deg,rgba(74,222,128,.12),rgba(61,255,208,.08));">🗒️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Music Tab -->
+  <div class="rp-body" id="rpMusic" style="display:none;">
+    <div class="music-panel">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Now Playing Together 🎵</div>
+      <div class="np-card">
+        <div class="np-cover playing" id="rpCover">🎵</div>
+        <div class="np-track">Dil Bechara</div>
+        <div class="np-artist">A.R. Rahman · Lo-fi Chill</div>
+        <div class="np-progress" onclick="seekMusic(event,this)">
+          <div class="np-fill" id="npFill"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);margin:-6px 0 8px;">
+          <span id="npCurrent">1:28</span><span>3:45</span>
+        </div>
+        <div class="np-controls">
+          <button class="np-btn">🔀</button>
+          <button class="np-btn" onclick="prevSong()">⏮</button>
+          <button class="np-play" id="npPlayBtn" onclick="togglePlayPause()">⏸</button>
+          <button class="np-btn" onclick="nextSong()">⏭</button>
+          <button class="np-btn">🔁</button>
+        </div>
+        <div class="both-listening">
+          <div class="bl-avatars">
+            <div class="bl-av" style="background:linear-gradient(135deg,var(--purple),var(--pink));">S</div>
+            <div class="bl-av" style="background:linear-gradient(135deg,var(--pink),var(--orange));">P</div>
+          </div>
+          <span style="color:var(--teal);font-weight:600;">Both listening in sync ✨</span>
+        </div>
+      </div>
+      <div class="playlist">
+        <div class="pl-title">🎵 Shared Playlist</div>
+        <div class="pl-item playing" onclick="playSong(this,0)">
+          <span class="pl-num"><div class="pl-eq"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div></span>
+          <div class="pl-thumb" style="background:linear-gradient(135deg,rgba(255,77,141,.2),rgba(124,106,247,.15));">🎵</div>
+          <div class="pl-info"><div class="pl-name">Dil Bechara</div><div class="pl-artist2">A.R. Rahman</div></div>
+          <span class="pl-dur">3:45</span>
+        </div>
+        <div class="pl-item" onclick="playSong(this,1)">
+          <span class="pl-num" style="color:var(--muted2);font-size:11px;">2</span>
+          <div class="pl-thumb" style="background:linear-gradient(135deg,rgba(61,255,208,.15),rgba(124,106,247,.1));">🌙</div>
+          <div class="pl-info"><div class="pl-name">Lo-fi Hip Hop</div><div class="pl-artist2">Chill Beats</div></div>
+          <span class="pl-dur">4:12</span>
+        </div>
+        <div class="pl-item" onclick="playSong(this,2)">
+          <span class="pl-num" style="color:var(--muted2);font-size:11px;">3</span>
+          <div class="pl-thumb" style="background:linear-gradient(135deg,rgba(255,225,77,.15),rgba(255,140,66,.1));">☀️</div>
+          <div class="pl-info"><div class="pl-name">Golden Hour</div><div class="pl-artist2">JVKE</div></div>
+          <span class="pl-dur">3:22</span>
+        </div>
+        <div class="pl-item" onclick="playSong(this,3)">
+          <span class="pl-num" style="color:var(--muted2);font-size:11px;">4</span>
+          <div class="pl-thumb" style="background:linear-gradient(135deg,rgba(124,106,247,.2),rgba(255,77,141,.1));">💜</div>
+          <div class="pl-info"><div class="pl-name">Stay</div><div class="pl-artist2">Kid LAROI & Justin Bieber</div></div>
+          <span class="pl-dur">2:21</span>
+        </div>
+        <div class="pl-item" onclick="playSong(this,4)">
+          <span class="pl-num" style="color:var(--muted2);font-size:11px;">5</span>
+          <div class="pl-thumb" style="background:linear-gradient(135deg,rgba(96,165,250,.15),rgba(74,222,128,.08));">🌊</div>
+          <div class="pl-info"><div class="pl-name">Blinding Lights</div><div class="pl-artist2">The Weeknd</div></div>
+          <span class="pl-dur">3:20</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Media Tab -->
+  <div class="rp-body" id="rpMedia" style="display:none;">
+    <div class="ms-title">Files & Links</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:12px;cursor:pointer;">
+        <div style="width:36px;height:36px;border-radius:9px;background:rgba(255,77,141,.12);color:var(--pink);display:flex;align-items:center;justify-content:center;font-size:16px;">📄</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;">OS_Notes_Unit4.pdf</div><div style="font-size:11px;color:var(--muted);">3.2 MB · Today</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:12px;cursor:pointer;">
+        <div style="width:36px;height:36px;border-radius:9px;background:rgba(61,255,208,.08);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:16px;">🔗</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;">Shared Playlist</div><div style="font-size:11px;color:var(--muted);">5 songs · Music sync</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .app -->
+
+<!-- ═══ VOICE CALL OVERLAY ═══ -->
+<div class="call-overlay" id="voiceCallOverlay">
+  <div class="call-bg"><div class="call-blob cb1"></div><div class="call-blob cb2"></div></div>
+  <div class="call-av">P</div>
+  <div class="call-name">Priya Singh</div>
+  <div class="call-status" id="callStatus">Calling...</div>
+  <div class="call-timer" id="callTimer" style="display:none;">00:00</div>
+  <div class="call-btns">
+    <div class="call-btn mute" id="muteBtn" onclick="toggleMute(this)">🎤</div>
+    <div class="call-btn end" onclick="endCall('voice')">📵</div>
+    <div class="call-btn speaker" onclick="toggleSpeaker(this)">🔊</div>
+  </div>
+</div>
+
+<!-- ═══ VIDEO CALL OVERLAY ═══ -->
+<div class="video-call-overlay" id="videoCallOverlay">
+  <div class="vcall-main">
+    <div class="vcall-remote">🧑‍💻</div>
+    <div class="vcall-self">😊</div>
+    <div class="vcall-info">
+      <div class="vcall-name">Priya Singh</div>
+      <div class="vcall-time" id="vcallTimer">00:00</div>
+    </div>
+    <div class="vcall-btns">
+      <div class="call-btn mute" onclick="toggleMute(this)">🎤</div>
+      <div class="call-btn cam" onclick="toggleCam(this)">📷</div>
+      <div class="call-btn" style="background:rgba(124,106,247,.3);">📺</div>
+      <div class="call-btn end" onclick="endCall('video')">📵</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STATUS VIEWER ═══ -->
+<div class="status-overlay" id="statusOverlay" onclick="closeStatus(event)">
+  <div class="status-view">
+    <div class="sv-progress" id="svProgress"></div>
+    <div class="sv-header">
+      <div class="ci-av" id="svAv" style="width:32px;height:32px;background:linear-gradient(135deg,rgba(255,77,141,.3),rgba(124,106,247,.2));color:var(--pink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">P</div>
+      <div style="margin-left:8px;">
+        <div style="font-size:13px;font-weight:700;" id="svName">Priya</div>
+        <div style="font-size:11px;color:var(--muted);" id="svTime">2 min ago</div>
+      </div>
+      <div class="sv-close" onclick="closeStatusView()">✕</div>
+    </div>
+    <div class="sv-body" id="svBody">📚</div>
+    <div class="sv-caption" id="svCaption">studying with campushub ✨</div>
+  </div>
+</div>
+
+<!-- ═══ MUSIC SYNC MODAL ═══ -->
+<div class="music-modal" id="musicModal" onclick="closeMusicModal(event)">
+  <div class="mm-card">
+    <button class="mm-close" onclick="closeMusicModalBtn()">✕</button>
+    <div class="mm-title">🎵 Music Sync</div>
+    <p class="mm-sub">Listen together in real-time. Perfectly in sync.</p>
+    <div class="mm-now">
+      <div class="mm-cover" id="mmCover">🎵</div>
+      <div class="mm-info">
+        <div class="mm-track" id="mmTrack">Dil Bechara</div>
+        <div class="mm-artist2" id="mmArtist">A.R. Rahman · Lo-fi Chill</div>
+        <div class="mm-controls">
+          <button class="mm-ctrl" onclick="prevSong()">⏮</button>
+          <button class="mm-play2" id="mmPlayBtn" onclick="togglePlayPause()">⏸</button>
+          <button class="mm-ctrl" onclick="nextSong()">⏭</button>
+          <button class="mm-ctrl">🔀</button>
+          <button class="mm-ctrl">🔁</button>
+        </div>
+      </div>
+    </div>
+    <div class="mm-both">
+      <div class="bl-avatars">
+        <div class="bl-av" style="background:linear-gradient(135deg,var(--purple),var(--pink));">S</div>
+        <div class="bl-av" style="background:linear-gradient(135deg,var(--pink),var(--orange));">P</div>
+      </div>
+      <span style="font-size:13px;"><span style="color:var(--teal);font-weight:700;">You & Priya</span> are synced 🎶</span>
+    </div>
+    <div class="mm-pl-label">Shared Playlist · 5 songs</div>
+    <div class="mm-playlist" id="mmPlaylist"></div>
+  </div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cd=document.getElementById('cur-d'),cr=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px';});
+(function lp(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(lp);})();
+document.querySelectorAll('button,a,.contact-item,.chd-btn,.sb-btn,.in-btn,.send-btn,.icon-btn,.msg-bubble,.status-item,.np-play,.pl-item,.rp-tab,.tab,.pc-btn,.call-btn,.mm-play2,.ep-emoji').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cr.classList.add('h'));
+  el.addEventListener('mouseleave',()=>cr.classList.remove('h'));
+});
+
+/* ── WAVE BARS ── */
+function makeWave(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  for(let i=0;i<20;i++){
+    const b=document.createElement('div');
+    b.className='wave-bar';
+    const h=10+Math.random()*20;
+    b.style.cssText=`height:${h}px;animation-duration:${.3+Math.random()*.6}s;animation-delay:${Math.random()*.4}s;`;
+    el.appendChild(b);
+  }
+}
+makeWave('wave1');
+
+/* ── EMOJI PICKER ── */
+const EMOJIS=['😂','😭','🔥','💯','✨','🥺','😍','🎉','👀','😤','💀','🙏','❤️','🤣','😊','🎵','📚','💜','🌙','☕','🤌','😏','🥲','🫡','🤯','😩','💅','🫶','🎶','🌸','⭐','💫','🎓','📱','🫠','🤭','💪','🏆'];
+const grid=document.getElementById('emojiGrid');
+EMOJIS.forEach(e=>{const d=document.createElement('div');d.className='ep-emoji';d.textContent=e;d.onclick=()=>{const inp=document.getElementById('chatInput');inp.value+=e;inp.focus();closeEmoji();};grid.appendChild(d);});
+
+function toggleEmoji(){const p=document.getElementById('emojiPicker');p.classList.toggle('show');}
+function closeEmoji(){document.getElementById('emojiPicker').classList.remove('show');}
+document.addEventListener('click',e=>{if(!e.target.closest('.emoji-picker')&&!e.target.closest('.emoji-btn')&&!e.target.classList.contains('in-btn'))closeEmoji();});
+
+/* ── SEND MESSAGE ── */
+function sendMessage(){
+  const inp=document.getElementById('chatInput');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  addMessage(txt,'out');
+  inp.value='';inp.style.height='auto';
+  closeReply();closeEmoji();
+  // Simulate reply after 1.5s
+  setTimeout(()=>{
+    const replies=["omg same 😭💀","wait seriously?? 💀","LOL THIS IS ME","no way 💜","broooo 😭😭","ahahaha ok valid tho","can't rn 💀💀","bestie 🫶","sending this to everyone","that's actually so real fr"];
+    addMessage(replies[Math.floor(Math.random()*replies.length)],'in');
+  },1500+Math.random()*1000);
+}
+
+function addMessage(txt,dir){
+  const msgs=document.getElementById('messagesContainer');
+  const row=document.createElement('div');
+  row.className=`msg-row ${dir}`;
+  const time=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
+  if(dir==='in'){
+    row.innerHTML=`
+      <div class="msg-av" style="background:linear-gradient(135deg,rgba(255,77,141,.25),rgba(124,106,247,.2));color:var(--pink);">P</div>
+      <div class="msg-bubble">
+        <div class="bubble-inner"><div class="msg-text">${escHtml(txt)}</div><div class="msg-time">${time}</div></div>
+      </div>`;
+  } else {
+    row.innerHTML=`
+      <div class="msg-bubble">
+        <div class="bubble-inner"><div class="msg-text">${escHtml(txt)}</div><div class="msg-time">${time} <span class="msg-ticks tick-sent">✓✓</span></div></div>
+      </div>`;
+  }
+  msgs.insertBefore(row,document.getElementById('typingRow'));
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+/* ── KEY HANDLER ── */
+function handleKey(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+
+/* ── REPLY ── */
+function replyTo(name,text){
+  document.getElementById('rsName').textContent=name;
+  document.getElementById('rsText').textContent=text;
+  document.getElementById('replyStrip').classList.add('show');
+  document.getElementById('chatInput').focus();
+}
+function closeReply(){document.getElementById('replyStrip').classList.remove('show');}
+
+/* ── VOICE REC ── */
+let recording=false;
+function toggleVoiceRec(){
+  recording=!recording;
+  const btn=document.getElementById('voiceRecBtn');
+  btn.classList.toggle('recording',recording);
+  btn.title=recording?'Stop recording':'Voice message';
+  if(!recording)setTimeout(()=>{addMessage('🎤 Voice message sent','out');},300);
+}
+
+/* ── VOICE PLAYBACK ── */
+function playVoice(btn){
+  const isPlay=btn.textContent==='▶';
+  btn.textContent=isPlay?'⏸':'▶';
+}
+
+/* ── CALL LOGIC ── */
+let callSecs=0,callInt=null;
+function startVoiceCall(){
+  document.getElementById('voiceCallOverlay').classList.add('show');
+  document.getElementById('callStatus').textContent='Calling...';
+  document.getElementById('callTimer').style.display='none';
+  callSecs=0;
+  setTimeout(()=>{
+    document.getElementById('callStatus').textContent='Connected';
+    document.getElementById('callTimer').style.display='block';
+    callInt=setInterval(()=>{callSecs++;const m=String(Math.floor(callSecs/60)).padStart(2,'0'),s=String(callSecs%60).padStart(2,'0');document.getElementById('callTimer').textContent=`${m}:${s}`;},1000);
+  },1500);
+}
+function startVideoCall(){
+  document.getElementById('videoCallOverlay').classList.add('show');
+  callSecs=0;
+  callInt=setInterval(()=>{callSecs++;const m=String(Math.floor(callSecs/60)).padStart(2,'0'),s=String(callSecs%60).padStart(2,'0');document.getElementById('vcallTimer').textContent=`${m}:${s}`;},1000);
+}
+function endCall(type){
+  clearInterval(callInt);callSecs=0;
+  if(type==='voice')document.getElementById('voiceCallOverlay').classList.remove('show');
+  else document.getElementById('videoCallOverlay').classList.remove('show');
+}
+function toggleMute(btn){btn.textContent=btn.textContent==='🎤'?'🔇':'🎤';}
+function toggleSpeaker(btn){btn.textContent=btn.textContent==='🔊'?'🔈':'🔊';}
+function toggleCam(btn){btn.textContent=btn.textContent==='📷'?'📷':'📷';}
+
+/* ── STATUS ── */
+const statusData=[
+  {name:'Priya',time:'2 min ago',emoji:'📚',cap:'studying with campushub ✨',color:'var(--pink)'},
+  {name:'Rahul',time:'10 min ago',emoji:'☕',cap:'coffee + code = life ☕👨‍💻',color:'var(--teal)'},
+  {name:'Shreya',time:'1h ago',emoji:'🌙',cap:'lo-fi study session 🎵',color:'var(--yellow)'},
+  {name:'Arjun',time:'3h ago',emoji:'🏆',cap:'hackathon prep mode 🔥',color:'var(--orange)'},
+  {name:'Meera',time:'5h ago',emoji:'🌸',cap:'finally done with assignments!!',color:'var(--green)'},
+];
+let statusIdx=0,progInt=null;
+function viewStatus(name,idx){
+  statusIdx=idx;
+  document.getElementById('statusOverlay').classList.add('show');
+  loadStatusSlide(idx);
+}
+function loadStatusSlide(i){
+  const d=statusData[i];
+  document.getElementById('svName').textContent=d.name;
+  document.getElementById('svTime').textContent=d.time;
+  document.getElementById('svBody').textContent=d.emoji;
+  document.getElementById('svCaption').textContent=d.cap;
+  const av=document.getElementById('svAv');
+  av.textContent=d.name[0];av.style.color=d.color;
+  // progress bars
+  const prog=document.getElementById('svProgress');
+  prog.innerHTML='';
+  statusData.forEach((_,j)=>{
+    const seg=document.createElement('div');seg.className='sv-prog-seg';
+    const fill=document.createElement('div');fill.className='sv-prog-fill';
+    if(j<i)fill.style.width='100%';
+    if(j===i){fill.style.transition=`width 4s linear`;setTimeout(()=>fill.style.width='100%',50);}
+    seg.appendChild(fill);prog.appendChild(seg);
+  });
+  clearInterval(progInt);
+  progInt=setInterval(()=>{i++;if(i>=statusData.length){closeStatusView();return;}loadStatusSlide(i);},4500);
+}
+function closeStatusView(){clearInterval(progInt);document.getElementById('statusOverlay').classList.remove('show');}
+function closeStatus(e){if(e.target===document.getElementById('statusOverlay'))closeStatusView();}
+function openStatusFeed(){viewStatus('Priya',0);}
+function addStatus(){alert('Add Status — camera & text options would open here!');}
+
+/* ── CONTACT FILTER ── */
+function filterContacts(q){
+  const items=document.querySelectorAll('.contact-item');
+  items.forEach(item=>{
+    const name=item.dataset.name||'';
+    item.style.display=(!q||name.includes(q.toLowerCase()))?'':'none';
+  });
+}
+
+/* ── OPEN CHAT ── */
+function openChat(id){
+  document.querySelectorAll('.contact-item').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`[data-name="${id}"]`)?.classList.add('active');
+  const names={priya:'Priya Singh 💜',rahul:'Rahul Mehta','cs-dept':'CS Dept 2025 🔥',hackathon:'Hackathon Team 💡',shreya:'Shreya Kapoor',arjun:'Arjun Sharma',techclub:'TechClub Core',meera:'Meera Iyer'};
+  document.querySelector('.chd-name').textContent=names[id]||id;
+}
+
+/* ── SWITCH TABS ── */
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+}
+function switchSection(sec,btn){
+  document.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function switchRpTab(tab,btn){
+  document.querySelectorAll('.rp-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ['rpProfile','rpMusic','rpMedia'].forEach(id=>document.getElementById(id).style.display='none');
+  const map={profile:'rpProfile',music:'rpMusic',media:'rpMedia'};
+  if(map[tab])document.getElementById(map[tab]).style.display='block';
+}
+function showRightProfile(){switchRpTab('profile',document.querySelector('.rp-tab'));}
+function showProfile(){switchRpTab('profile',document.querySelector('.rp-tab'));}
+
+/* ── MUSIC ── */
+const songs=[
+  {name:'Dil Bechara',artist:'A.R. Rahman',emoji:'🎵',dur:'3:45'},
+  {name:'Lo-fi Hip Hop',artist:'Chill Beats',emoji:'🌙',dur:'4:12'},
+  {name:'Golden Hour',artist:'JVKE',emoji:'☀️',dur:'3:22'},
+  {name:'Stay',artist:'Kid LAROI',emoji:'💜',dur:'2:21'},
+  {name:'Blinding Lights',artist:'The Weeknd',emoji:'🌊',dur:'3:20'},
+];
+let curSong=0,playing=true;
+
+// Build modal playlist
+const mmPl=document.getElementById('mmPlaylist');
+songs.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='mm-pl-item'+(i===0?' active':'');
+  d.innerHTML=`<div class="mm-pl-cover" style="background:linear-gradient(135deg,rgba(255,77,141,.2),rgba(124,106,247,.15));">${s.emoji}</div><span class="mm-pl-name">${s.name}</span><span class="mm-pl-dur">${s.dur}</span>`;
+  d.onclick=()=>{curSong=i;updateMusicUI();d.closest('.mm-playlist').querySelectorAll('.mm-pl-item').forEach(x=>x.classList.remove('active'));d.classList.add('active');};
+  mmPl.appendChild(d);
+});
+
+function updateMusicUI(){
+  const s=songs[curSong];
+  document.getElementById('mmTrack').textContent=s.name;
+  document.getElementById('mmArtist').textContent=s.artist;
+  document.getElementById('mmCover').textContent=s.emoji;
+  document.getElementById('npPlayBtn').textContent=playing?'⏸':'▶';
+  document.getElementById('mmPlayBtn').textContent=playing?'⏸':'▶';
+  document.getElementById('rpCover').textContent=s.emoji;
+  // update right panel playlist
+  document.querySelectorAll('.pl-item').forEach((item,i)=>{
+    item.classList.toggle('playing',i===curSong);
+    const numEl=item.querySelector('.pl-num');
+    if(i===curSong){numEl.innerHTML='<div class="pl-eq"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>';}
+    else{numEl.innerHTML=`<span style="color:var(--muted2);font-size:11px;">${i+1}</span>`;}
+  });
+}
+function togglePlayPause(){
+  playing=!playing;
+  document.getElementById('rpCover').classList.toggle('playing',playing);
+  updateMusicUI();
+}
+function nextSong(){curSong=(curSong+1)%songs.length;updateMusicUI();}
+function prevSong(){curSong=(curSong-1+songs.length)%songs.length;updateMusicUI();}
+function playSong(item,i){curSong=i;updateMusicUI();}
+function seekMusic(e,el){const r=el.getBoundingClientRect();const pct=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));document.getElementById('npFill').style.width=(pct*100)+'%';}
+
+// Progress animation
+let prog=38;
+setInterval(()=>{
+  if(playing){prog+=.015;if(prog>100)prog=0;const fill=document.getElementById('npFill');if(fill)fill.style.width=prog+'%';}
+  const mins=Math.floor(prog*.0245*60),secs=Math.floor((prog*.0245*60-mins)*60);
+  const cur=document.getElementById('npCurrent');
+  if(cur)cur.textContent=`${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+},500);
+
+function openMusicModal(){document.getElementById('musicModal').classList.add('show');}
+function closeMusicModal(e){if(e.target===document.getElementById('musicModal'))closeMusicModalBtn();}
+function closeMusicModalBtn(){document.getElementById('musicModal').classList.remove('show');}
+
+/* ── FILE UPLOAD ── */
+function triggerFileUpload(){
+  const types=['📸 Photo','📹 Video','📄 Document','🎵 Music','📍 Location'];
+  const type=types[Math.floor(Math.random()*types.length)];
+  setTimeout(()=>addMessage(`${type} shared`,'out'),400);
+}
+
+/* ── NEW CHAT ── */
+function newChat(){alert('Create new conversation — search or invite by campus email');}
+
+/* ── TYPING SIMULATION ── */
+let typingVisible=true;
+setInterval(()=>{
+  const row=document.getElementById('typingRow');
+  const ind=document.getElementById('typingInd');
+  if(row)row.style.display=typingVisible?'flex':'none';
+  if(ind)ind.style.display=typingVisible?'flex':'none';
+  typingVisible=!typingVisible;
+},4000);
+</script>
+</body>
+</html>
