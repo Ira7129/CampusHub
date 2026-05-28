@@ -3,886 +3,1369 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CampusHub Clubs</title>
-
-<!-- GOOGLE FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-<!-- FONT AWESOME -->
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
-<!-- AOS -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<title>Clubs — CampusHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
-body{
-    background:#060816;
-    color:white;
-    overflow-x:hidden;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-/* BACKGROUND */
-.background{
-    position:fixed;
-    inset:0;
-    z-index:-2;
-    overflow:hidden;
-}
-
-.blob{
-    position:absolute;
-    border-radius:50%;
-    filter:blur(70px);
-    opacity:.4;
-    animation:float 8s infinite alternate ease-in-out;
-}
-
-.blob1{
-    width:320px;
-    height:320px;
-    background:#00e5ff;
-    top:-80px;
-    left:-60px;
-}
-
-.blob2{
-    width:260px;
-    height:260px;
-    background:#7a5cff;
-    right:-80px;
-    top:30%;
-}
-
-.blob3{
-    width:220px;
-    height:220px;
-    background:#ff4ecd;
-    bottom:-60px;
-    left:40%;
-}
-
-@keyframes float{
-    from{
-        transform:translateY(0px) translateX(0px);
-    }
-    to{
-        transform:translateY(-30px) translateX(20px);
-    }
-}
-
-/* NAVBAR */
-nav{
-    width:100%;
-    position:fixed;
-    top:0;
-    z-index:999;
-    padding:18px 8%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    backdrop-filter:blur(15px);
-    background:rgba(6,8,22,.45);
-    border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.logo{
-    font-size:30px;
-    font-weight:800;
-    background:linear-gradient(90deg,#00e5ff,#7a5cff,#ff4ecd);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.nav-links{
-    display:flex;
-    gap:28px;
-}
-
-.nav-links a{
-    color:white;
-    text-decoration:none;
-    transition:.3s;
-    position:relative;
-}
-
-.nav-links a::after{
-    content:'';
-    position:absolute;
-    left:0;
-    bottom:-6px;
-    width:0%;
-    height:2px;
-    background:#00e5ff;
-    transition:.3s;
-}
-
-.nav-links a:hover::after{
-    width:100%;
-}
-
-.create-btn{
-    padding:12px 24px;
-    border:none;
-    border-radius:40px;
-    background:linear-gradient(90deg,#00e5ff,#7a5cff);
-    color:white;
-    cursor:pointer;
-    font-weight:600;
-    box-shadow:0 0 20px rgba(0,229,255,.3);
-}
-
-/* HERO */
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:140px 8% 60px;
-    gap:50px;
-}
-
-.hero-text{
-    flex:1;
-}
-
-.hero-text h1{
-    font-size:72px;
-    line-height:1.1;
-    margin-bottom:25px;
-}
-
-.hero-text h1 span{
-    background:linear-gradient(90deg,#00e5ff,#7a5cff,#ff4ecd);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.hero-text p{
-    color:#d3d3d3;
-    line-height:1.9;
-    margin-bottom:35px;
-    max-width:650px;
-}
-
-.hero-buttons{
-    display:flex;
-    gap:18px;
-}
-
-.hero-buttons a{
-    padding:14px 30px;
-    border-radius:40px;
-    text-decoration:none;
-    font-weight:600;
-    transition:.4s;
-}
-
-.primary-btn{
-    background:linear-gradient(90deg,#00e5ff,#7a5cff);
-    color:white;
-}
-
-.secondary-btn{
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.05);
-    color:white;
-    backdrop-filter:blur(10px);
-}
-
-.hero-buttons a:hover{
-    transform:translateY(-4px);
-}
-
-/* HERO CARD */
-.hero-card{
-    width:430px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:30px;
-    padding:30px;
-    backdrop-filter:blur(20px);
-    animation:cardFloat 4s infinite ease-in-out;
-}
-
-@keyframes cardFloat{
-    50%{
-        transform:translateY(-10px);
-    }
-}
-
-.hero-card h2{
-    margin-bottom:20px;
-}
-
-.select-box{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:16px;
-    background:rgba(255,255,255,.08);
-    color:white;
-    margin-bottom:25px;
-    outline:none;
-    font-size:16px;
-}
-
-.select-box option{
-    background:#0f172a;
-}
-
-.stat-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-}
-
-.stat-box{
-    background:rgba(255,255,255,.06);
-    padding:18px;
-    border-radius:18px;
-    text-align:center;
-}
-
-.stat-box h3{
-    color:#00e5ff;
-    margin-bottom:5px;
-}
-
-/* SECTION */
-.section{
-    padding:100px 8%;
-}
-
-.section-title{
-    text-align:center;
-    margin-bottom:70px;
+/* ══ TOKENS ══ */
+:root {
+  --bg:      #0b0c14;
+  --bg2:     #10111f;
+  --paper:   #161724;
+  --card:    #1c1d2e;
+  --card2:   #232438;
+  --border:  rgba(255,255,255,0.06);
+  --text:    #eeeeff;
+  --muted:   rgba(180,178,220,0.5);
+  --purple:  #7c6af7;
+  --pink:    #ff4d8d;
+  --yellow:  #ffe14d;
+  --teal:    #3dffd0;
+  --orange:  #ff8c42;
+  --green:   #4ade80;
+  --blue:    #60a5fa;
+  --red:     #f87171;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+  min-height: 100vh;
+}
+
+/* ── NOISE ── */
+body::before {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.022;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── CURSOR ── */
+#cur-dot, #cur-ring {
+  position:fixed; border-radius:50%; pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+}
+#cur-dot { width:8px; height:8px; background:var(--pink); mix-blend-mode:screen; }
+#cur-ring {
+  width:36px; height:36px;
+  border:1.5px solid rgba(124,106,247,0.45);
+  transition:width .22s, height .22s, border-color .22s, background .22s;
+}
+#cur-ring.big { width:56px; height:56px; border-color:var(--purple); background:rgba(124,106,247,0.05); }
+#cur-ring.click { width:24px; height:24px; border-color:var(--pink); background:rgba(255,77,141,0.12); }
+
+/* ── BG ── */
+.bg-blobs { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.blob {
+  position:absolute; border-radius:50%; filter:blur(100px);
+  animation:blobFloat ease-in-out infinite alternate;
+}
+.b1 { width:700px;height:700px;background:rgba(124,106,247,.1);top:-200px;left:-150px;animation-duration:20s; }
+.b2 { width:500px;height:500px;background:rgba(255,77,141,.08);bottom:-100px;right:-80px;animation-duration:25s;animation-delay:-8s; }
+.b3 { width:350px;height:350px;background:rgba(61,255,208,.07);top:40%;right:10%;animation-duration:16s;animation-delay:-5s; }
+@keyframes blobFloat { from{transform:translate(0,0)scale(1);}to{transform:translate(35px,28px)scale(1.1);} }
+
+/* Dot grid */
+.bg-dots {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image: radial-gradient(rgba(124,106,247,.18) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+}
+
+/* ══════════════════════════
+   BACK BUTTON
+══════════════════════════ */
+.back-btn {
+  position:fixed; top:24px; left:24px; z-index:700;
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:13px; font-weight:700; color:var(--purple);
+  padding:10px 18px; border-radius:40px;
+  background:rgba(124,106,247,0.1); border:1.5px solid rgba(124,106,247,0.25);
+  text-decoration:none; backdrop-filter:blur(16px); cursor:none; opacity:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);
+  white-space:nowrap;
+}
+.back-btn:hover {
+  background:rgba(124,106,247,0.2); border-color:var(--purple);
+  transform:translateX(-4px);
+  box-shadow:0 8px 28px rgba(124,106,247,0.3); color:var(--text);
+}
+.back-btn svg { transition:transform .3s cubic-bezier(.34,1.56,.64,1); flex-shrink:0; }
+.back-btn:hover svg { transform:translateX(-3px); }
+
+/* ══════════════════════════
+   NAVBAR
+══════════════════════════ */
+nav {
+  position:fixed; top:14px; left:50%; transform:translateX(-50%);
+  z-index:600;
+  display:flex; align-items:center; gap:4px;
+  padding:7px 10px 7px 20px;
+  background:rgba(18,17,36,.78);
+  backdrop-filter:blur(28px) saturate(200%);
+  border:1px solid rgba(124,106,247,.18);
+  border-radius:60px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.03) inset, 0 10px 50px rgba(0,0,0,.5);
+  opacity:0;
+}
+.nav-logo {
+  font-family:'Fredoka One',sans-serif; font-size:20px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  text-decoration:none; margin-right:8px; cursor:none;
+}
+.nav-pill {
+  font-size:12.5px; font-weight:600; color:var(--muted);
+  padding:6px 13px; border-radius:40px; text-decoration:none;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1); cursor:none;
+}
+.nav-pill:hover { color:var(--text); background:rgba(124,106,247,.1); }
+.nav-pill.active { color:var(--purple); background:rgba(124,106,247,.12); }
+.nav-sep { width:1px; height:16px; background:rgba(255,255,255,.07); margin:0 3px; }
+.nav-cta {
+  display:flex; align-items:center; gap:7px;
+  font-size:13px; font-weight:700; padding:9px 20px; border-radius:40px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff; border:none; cursor:none; text-decoration:none;
+  box-shadow:0 4px 18px rgba(124,106,247,.4);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap;
+}
+.nav-cta:hover { transform:scale(1.05); box-shadow:0 8px 30px rgba(124,106,247,.55); }
+
+/* ══════════════════════════
+   PAGE HERO
+══════════════════════════ */
+.page-hero {
+  position:relative; z-index:2;
+  padding:120px 32px 56px;
+  max-width:1240px; margin:0 auto;
+  display:flex; align-items:flex-end; justify-content:space-between;
+  flex-wrap:wrap; gap:24px;
+}
+
+.ph-eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+  color:var(--orange); border:1px solid rgba(255,140,66,.2); background:rgba(255,140,66,.07);
+  padding:6px 16px; border-radius:40px; margin-bottom:18px;
+  opacity:0;
+}
+.ey-live { width:6px; height:6px; border-radius:50%; background:var(--orange); animation:livePulse 2s infinite; }
+@keyframes livePulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,140,66,.4);}50%{opacity:.5;box-shadow:0 0 0 5px rgba(255,140,66,0);} }
+
+.ph-title {
+  font-family:'Fredoka One',sans-serif;
+  font-size:clamp(42px,7vw,88px);
+  line-height:.9; letter-spacing:-.5px; margin-bottom:16px;
+  opacity:0;
+}
+.ph-title .line2 {
+  background:linear-gradient(135deg,var(--orange),var(--pink),var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-size:200%; animation:gradShift 5s ease infinite;
+}
+@keyframes gradShift { 0%{background-position:0%;}50%{background-position:100%;}100%{background-position:0%;} }
+
+.ph-sub {
+  font-size:16px; font-weight:300; color:var(--muted);
+  max-width:460px; line-height:1.8; opacity:0;
+}
+
+.ph-right { opacity:0; }
+.ph-stats-row { display:flex; gap:24px; }
+.ph-stat {
+  text-align:center; padding:18px 24px;
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:16px; cursor:default;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.ph-stat:hover { border-color:rgba(124,106,247,.3); transform:translateY(-4px); background:var(--card2); }
+.ps-num { font-family:'Fredoka One',sans-serif; font-size:32px; line-height:1; }
+.ps-label { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+
+/* ══════════════════════════
+   FILTER & SEARCH BAR
+══════════════════════════ */
+.filter-section {
+  position:relative; z-index:2;
+  max-width:1240px; margin:0 auto;
+  padding:0 32px 32px;
+  display:flex; flex-direction:column; gap:14px;
+}
+
+.search-row { display:flex; gap:12px; }
+.search-box {
+  flex:1; display:flex; align-items:center; gap:10px; padding:0 16px;
+  background:var(--card); border:1.5px solid var(--border); border-radius:14px;
+  transition:border-color .3s, box-shadow .3s;
+}
+.search-box:focus-within { border-color:var(--purple); box-shadow:0 0 0 4px rgba(124,106,247,.1); }
+.search-box svg { color:var(--muted); flex-shrink:0; transition:color .3s; }
+.search-box:focus-within svg { color:var(--purple); }
+.search-input {
+  flex:1; padding:13px 0; background:transparent; border:none; outline:none;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; color:var(--text);
+  caret-color:var(--purple);
+}
+.search-input::placeholder { color:var(--muted); }
+.search-clear { background:none; border:none; color:var(--muted); cursor:pointer; font-size:17px; transition:color .2s; }
+.search-clear:hover { color:var(--pink); }
+
+.cat-pills { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.cat-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+.cpill {
+  font-size:12px; font-weight:600; padding:7px 16px; border-radius:40px;
+  background:var(--card); border:1.5px solid var(--border); color:var(--muted);
+  cursor:pointer; transition:all .25s cubic-bezier(.34,1.56,.64,1); white-space:nowrap;
+  display:flex; align-items:center; gap:6px;
+}
+.cpill:hover { border-color:var(--purple); color:var(--text); }
+.cpill.active { background:rgba(124,106,247,.15); border-color:var(--purple); color:var(--purple); transform:scale(1.04); }
+.cpill[data-cat="Tech"].active { background:rgba(96,165,250,.12); border-color:var(--blue); color:var(--blue); }
+.cpill[data-cat="Arts"].active { background:rgba(255,77,141,.12); border-color:var(--pink); color:var(--pink); }
+.cpill[data-cat="Sports"].active { background:rgba(74,222,128,.1); border-color:var(--green); color:var(--green); }
+.cpill[data-cat="Culture"].active { background:rgba(255,225,77,.1); border-color:var(--yellow); color:var(--yellow); }
+.cpill[data-cat="Social"].active { background:rgba(255,140,66,.1); border-color:var(--orange); color:var(--orange); }
+
+.results-bar {
+  display:flex; align-items:center; justify-content:space-between;
+}
+.results-count { font-size:13px; color:var(--muted); }
+.results-count span { color:var(--text); font-weight:700; }
+
+/* ══════════════════════════
+   FEATURED CLUB BANNER
+══════════════════════════ */
+.featured-wrap {
+  position:relative; z-index:2;
+  max-width:1240px; margin:0 auto;
+  padding:0 32px 28px;
+  opacity:0; transform:translateY(30px);
+}
+.featured-club {
+  position:relative; border-radius:24px; overflow:hidden;
+  padding:48px 52px;
+  background:linear-gradient(135deg,rgba(124,106,247,.15),rgba(255,77,141,.1),rgba(61,255,208,.07));
+  border:1.5px solid rgba(124,106,247,.25);
+  display:flex; align-items:center; gap:40px; flex-wrap:wrap;
+  cursor:pointer;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.featured-club::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--purple),var(--pink),var(--yellow),var(--teal));
+}
+.featured-club:hover { border-color:rgba(124,106,247,.45); box-shadow:0 24px 70px rgba(0,0,0,.4); transform:translateY(-4px); }
+.fc-emoji { font-size:80px; line-height:1; flex-shrink:0; animation:emojiPop 4s ease-in-out infinite; }
+@keyframes emojiPop { 0%,100%{transform:scale(1) rotate(-3deg);}50%{transform:scale(1.08) rotate(3deg);} }
+.fc-badge {
+  position:absolute; top:20px; right:20px;
+  font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff; padding:6px 14px; border-radius:20px;
+}
+.fc-body { flex:1; }
+.fc-tag { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--teal); margin-bottom:10px; }
+.fc-title { font-family:'Fredoka One',sans-serif; font-size:clamp(28px,4vw,48px); line-height:1; margin-bottom:12px; }
+.fc-desc { font-size:15px; font-weight:300; color:var(--muted); line-height:1.8; max-width:520px; margin-bottom:24px; }
+.fc-meta { display:flex; gap:20px; flex-wrap:wrap; align-items:center; }
+.fc-meta-item { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--muted); }
+.fc-join-btn {
+  display:inline-flex; align-items:center; gap:9px;
+  font-size:14px; font-weight:700; padding:13px 30px; border-radius:40px;
+  background:linear-gradient(135deg,var(--purple),var(--pink)); color:#fff;
+  border:none; cursor:none; transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 6px 24px rgba(124,106,247,.4);
+}
+.fc-join-btn:hover { transform:scale(1.06); box-shadow:0 10px 36px rgba(124,106,247,.6); }
+
+/* ══════════════════════════
+   CLUBS GRID
+══════════════════════════ */
+.clubs-section {
+  position:relative; z-index:2;
+  max-width:1240px; margin:0 auto;
+  padding:0 32px 100px;
+}
+
+.clubs-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+/* ── CLUB CARD ── */
+.club-card {
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:20px; padding:28px;
+  position:relative; overflow:hidden;
+  cursor:pointer;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  opacity:0; transform:translateY(28px);
+}
+.club-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--cc-accent,linear-gradient(90deg,var(--purple),var(--pink)));
+  transform:scaleX(0); transform-origin:left; transition:transform .35s;
+}
+.club-card::after {
+  content:''; position:absolute; width:200px; height:200px; border-radius:50%;
+  filter:blur(50px); pointer-events:none;
+  background:var(--cc-glow,rgba(124,106,247,.1));
+  bottom:-80px; right:-60px; opacity:0; transition:opacity .4s;
+}
+.club-card:hover { transform:translateY(-8px) scale(1.01); border-color:rgba(124,106,247,.3); background:var(--card2); box-shadow:0 20px 60px rgba(0,0,0,.4); }
+.club-card:hover::before { transform:scaleX(1); }
+.club-card:hover::after { opacity:1; }
+
+/* Emoji + header */
+.cc-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; }
+.cc-emoji-wrap {
+  width:64px; height:64px; border-radius:18px; font-size:32px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--cc-icon-bg,rgba(124,106,247,.1));
+  border:1px solid var(--cc-icon-border,rgba(124,106,247,.2));
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  flex-shrink:0;
+}
+.club-card:hover .cc-emoji-wrap { transform:rotate(-8deg) scale(1.1); }
+
+.cc-badges { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.cc-cat-badge {
+  font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  padding:4px 10px; border-radius:20px;
+  background:var(--cc-badge-bg); color:var(--cc-badge-color);
+  border:1px solid var(--cc-badge-border);
+}
+.cc-open-badge {
+  font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  padding:4px 10px; border-radius:20px;
+  background:rgba(74,222,128,.1); color:var(--green); border:1px solid rgba(74,222,128,.2);
+  display:flex; align-items:center; gap:4px;
+}
+.cc-open-dot { width:5px; height:5px; border-radius:50%; background:var(--green); animation:livePulse 2s infinite; }
+.cc-closed-badge {
+  font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  padding:4px 10px; border-radius:20px;
+  background:rgba(248,113,113,.1); color:var(--red); border:1px solid rgba(248,113,113,.2);
+}
+
+.cc-name { font-family:'Fredoka One',sans-serif; font-size:21px; letter-spacing:-.3px; margin-bottom:8px; }
+.cc-desc { font-size:13px; font-weight:300; color:var(--muted); line-height:1.75; margin-bottom:18px;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* Members row */
+.cc-members { display:flex; align-items:center; gap:0; margin-bottom:16px; }
+.cc-member-av {
+  width:28px; height:28px; border-radius:50%;
+  border:2px solid var(--card);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:700;
+  margin-left:-8px;
+  transition:all .25s; flex-shrink:0;
+}
+.cc-member-av:first-child { margin-left:0; }
+.club-card:hover .cc-member-av { margin-left:-4px; }
+.cc-member-count { font-size:12px; color:var(--muted); font-weight:600; margin-left:10px; }
+
+/* Tag chips */
+.cc-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
+.cc-tag {
+  font-size:10px; font-weight:600; padding:3px 10px; border-radius:20px;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+  color:var(--muted); transition:background .2s;
+}
+.club-card:hover .cc-tag { background:rgba(124,106,247,.07); border-color:rgba(124,106,247,.15); }
+
+/* Footer */
+.cc-footer { display:flex; align-items:center; justify-content:space-between; padding-top:16px; border-top:1px solid var(--border); }
+.cc-next-event { font-size:11px; color:var(--muted); }
+.cc-next-event strong { color:var(--text); }
+.cc-join {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+  padding:7px 16px; border-radius:20px;
+  background:var(--cc-btn-bg,rgba(124,106,247,.1));
+  color:var(--cc-btn-color,var(--purple));
+  border:1px solid var(--cc-btn-border,rgba(124,106,247,.25));
+  cursor:none; transition:all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.cc-join:hover { transform:scale(1.05); filter:brightness(1.15); }
+.cc-join.joined {
+  background:rgba(74,222,128,.1); color:var(--green); border-color:rgba(74,222,128,.25);
+}
+
+/* Wide card variant */
+.club-card.wide { grid-column:span 2; }
+
+/* ══════════════════════════
+   UPCOMING EVENTS STRIP
+══════════════════════════ */
+.events-strip {
+  position:relative; z-index:2;
+  max-width:1240px; margin:0 auto;
+  padding:0 32px 48px;
+}
+.strip-title { font-family:'Fredoka One',sans-serif; font-size:26px; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+.events-row { display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none; }
+.events-row::-webkit-scrollbar { display:none; }
+.ev-card {
+  flex-shrink:0; width:240px;
+  background:var(--card); border:1.5px solid var(--border); border-radius:16px; padding:18px;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1); cursor:pointer;
+  border-left:3px solid var(--ev-color,var(--purple));
+}
+.ev-card:hover { transform:translateY(-5px); background:var(--card2); box-shadow:0 14px 40px rgba(0,0,0,.35); }
+.ev-date { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; color:var(--ev-color,var(--purple)); letter-spacing:1px; margin-bottom:8px; }
+.ev-title { font-family:'Fredoka One',sans-serif; font-size:16px; margin-bottom:6px; }
+.ev-club { font-size:11px; color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:5px; }
+.ev-meta { display:flex; gap:8px; font-size:11px; color:var(--muted); flex-wrap:wrap; }
+
+/* ══════════════════════════
+   CLUB MODAL
+══════════════════════════ */
+.modal-overlay {
+  position:fixed; inset:0; z-index:900;
+  background:rgba(8,7,18,.88); backdrop-filter:blur(14px);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal-box {
+  background:var(--paper); border:1.5px solid rgba(124,106,247,.25);
+  border-radius:24px; padding:0; width:90%; max-width:600px;
+  position:relative; overflow:hidden;
+  transform:translateY(40px) scale(.96);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 40px 100px rgba(0,0,0,.6); max-height:90vh; overflow-y:auto;
+}
+.modal-overlay.open .modal-box { transform:none; }
+.modal-header {
+  padding:36px 36px 28px;
+  background:linear-gradient(160deg,rgba(124,106,247,.1),rgba(255,77,141,.07));
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.modal-header::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--mh-accent,linear-gradient(90deg,var(--purple),var(--pink))); }
+.modal-close {
+  position:absolute; top:18px; right:18px;
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(255,255,255,.06); border:1px solid var(--border);
+  font-size:16px; cursor:pointer; color:var(--muted);
+  display:flex; align-items:center; justify-content:center;
+  transition:all .25s;
+}
+.modal-close:hover { background:rgba(255,77,141,.12); color:var(--pink); transform:rotate(90deg); }
+.mh-row { display:flex; align-items:center; gap:18px; margin-bottom:14px; }
+.mh-emoji { font-size:52px; flex-shrink:0; }
+.mh-name { font-family:'Fredoka One',sans-serif; font-size:30px; margin-bottom:4px; }
+.mh-cat { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.mh-desc { font-size:14px; font-weight:300; color:var(--muted); line-height:1.8; }
+.modal-body { padding:28px 36px 36px; }
+.mb-section { margin-bottom:24px; }
+.mb-title { font-family:'Fredoka One',sans-serif; font-size:17px; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.mb-events { display:flex; flex-direction:column; gap:8px; }
+.mb-event {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px; border-radius:12px;
+  background:rgba(255,255,255,.04); border:1px solid var(--border);
+  transition:background .2s;
+}
+.mb-event:hover { background:rgba(124,106,247,.07); }
+.mb-ev-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.mb-ev-name { font-size:13px; font-weight:600; flex:1; }
+.mb-ev-date { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); }
+.mb-members-row { display:flex; align-items:center; gap:-6px; margin-bottom:8px; }
+.mb-av { width:36px; height:36px; border-radius:50%; border:2px solid var(--paper); display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; margin-left:-8px; }
+.mb-av:first-child { margin-left:0; }
+.mb-av-more { width:36px; height:36px; border-radius:50%; border:2px solid var(--paper); background:var(--card2); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--muted); margin-left:-8px; }
+.mb-member-text { font-size:13px; color:var(--muted); margin-left:14px; }
+.mb-join-big {
+  width:100%; padding:15px; border-radius:14px; border:none; cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; font-weight:700;
+  background:linear-gradient(135deg,var(--purple),var(--pink)); color:#fff;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 6px 24px rgba(124,106,247,.4);
+}
+.mb-join-big:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(124,106,247,.55); }
+.mb-join-big.joined { background:linear-gradient(135deg,var(--green),var(--teal)); box-shadow:0 6px 24px rgba(74,222,128,.35); }
+
+/* ══════════════════════════
+   TOAST
+══════════════════════════ */
+.toast {
+  position:fixed; bottom:28px; right:28px; z-index:999;
+  background:var(--card2); border:1px solid rgba(124,106,247,.25);
+  border-radius:14px; padding:14px 18px;
+  display:flex; align-items:center; gap:10px;
+  font-size:13px; font-weight:600;
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+  transform:translateX(130%); transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.show { transform:none; }
+
+/* ══════════════════════════
+   EMPTY STATE
+══════════════════════════ */
+.empty-state {
+  grid-column:1/-1; text-align:center; padding:80px 20px;
+  display:none;
+}
+.empty-state.show { display:block; }
+.empty-emoji { font-size:64px; margin-bottom:16px; animation:emptyBounce 2s ease-in-out infinite; }
+@keyframes emptyBounce { 0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);} }
+.empty-title { font-family:'Fredoka One',sans-serif; font-size:26px; margin-bottom:8px; }
+.empty-sub { font-size:14px; color:var(--muted); font-weight:300; }
+
+/* ══════════════════════════
+   RESPONSIVE
+══════════════════════════ */
+@media(max-width:1024px){
+  .clubs-grid { grid-template-columns:repeat(2,1fr); }
+  .club-card.wide { grid-column:span 2; }
+}
+@media(max-width:768px){
+  .back-btn { top:auto; bottom:24px; left:50%; transform:translateX(-50%); }
+  .back-btn:hover { transform:translateX(-50%) translateX(-4px); }
+  nav .nav-pill { display:none; }
+  .page-hero { padding:90px 20px 40px; }
+  .filter-section,.clubs-section,.events-strip,.featured-wrap { padding-left:20px; padding-right:20px; }
+  .clubs-grid { grid-template-columns:1fr; }
+  .club-card.wide { grid-column:span 1; }
+  .ph-stats-row { gap:10px; }
+  .ph-stat { padding:14px 16px; }
+  .ps-num { font-size:24px; }
+  .featured-club { padding:32px 24px; }
+  .fc-emoji { font-size:56px; }
+  .modal-header,.modal-body { padding-left:24px; padding-right:24px; }
+}
+@media(max-width:480px){
+  .search-row { flex-direction:column; }
 }
-
-.section-title h2{
-    font-size:54px;
-    margin-bottom:14px;
-}
-
-.section-title p{
-    color:#d3d3d3;
-}
-
-/* CLUBS */
-.club-container{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:30px;
-}
-
-.club-card{
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:30px;
-    padding:30px;
-    backdrop-filter:blur(18px);
-    position:relative;
-    overflow:hidden;
-    transition:.4s;
-}
-
-.club-card:hover{
-    transform:translateY(-10px) scale(1.02);
-    box-shadow:0 15px 40px rgba(0,229,255,.12);
-}
-
-.club-banner{
-    height:160px;
-    border-radius:24px;
-    margin-bottom:24px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:55px;
-    background:linear-gradient(135deg,#00e5ff,#7a5cff,#ff4ecd);
-}
-
-.club-card h3{
-    font-size:28px;
-    margin-bottom:10px;
-}
-
-.club-card p{
-    color:#d0d0d0;
-    line-height:1.8;
-    margin-bottom:22px;
-}
-
-.club-footer{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.members{
-    color:#00e5ff;
-    font-weight:600;
-}
-
-.join-btn{
-    padding:10px 20px;
-    border:none;
-    border-radius:30px;
-    background:linear-gradient(90deg,#00e5ff,#7a5cff);
-    color:white;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.join-btn:hover{
-    transform:scale(1.05);
-}
-
-/* EVENTS */
-.events-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:30px;
-}
-
-.event-card{
-    border-radius:28px;
-    overflow:hidden;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08);
-    transition:.4s;
-}
-
-.event-card:hover{
-    transform:translateY(-8px);
-}
-
-.event-image{
-    height:220px;
-    background:linear-gradient(135deg,#00e5ff,#7a5cff,#ff4ecd);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:60px;
-}
-
-.event-content{
-    padding:26px;
-}
-
-.event-content h3{
-    margin-bottom:12px;
-}
-
-.event-content p{
-    color:#d0d0d0;
-    line-height:1.8;
-    margin-bottom:18px;
-}
-
-.event-meta{
-    display:flex;
-    justify-content:space-between;
-    color:#00e5ff;
-}
-
-/* CTA */
-.cta{
-    margin:0 8% 100px;
-    padding:80px 40px;
-    border-radius:40px;
-    text-align:center;
-    background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(122,92,255,.18));
-    border:1px solid rgba(255,255,255,.1);
-    backdrop-filter:blur(18px);
-}
-
-.cta h2{
-    font-size:52px;
-    margin-bottom:20px;
-}
-
-.cta p{
-    max-width:750px;
-    margin:auto;
-    line-height:1.9;
-    color:#d0d0d0;
-    margin-bottom:30px;
-}
-
-/* FOOTER */
-footer{
-    padding:40px 8%;
-    border-top:1px solid rgba(255,255,255,.08);
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:20px;
-}
-
-.socials{
-    display:flex;
-    gap:14px;
-}
-
-.socials a{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    background:rgba(255,255,255,.08);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    text-decoration:none;
-    transition:.3s;
-}
-
-.socials a:hover{
-    transform:translateY(-4px);
-    background:linear-gradient(135deg,#00e5ff,#7a5cff);
-}
-
-/* MOBILE */
-@media(max-width:950px){
-
-.hero{
-    flex-direction:column;
-    text-align:center;
-}
-
-.hero-text h1{
-    font-size:50px;
-}
-
-.hero-buttons{
-    justify-content:center;
-}
-
-.hero-card{
-    width:100%;
-}
-
-.nav-links{
-    display:none;
-}
-
-.section-title h2,
-.cta h2{
-    font-size:38px;
-}
-
-}
-
 </style>
 </head>
 <body>
 
-<!-- BACKGROUND -->
-<div class="background">
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-    <div class="blob blob3"></div>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<div class="bg-blobs">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
 </div>
+<div class="bg-dots"></div>
 
-<!-- NAVBAR -->
-<nav>
+<!-- ══ BACK BUTTON ══ -->
+<a href="index.html" class="back-btn" id="backBtn">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M9 1L3 7l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  Back to CampusHub
+</a>
 
-<div class="logo">CampusHub</div>
-
-<div class="nav-links">
-    <a href="#clubs">Clubs</a>
-    <a href="#events">Events</a>
-    <a href="#community">Community</a>
-    <a href="#join">Join</a>
-</div>
-
-<button class="create-btn">Create Club</button>
-
+<!-- ══ NAV ══ -->
+<nav id="navbar">
+  <a class="nav-logo" href="index.html">CampusHub</a>
+  <div class="nav-sep"></div>
+  <a class="nav-pill" href="notes.html">📚 Notes</a>
+  <a class="nav-pill active" href="#">🎭 Clubs</a>
+  <a class="nav-pill" href="#">🎉 Events</a>
+  <a class="nav-pill" href="#">🤫 Confess</a>
+  <div class="nav-sep"></div>
+  <a class="nav-cta" href="#" id="createClubBtn">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    Start a Club
+  </a>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-
-<div class="hero-text" data-aos="fade-right">
-
-<h1>
-Find Your <span>College Community</span>
-</h1>
-
-<p>
-Join clubs, meet students, attend events and build your campus network through futuristic student communities made for your college.
-</p>
-
-<div class="hero-buttons">
-    <a href="#clubs" class="primary-btn">Explore Clubs</a>
-    <a href="#events" class="secondary-btn">Upcoming Events</a>
-</div>
-
-</div>
-
-<div class="hero-card" data-aos="zoom-in">
-
-<h2>Select Your College</h2>
-
-<select class="select-box" id="collegeSelect">
-    <option value="Bankura College">Bankura College</option>
-    <option value="IIT Delhi">IIT Delhi</option>
-    <option value="St Xavier's">St Xavier's</option>
-    <option value="Tech University">Tech University</option>
-</select>
-
-<div class="stat-grid">
-
-<div class="stat-box">
-    <h3 id="clubCount">12</h3>
-    <span>Clubs</span>
-</div>
-
-<div class="stat-box">
-    <h3 id="memberCount">4.2K</h3>
-    <span>Students</span>
-</div>
-
-<div class="stat-box">
-    <h3 id="eventCount">38</h3>
-    <span>Events</span>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- CLUBS -->
-<section class="section" id="clubs">
-
-<div class="section-title" data-aos="fade-up">
-    <h2 id="collegeHeading">Bankura College Clubs</h2>
-    <p>Exclusive student communities for your campus.</p>
-</div>
-
-<div class="club-container" id="clubContainer">
-</div>
-
-</section>
-
-<!-- EVENTS -->
-<section class="section" id="events">
-
-<div class="section-title" data-aos="fade-up">
-    <h2>Trending Club Events</h2>
-    <p>Campus activities happening this week.</p>
-</div>
-
-<div class="events-grid">
-
-<div class="event-card" data-aos="zoom-in">
-    <div class="event-image">
-        <i class="fa-solid fa-code"></i>
+<!-- ══ PAGE HERO ══ -->
+<div class="page-hero">
+  <div>
+    <div class="ph-eyebrow" id="phEyebrow">
+      <span class="ey-live"></span>
+      48 Active Clubs On Campus
     </div>
+    <h1 class="ph-title" id="phTitle">
+      Find your<br><span class="line2">people.</span>
+    </h1>
+    <p class="ph-sub" id="phSub">
+      From hackathons to drama stages, robotics to photography — your campus has a club for everything. Join one. Start one. Own it.
+    </p>
+  </div>
+  <div class="ph-right" id="phRight">
+    <div class="ph-stats-row">
+      <div class="ph-stat">
+        <div class="ps-num" style="color:var(--purple);">48</div>
+        <div class="ps-label">Active Clubs</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ps-num" style="color:var(--pink);">6.2K</div>
+        <div class="ps-label">Members</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ps-num" style="color:var(--teal);">120+</div>
+        <div class="ps-label">Events / Year</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <div class="event-content">
-        <h3>National Hackathon</h3>
-        <p>
-            Collaborate with developers and create innovative solutions in 48 hours.
-        </p>
+<!-- ══ FEATURED CLUB ══ -->
+<div class="featured-wrap" id="featuredWrap">
+  <div class="featured-club" onclick="openModal('techclub')">
+    <div class="fc-emoji">🚀</div>
+    <div class="fc-badge">⭐ Club of the Month</div>
+    <div class="fc-body">
+      <div class="fc-tag">💻 Technology</div>
+      <div class="fc-title">TechClub VITV</div>
+      <div class="fc-desc">The biggest tech community on campus. Hackathons, open-source projects, workshops, and industry speaker sessions every month. 700+ members strong.</div>
+      <div class="fc-meta">
+        <div class="fc-meta-item">👥 <span style="color:var(--text);font-weight:700;">724 members</span></div>
+        <div class="fc-meta-item">📅 <span style="color:var(--teal);">Next: Annual Hackathon · Tonight</span></div>
+        <div class="fc-meta-item">🏆 <span>Best Tech Club 2024</span></div>
+        <button class="fc-join-btn" onclick="event.stopPropagation(); handleJoin(this,'TechClub VITV')">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Join Club
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <div class="event-meta">
-            <span>June 2</span>
-            <span>Main Auditorium</span>
+<!-- ══ FILTER + SEARCH ══ -->
+<div class="filter-section">
+  <div class="search-row">
+    <div class="search-box">
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.7"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search clubs by name, interest, or keyword...">
+      <button class="search-clear" id="searchClear" style="display:none">✕</button>
+    </div>
+  </div>
+  <div class="cat-pills">
+    <span class="cat-label">Category:</span>
+    <div class="cpill active" data-cat="all">All Clubs</div>
+    <div class="cpill" data-cat="Tech">💻 Tech</div>
+    <div class="cpill" data-cat="Arts">🎨 Arts</div>
+    <div class="cpill" data-cat="Sports">⚽ Sports</div>
+    <div class="cpill" data-cat="Culture">🎭 Culture</div>
+    <div class="cpill" data-cat="Social">🤝 Social</div>
+  </div>
+  <div class="results-bar">
+    <div class="results-count">Showing <span id="countDisplay">12</span> clubs</div>
+  </div>
+</div>
+
+<!-- ══ CLUBS GRID ══ -->
+<div class="clubs-section">
+  <div class="clubs-grid" id="clubsGrid">
+
+    <!-- TECHCLUB -->
+    <div class="club-card wide" data-cat="Tech" data-id="techclub"
+         style="--cc-accent:linear-gradient(90deg,var(--blue),var(--purple));--cc-glow:rgba(96,165,250,.12);--cc-icon-bg:rgba(96,165,250,.1);--cc-icon-border:rgba(96,165,250,.2);--cc-badge-bg:rgba(96,165,250,.1);--cc-badge-color:var(--blue);--cc-badge-border:rgba(96,165,250,.2);--cc-btn-bg:rgba(96,165,250,.1);--cc-btn-color:var(--blue);--cc-btn-border:rgba(96,165,250,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">🚀</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">💻 Tech</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Recruiting</div>
         </div>
+      </div>
+      <div class="cc-name">TechClub VITV</div>
+      <div class="cc-desc">The biggest tech community on campus. Hackathons, open-source projects, and monthly workshops with industry experts.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(96,165,250,.2);color:var(--blue);">S</div>
+        <div class="cc-member-av" style="background:rgba(124,106,247,.2);color:var(--purple);">R</div>
+        <div class="cc-member-av" style="background:rgba(255,77,141,.2);color:var(--pink);">A</div>
+        <div class="cc-member-av" style="background:rgba(61,255,208,.15);color:var(--teal);">P</div>
+        <div class="cc-member-av" style="background:rgba(255,225,77,.15);color:var(--yellow);">V</div>
+        <div class="cc-member-count">+719 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Hackathon</div><div class="cc-tag">Open Source</div>
+        <div class="cc-tag">AI/ML</div><div class="cc-tag">Web Dev</div><div class="cc-tag">Workshops</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Hackathon 2025</strong> · Tonight 7PM</div>
+        <button class="cc-join" onclick="handleJoin(this,'TechClub VITV')" style="--cc-btn-bg:rgba(96,165,250,.1);--cc-btn-color:var(--blue);--cc-btn-border:rgba(96,165,250,.25);">
+          + Join
+        </button>
+      </div>
     </div>
-</div>
 
-<div class="event-card" data-aos="zoom-in" data-aos-delay="100">
-    <div class="event-image">
-        <i class="fa-solid fa-music"></i>
-    </div>
-
-    <div class="event-content">
-        <h3>Campus Music Night</h3>
-        <p>
-            Open mic, DJ battles and student band performances under neon lights.
-        </p>
-
-        <div class="event-meta">
-            <span>June 5</span>
-            <span>Central Lawn</span>
+    <!-- DRAMA CLUB -->
+    <div class="club-card" data-cat="Arts" data-id="dramaclub"
+         style="--cc-accent:linear-gradient(90deg,var(--pink),var(--orange));--cc-glow:rgba(255,77,141,.1);--cc-icon-bg:rgba(255,77,141,.1);--cc-icon-border:rgba(255,77,141,.2);--cc-badge-bg:rgba(255,77,141,.1);--cc-badge-color:var(--pink);--cc-badge-border:rgba(255,77,141,.2);--cc-btn-bg:rgba(255,77,141,.1);--cc-btn-color:var(--pink);--cc-btn-border:rgba(255,77,141,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">🎭</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">🎨 Arts</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Recruiting</div>
         </div>
+      </div>
+      <div class="cc-name">DramaClub</div>
+      <div class="cc-desc">Plays, improv nights, monologue competitions. If you love the stage — or just want to overcome stage fright — this is home.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(255,77,141,.2);color:var(--pink);">N</div>
+        <div class="cc-member-av" style="background:rgba(255,140,66,.2);color:var(--orange);">K</div>
+        <div class="cc-member-av" style="background:rgba(124,106,247,.2);color:var(--purple);">D</div>
+        <div class="cc-member-count">+87 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Theatre</div><div class="cc-tag">Improv</div><div class="cc-tag">Monologue</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Annual Play</strong> · Sat 6PM</div>
+        <button class="cc-join" onclick="handleJoin(this,'DramaClub')">+ Join</button>
+      </div>
     </div>
-</div>
 
-<div class="event-card" data-aos="zoom-in" data-aos-delay="200">
-    <div class="event-image">
-        <i class="fa-solid fa-trophy"></i>
-    </div>
-
-    <div class="event-content">
-        <h3>Esports Championship</h3>
-        <p>
-            Valorant and BGMI campus showdown with live audience and leaderboard.
-        </p>
-
-        <div class="event-meta">
-            <span>June 9</span>
-            <span>Tech Hall</span>
+    <!-- ECOSOC -->
+    <div class="club-card" data-cat="Social" data-id="ecosoc"
+         style="--cc-accent:linear-gradient(90deg,var(--green),var(--teal));--cc-glow:rgba(74,222,128,.1);--cc-icon-bg:rgba(74,222,128,.1);--cc-icon-border:rgba(74,222,128,.2);--cc-badge-bg:rgba(74,222,128,.1);--cc-badge-color:var(--green);--cc-badge-border:rgba(74,222,128,.2);--cc-btn-bg:rgba(74,222,128,.1);--cc-btn-color:var(--green);--cc-btn-border:rgba(74,222,128,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">🌱</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">🤝 Social</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Open</div>
         </div>
+      </div>
+      <div class="cc-name">EcoSoc</div>
+      <div class="cc-desc">Environmental sustainability drives, tree-planting campaigns, zero-waste workshops and campus green audit every semester.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(74,222,128,.2);color:var(--green);">M</div>
+        <div class="cc-member-av" style="background:rgba(61,255,208,.15);color:var(--teal);">L</div>
+        <div class="cc-member-av" style="background:rgba(74,222,128,.2);color:var(--green);">A</div>
+        <div class="cc-member-count">+142 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Sustainability</div><div class="cc-tag">Environment</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Tree Drive</strong> · Sun 8AM</div>
+        <button class="cc-join" onclick="handleJoin(this,'EcoSoc')" style="--cc-btn-bg:rgba(74,222,128,.1);--cc-btn-color:var(--green);--cc-btn-border:rgba(74,222,128,.25);">+ Join</button>
+      </div>
     </div>
+
+    <!-- SPORTS CLUB -->
+    <div class="club-card" data-cat="Sports" data-id="sportsclub"
+         style="--cc-accent:linear-gradient(90deg,var(--yellow),var(--orange));--cc-glow:rgba(255,225,77,.1);--cc-icon-bg:rgba(255,225,77,.1);--cc-icon-border:rgba(255,225,77,.2);--cc-badge-bg:rgba(255,225,77,.1);--cc-badge-color:var(--yellow);--cc-badge-border:rgba(255,225,77,.2);--cc-btn-bg:rgba(255,225,77,.1);--cc-btn-color:var(--yellow);--cc-btn-border:rgba(255,225,77,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">⚽</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">⚽ Sports</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Open</div>
+        </div>
+      </div>
+      <div class="cc-name">SportsClub</div>
+      <div class="cc-desc">Football, cricket, badminton, and chess — inter-college tournaments, fitness bootcamps and weekend sport leagues for all levels.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(255,225,77,.2);color:var(--yellow);">J</div>
+        <div class="cc-member-av" style="background:rgba(255,140,66,.2);color:var(--orange);">T</div>
+        <div class="cc-member-av" style="background:rgba(74,222,128,.15);color:var(--green);">R</div>
+        <div class="cc-member-av" style="background:rgba(255,225,77,.2);color:var(--yellow);">H</div>
+        <div class="cc-member-count">+310 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Football</div><div class="cc-tag">Cricket</div><div class="cc-tag">Badminton</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Inter-College</strong> · Next Mon</div>
+        <button class="cc-join" onclick="handleJoin(this,'SportsClub')" style="--cc-btn-bg:rgba(255,225,77,.1);--cc-btn-color:var(--yellow);--cc-btn-border:rgba(255,225,77,.25);">+ Join</button>
+      </div>
+    </div>
+
+    <!-- PHOTOGRAPHY CLUB -->
+    <div class="club-card" data-cat="Arts" data-id="photoclub"
+         style="--cc-accent:linear-gradient(90deg,var(--purple),var(--pink));--cc-glow:rgba(124,106,247,.12);--cc-icon-bg:rgba(124,106,247,.1);--cc-icon-border:rgba(124,106,247,.2);--cc-badge-bg:rgba(124,106,247,.1);--cc-badge-color:var(--purple);--cc-badge-border:rgba(124,106,247,.2);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">📸</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">🎨 Arts</div>
+          <div class="cc-closed-badge">Waitlist</div>
+        </div>
+      </div>
+      <div class="cc-name">Shutter Society</div>
+      <div class="cc-desc">Street photography walks, portrait sessions, dark-room printing, and the campus's most aesthetic Instagram page — all yours.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(124,106,247,.2);color:var(--purple);">Z</div>
+        <div class="cc-member-av" style="background:rgba(255,77,141,.2);color:var(--pink);">F</div>
+        <div class="cc-member-av" style="background:rgba(124,106,247,.2);color:var(--purple);">W</div>
+        <div class="cc-member-count">+65 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Photography</div><div class="cc-tag">Film</div><div class="cc-tag">Editing</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Campus Walk</strong> · Fri 5PM</div>
+        <button class="cc-join" onclick="handleJoin(this,'Shutter Society')">+ Waitlist</button>
+      </div>
+    </div>
+
+    <!-- ROBOTICS CLUB -->
+    <div class="club-card" data-cat="Tech" data-id="robotics"
+         style="--cc-accent:linear-gradient(90deg,var(--teal),var(--blue));--cc-glow:rgba(61,255,208,.1);--cc-icon-bg:rgba(61,255,208,.1);--cc-icon-border:rgba(61,255,208,.2);--cc-badge-bg:rgba(61,255,208,.08);--cc-badge-color:var(--teal);--cc-badge-border:rgba(61,255,208,.2);--cc-btn-bg:rgba(61,255,208,.08);--cc-btn-color:var(--teal);--cc-btn-border:rgba(61,255,208,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">🤖</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">💻 Tech</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Open</div>
+        </div>
+      </div>
+      <div class="cc-name">RoboVIT</div>
+      <div class="cc-desc">Build autonomous robots, compete in national robotics championships, and push the limits of embedded systems and computer vision.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(61,255,208,.15);color:var(--teal);">C</div>
+        <div class="cc-member-av" style="background:rgba(96,165,250,.2);color:var(--blue);">E</div>
+        <div class="cc-member-av" style="background:rgba(61,255,208,.15);color:var(--teal);">B</div>
+        <div class="cc-member-count">+156 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Robotics</div><div class="cc-tag">CV</div><div class="cc-tag">Embedded</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Robocon Build</strong> · Wed</div>
+        <button class="cc-join" onclick="handleJoin(this,'RoboVIT')" style="--cc-btn-bg:rgba(61,255,208,.08);--cc-btn-color:var(--teal);--cc-btn-border:rgba(61,255,208,.25);">+ Join</button>
+      </div>
+    </div>
+
+    <!-- MUSIC CLUB -->
+    <div class="club-card" data-cat="Culture" data-id="musicclub"
+         style="--cc-accent:linear-gradient(90deg,var(--orange),var(--yellow));--cc-glow:rgba(255,140,66,.1);--cc-icon-bg:rgba(255,140,66,.1);--cc-icon-border:rgba(255,140,66,.2);--cc-badge-bg:rgba(255,140,66,.1);--cc-badge-color:var(--orange);--cc-badge-border:rgba(255,140,66,.2);--cc-btn-bg:rgba(255,140,66,.1);--cc-btn-color:var(--orange);--cc-btn-border:rgba(255,140,66,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">🎵</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">🎭 Culture</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Auditions Open</div>
+        </div>
+      </div>
+      <div class="cc-name">Resonance</div>
+      <div class="cc-desc">Band jams, open-mics, classical and contemporary — Resonance is the heartbeat of campus. All genres, all instruments, all welcome.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(255,140,66,.2);color:var(--orange);">G</div>
+        <div class="cc-member-av" style="background:rgba(255,225,77,.15);color:var(--yellow);">I</div>
+        <div class="cc-member-av" style="background:rgba(255,140,66,.2);color:var(--orange);">S</div>
+        <div class="cc-member-count">+193 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Band</div><div class="cc-tag">Open-Mic</div><div class="cc-tag">Classical</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Open Mic Night</strong> · Fri 7PM</div>
+        <button class="cc-join" onclick="handleJoin(this,'Resonance')" style="--cc-btn-bg:rgba(255,140,66,.1);--cc-btn-color:var(--orange);--cc-btn-border:rgba(255,140,66,.25);">+ Audition</button>
+      </div>
+    </div>
+
+    <!-- DEBATE CLUB -->
+    <div class="club-card" data-cat="Culture" data-id="debateclub"
+         style="--cc-accent:linear-gradient(90deg,var(--pink),var(--purple));--cc-glow:rgba(255,77,141,.1);--cc-icon-bg:rgba(255,77,141,.1);--cc-icon-border:rgba(255,77,141,.2);--cc-badge-bg:rgba(255,77,141,.1);--cc-badge-color:var(--pink);--cc-badge-border:rgba(255,77,141,.2);--cc-btn-bg:rgba(255,77,141,.1);--cc-btn-color:var(--pink);--cc-btn-border:rgba(255,77,141,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">🗣️</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">🎭 Culture</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Open</div>
+        </div>
+      </div>
+      <div class="cc-name">DebSoc</div>
+      <div class="cc-desc">British Parliamentary, MUN, elocution, extempore — if you have opinions and love arguing (who doesn't?), DebSoc is calling.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(255,77,141,.2);color:var(--pink);">O</div>
+        <div class="cc-member-av" style="background:rgba(124,106,247,.2);color:var(--purple);">Y</div>
+        <div class="cc-member-av" style="background:rgba(255,77,141,.2);color:var(--pink);">U</div>
+        <div class="cc-member-count">+98 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">BP Debate</div><div class="cc-tag">MUN</div><div class="cc-tag">Elocution</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Inter-Uni Debate</strong> · Thu</div>
+        <button class="cc-join" onclick="handleJoin(this,'DebSoc')" style="--cc-btn-bg:rgba(255,77,141,.1);--cc-btn-color:var(--pink);--cc-btn-border:rgba(255,77,141,.25);">+ Join</button>
+      </div>
+    </div>
+
+    <!-- ENTREPRENEURSHIP CELL -->
+    <div class="club-card" data-cat="Social" data-id="ecell"
+         style="--cc-accent:linear-gradient(90deg,var(--yellow),var(--green));--cc-glow:rgba(255,225,77,.1);--cc-icon-bg:rgba(255,225,77,.1);--cc-icon-border:rgba(255,225,77,.2);--cc-badge-bg:rgba(255,225,77,.1);--cc-badge-color:var(--yellow);--cc-badge-border:rgba(255,225,77,.2);--cc-btn-bg:rgba(255,225,77,.1);--cc-btn-color:var(--yellow);--cc-btn-border:rgba(255,225,77,.25);">
+      <div class="cc-top">
+        <div class="cc-emoji-wrap">💡</div>
+        <div class="cc-badges">
+          <div class="cc-cat-badge">🤝 Social</div>
+          <div class="cc-open-badge"><div class="cc-open-dot"></div>Open</div>
+        </div>
+      </div>
+      <div class="cc-name">E-Cell VIT</div>
+      <div class="cc-desc">Startup ideation, pitch competitions, founder talks, and incubator access. Turn your campus idea into a real company.</div>
+      <div class="cc-members">
+        <div class="cc-member-av" style="background:rgba(255,225,77,.2);color:var(--yellow);">X</div>
+        <div class="cc-member-av" style="background:rgba(74,222,128,.15);color:var(--green);">Q</div>
+        <div class="cc-member-av" style="background:rgba(255,225,77,.2);color:var(--yellow);">H</div>
+        <div class="cc-member-count">+240 members</div>
+      </div>
+      <div class="cc-tags">
+        <div class="cc-tag">Startups</div><div class="cc-tag">Pitching</div><div class="cc-tag">VC</div>
+      </div>
+      <div class="cc-footer">
+        <div class="cc-next-event">📅 <strong>Pitch Day</strong> · Next Sat</div>
+        <button class="cc-join" onclick="handleJoin(this,'E-Cell VIT')" style="--cc-btn-bg:rgba(255,225,77,.1);--cc-btn-color:var(--yellow);--cc-btn-border:rgba(255,225,77,.25);">+ Join</button>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-emoji">🔍</div>
+      <div class="empty-title">No clubs found</div>
+      <p class="empty-sub">Try a different category or search term — or start your own club!</p>
+    </div>
+
+  </div>
 </div>
 
+<!-- ══ UPCOMING EVENTS STRIP ══ -->
+<div class="events-strip" id="eventsStrip">
+  <div class="strip-title">📅 Upcoming Club Events</div>
+  <div class="events-row">
+    <div class="ev-card" style="--ev-color:var(--blue);">
+      <div class="ev-date">TODAY · 7:00 PM</div>
+      <div class="ev-title">Annual Hackathon 2025</div>
+      <div class="ev-club">🚀 TechClub VITV</div>
+      <div class="ev-meta"><span>📍 Main Auditorium</span><span>👥 128 going</span></div>
+    </div>
+    <div class="ev-card" style="--ev-color:var(--pink);">
+      <div class="ev-date">SAT · 6:00 PM</div>
+      <div class="ev-title">Annual Drama Night</div>
+      <div class="ev-club">🎭 DramaClub</div>
+      <div class="ev-meta"><span>📍 Open Air Theatre</span><span>👥 64 going</span></div>
+    </div>
+    <div class="ev-card" style="--ev-color:var(--orange);">
+      <div class="ev-date">FRI · 7:00 PM</div>
+      <div class="ev-title">Open Mic Night</div>
+      <div class="ev-club">🎵 Resonance</div>
+      <div class="ev-meta"><span>📍 Amphitheatre</span><span>👥 89 going</span></div>
+    </div>
+    <div class="ev-card" style="--ev-color:var(--green);">
+      <div class="ev-date">SUN · 8:00 AM</div>
+      <div class="ev-title">Campus Tree Drive</div>
+      <div class="ev-club">🌱 EcoSoc</div>
+      <div class="ev-meta"><span>📍 North Lawn</span><span>👥 47 going</span></div>
+    </div>
+    <div class="ev-card" style="--ev-color:var(--teal);">
+      <div class="ev-date">WED · 4:00 PM</div>
+      <div class="ev-title">Robocon Build Sprint</div>
+      <div class="ev-club">🤖 RoboVIT</div>
+      <div class="ev-meta"><span>📍 Innovation Lab</span><span>👥 33 going</span></div>
+    </div>
+    <div class="ev-card" style="--ev-color:var(--yellow);">
+      <div class="ev-date">THU · 5:00 PM</div>
+      <div class="ev-title">Inter-University Debate</div>
+      <div class="ev-club">🗣️ DebSoc</div>
+      <div class="ev-meta"><span>📍 Seminar Hall</span><span>👥 52 going</span></div>
+    </div>
+    <div class="ev-card" style="--ev-color:var(--purple);">
+      <div class="ev-date">FRI · 5:00 PM</div>
+      <div class="ev-title">Campus Photography Walk</div>
+      <div class="ev-club">📸 Shutter Society</div>
+      <div class="ev-meta"><span>📍 Main Gate</span><span>👥 28 going</span></div>
+    </div>
+  </div>
 </div>
 
-</section>
-
-<!-- CTA -->
-<section class="cta" id="join" data-aos="fade-up">
-
-<h2>Create Your Own Club</h2>
-
-<p>
-Start a coding community, gaming clan, startup circle or photography society and grow your campus network inside CampusHub.
-</p>
-
-<button class="create-btn">Launch Club</button>
-
-</section>
-
-<!-- FOOTER -->
-<footer id="community">
-
-<p>© 2026 CampusHub • Student Communities Reimagined</p>
-
-<div class="socials">
-    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-    <a href="#"><i class="fa-brands fa-discord"></i></a>
-    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+<!-- ══ CLUB MODAL ══ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header" id="modalHeader" style="--mh-accent:linear-gradient(90deg,var(--purple),var(--pink));">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="mh-row">
+        <div class="mh-emoji" id="mEmoji">🚀</div>
+        <div>
+          <div class="mh-name" id="mName">TechClub VITV</div>
+          <div class="mh-cat" id="mCat">💻 Technology</div>
+        </div>
+      </div>
+      <div class="mh-desc" id="mDesc">The biggest tech community on campus.</div>
+    </div>
+    <div class="modal-body">
+      <div class="mb-section">
+        <div class="mb-title">📅 Upcoming Events</div>
+        <div class="mb-events" id="mEvents"></div>
+      </div>
+      <div class="mb-section">
+        <div class="mb-title">👥 Members</div>
+        <div style="display:flex;align-items:center;">
+          <div class="mb-members-row" id="mMembers"></div>
+          <div class="mb-member-text" id="mMemberText"></div>
+        </div>
+      </div>
+      <div class="mb-section">
+        <div class="mb-title">🏷️ What we do</div>
+        <div id="mTags" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
+      <button class="mb-join-big" id="mJoinBtn" onclick="handleModalJoin()">
+        + Join Club
+      </button>
+    </div>
+  </div>
 </div>
 
-</footer>
-
-<!-- AOS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-<!-- ANIME JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast">
+  <span id="toastIcon">🎉</span>
+  <span id="toastMsg">Joined successfully!</span>
+</div>
 
 <script>
+/* ── CURSOR ── */
+const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function lp(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lp);})();
+document.querySelectorAll('a,button,.club-card,.cpill,.ev-card,.ph-stat,.fc-join-btn,.back-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+});
+document.addEventListener('mousedown',()=>ring.classList.add('click'));
+document.addEventListener('mouseup',()=>ring.classList.remove('click'));
 
-AOS.init({
-    duration:1000,
-    once:true
+/* ── ENTRANCE ANIMATIONS ── */
+anime({targets:'#navbar',opacity:[0,1],translateY:[-26,0],duration:800,delay:200,easing:'easeOutElastic(1,.7)'});
+anime({targets:'#backBtn',opacity:[0,1],translateX:[-20,0],duration:600,delay:350,easing:'easeOutElastic(1,.7)'});
+
+anime.timeline({easing:'easeOutExpo'})
+  .add({targets:'#phEyebrow',opacity:[0,1],translateY:[16,0],duration:600,delay:400})
+  .add({targets:'#phTitle',opacity:[0,1],translateY:[50,0],duration:800},'-=300')
+  .add({targets:'#phSub',opacity:[0,1],translateY:[20,0],duration:600},'-=400')
+  .add({targets:'#phRight',opacity:[0,1],translateX:[30,0],duration:600},'-=500')
+  .add({targets:'#featuredWrap',opacity:[0,1],translateY:[30,0],duration:700},'-=300');
+
+/* ── CLUB CARDS REVEAL ── */
+const cardObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const allCards = [...document.querySelectorAll('.club-card:not([style*="display:none"]):not([style*="display: none"])')];
+      const idx = allCards.indexOf(e.target);
+      anime({targets:e.target,opacity:[0,1],translateY:[28,0],scale:[.97,1],
+        duration:600,delay:Math.min(idx%3,2)*80,easing:'easeOutElastic(1,.7)'});
+      cardObs.unobserve(e.target);
+    }
+  });
+},{threshold:.08});
+document.querySelectorAll('.club-card').forEach(c=>cardObs.observe(c));
+
+/* ── CARD TILT ── */
+document.querySelectorAll('.club-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*10;
+    const y=((e.clientY-r.top)/r.height-.5)*10;
+    card.style.transform=`translateY(-8px) perspective(700px) rotateX(${-y}deg) rotateY(${x}deg) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    anime({targets:card,rotateX:0,rotateY:0,translateY:0,scale:1,duration:500,easing:'easeOutElastic(1,.7)'});
+  });
+  card.addEventListener('click',function(){
+    const id = this.dataset.id;
+    if(id) openModal(id);
+  });
 });
 
-const colleges = {
+/* ── FILTER ── */
+let activeCat = 'all';
+document.querySelectorAll('.cpill').forEach(pill=>{
+  pill.addEventListener('click',()=>{
+    document.querySelectorAll('.cpill').forEach(p=>p.classList.remove('active'));
+    pill.classList.add('active');
+    activeCat = pill.dataset.cat;
+    filterClubs();
+    anime({targets:pill,scale:[1,1.1,1],duration:300,easing:'easeOutElastic(1,.6)'});
+  });
+});
 
-    "Bankura College": {
-        clubs:[
-            {
-                icon:'fa-code',
-                name:'Dev Society',
-                desc:'Coding community for hackathons, AI projects and app development.',
-                members:'1.4K Members'
-            },
-            {
-                icon:'fa-music',
-                name:'Music Crew',
-                desc:'Open mic sessions, campus concerts and music collaborations.',
-                members:'900 Members'
-            },
-            {
-                icon:'fa-gamepad',
-                name:'Gaming Arena',
-                desc:'Competitive gaming tournaments and esports communities.',
-                members:'1.1K Members'
-            }
-        ],
-        stats:{
-            clubs:'12',
-            members:'4.2K',
-            events:'38'
-        }
-    },
+document.getElementById('searchInput').addEventListener('input',e=>{
+  document.getElementById('searchClear').style.display = e.target.value ? 'block' : 'none';
+  filterClubs();
+});
+document.getElementById('searchClear').addEventListener('click',()=>{
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').style.display = 'none';
+  filterClubs();
+});
 
-    "IIT Delhi": {
-        clubs:[
-            {
-                icon:'fa-robot',
-                name:'AI Robotics Club',
-                desc:'Machine learning, robotics and automation workshops.',
-                members:'2.8K Members'
-            },
-            {
-                icon:'fa-lightbulb',
-                name:'Startup Circle',
-                desc:'Pitch ideas, build startups and meet founders.',
-                members:'1.7K Members'
-            },
-            {
-                icon:'fa-microchip',
-                name:'Tech Innovators',
-                desc:'Deep tech projects and innovation challenges.',
-                members:'1.3K Members'
-            }
-        ],
-        stats:{
-            clubs:'20',
-            members:'8.1K',
-            events:'62'
-        }
-    },
-
-    "St Xavier's": {
-        clubs:[
-            {
-                icon:'fa-camera',
-                name:'Photography Club',
-                desc:'Street photography, editing and visual storytelling.',
-                members:'700 Members'
-            },
-            {
-                icon:'fa-film',
-                name:'Film Makers',
-                desc:'Short films, reels and campus media production.',
-                members:'850 Members'
-            },
-            {
-                icon:'fa-palette',
-                name:'Creative Arts',
-                desc:'Digital art, sketching and creative design workshops.',
-                members:'650 Members'
-            }
-        ],
-        stats:{
-            clubs:'10',
-            members:'3.5K',
-            events:'24'
-        }
-    },
-
-    "Tech University": {
-        clubs:[
-            {
-                icon:'fa-globe',
-                name:'Cyber Club',
-                desc:'Cybersecurity challenges and ethical hacking sessions.',
-                members:'1.1K Members'
-            },
-            {
-                icon:'fa-vr-cardboard',
-                name:'AR VR Club',
-                desc:'Virtual reality experiences and futuristic projects.',
-                members:'750 Members'
-            },
-            {
-                icon:'fa-chart-line',
-                name:'Finance League',
-                desc:'Stock market discussions and business competitions.',
-                members:'980 Members'
-            }
-        ],
-        stats:{
-            clubs:'16',
-            members:'5.4K',
-            events:'41'
-        }
+function filterClubs(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const cards = [...document.querySelectorAll('.club-card:not(.empty-state)')];
+  let shown = 0;
+  cards.forEach(card=>{
+    const cat = card.dataset.cat || '';
+    const text = card.textContent.toLowerCase();
+    const matchCat = activeCat==='all' || cat===activeCat;
+    const matchQ = !q || text.includes(q);
+    const show = matchCat && matchQ;
+    card.style.display = show ? '' : 'none';
+    if(show){
+      shown++;
+      anime({targets:card,opacity:[0,1],translateY:[16,0],scale:[.97,1],duration:380,delay:shown*45,easing:'easeOutExpo'});
     }
-
-};
-
-const clubContainer = document.getElementById('clubContainer');
-const collegeSelect = document.getElementById('collegeSelect');
-const collegeHeading = document.getElementById('collegeHeading');
-
-function renderCollege(collegeName){
-
-    const data = colleges[collegeName];
-
-    clubContainer.innerHTML = '';
-
-    collegeHeading.innerText = collegeName + ' Clubs';
-
-    document.getElementById('clubCount').innerText = data.stats.clubs;
-    document.getElementById('memberCount').innerText = data.stats.members;
-    document.getElementById('eventCount').innerText = data.stats.events;
-
-    data.clubs.forEach(club => {
-
-        clubContainer.innerHTML += `
-        <div class="club-card" data-aos="fade-up">
-
-            <div class="club-banner">
-                <i class="fa-solid ${club.icon}"></i>
-            </div>
-
-            <h3>${club.name}</h3>
-
-            <p>${club.desc}</p>
-
-            <div class="club-footer">
-                <span class="members">${club.members}</span>
-                <button class="join-btn">Join Club</button>
-            </div>
-
-        </div>
-        `;
-
-    });
-
+  });
+  document.getElementById('countDisplay').textContent = shown;
+  document.getElementById('emptyState').classList.toggle('show', shown===0);
 }
 
-renderCollege('Bankura College');
+/* ── JOIN HANDLER ── */
+const joined = new Set();
+function handleJoin(btn, name){
+  event.stopPropagation();
+  if(joined.has(name)){
+    showToast('👋',`Left ${name}`);
+    joined.delete(name);
+    btn.textContent = '+ Join';
+    btn.classList.remove('joined');
+  } else {
+    joined.add(name);
+    btn.innerHTML = '✓ Joined';
+    btn.classList.add('joined');
+    anime({targets:btn,scale:[1,.88,1.1,1],duration:450,easing:'easeOutElastic(1,.5)'});
+    showToast('🎉',`Joined ${name}! Welcome aboard 🚀`);
+  }
+}
 
-collegeSelect.addEventListener('change', function(){
-    renderCollege(this.value);
+/* ── MODAL DATA ── */
+const clubData = {
+  techclub:{
+    emoji:'🚀', name:'TechClub VITV', cat:'💻 Technology',
+    desc:'The biggest tech community on campus. Hackathons, open-source projects, workshops, and industry speaker sessions every month. 700+ members strong.',
+    events:[
+      {color:'var(--blue)',name:'Annual Hackathon 2025',date:'Today · 7PM'},
+      {color:'var(--purple)',name:'AI/ML Workshop',date:'Mon · 4PM'},
+      {color:'var(--teal)',name:'Open Source Sprint',date:'Next Wed'}
+    ],
+    members:['S','R','A','P','V'],
+    memberColors:['rgba(96,165,250,.2)','rgba(124,106,247,.2)','rgba(255,77,141,.2)','rgba(61,255,208,.15)','rgba(255,225,77,.15)'],
+    memberTextColors:['var(--blue)','var(--purple)','var(--pink)','var(--teal)','var(--yellow)'],
+    memberCount:'724 members',
+    tags:['Hackathon','Open Source','AI/ML','Web Dev','Workshops','DSA'],
+    accent:'linear-gradient(90deg,var(--blue),var(--purple))'
+  },
+  dramaclub:{
+    emoji:'🎭', name:'DramaClub', cat:'🎨 Arts & Theatre',
+    desc:'Plays, improv nights, monologue competitions. If you love the stage — or just want to overcome stage fright — this is home.',
+    events:[
+      {color:'var(--pink)',name:'Annual Drama Night',date:'Sat · 6PM'},
+      {color:'var(--orange)',name:'Improv Workshop',date:'Wed · 5PM'},
+    ],
+    members:['N','K','D'],
+    memberColors:['rgba(255,77,141,.2)','rgba(255,140,66,.2)','rgba(124,106,247,.2)'],
+    memberTextColors:['var(--pink)','var(--orange)','var(--purple)'],
+    memberCount:'90 members',
+    tags:['Theatre','Improv','Monologue','Direction','Scriptwriting'],
+    accent:'linear-gradient(90deg,var(--pink),var(--orange))'
+  },
+  ecosoc:{
+    emoji:'🌱', name:'EcoSoc', cat:'🤝 Social & Environment',
+    desc:'Environmental sustainability drives, tree-planting campaigns, zero-waste workshops and campus green audit every semester.',
+    events:[
+      {color:'var(--green)',name:'Campus Tree Drive',date:'Sun · 8AM'},
+      {color:'var(--teal)',name:'Zero Waste Workshop',date:'Fri · 3PM'},
+    ],
+    members:['M','L','A'],
+    memberColors:['rgba(74,222,128,.2)','rgba(61,255,208,.15)','rgba(74,222,128,.2)'],
+    memberTextColors:['var(--green)','var(--teal)','var(--green)'],
+    memberCount:'142 members',
+    tags:['Sustainability','Environment','Zero Waste','Tree Planting'],
+    accent:'linear-gradient(90deg,var(--green),var(--teal))'
+  },
+  sportsclub:{
+    emoji:'⚽', name:'SportsClub', cat:'⚽ Sports & Fitness',
+    desc:'Football, cricket, badminton, and chess — inter-college tournaments, fitness bootcamps and weekend sport leagues for all levels.',
+    events:[
+      {color:'var(--yellow)',name:'Inter-College Tournament',date:'Next Mon'},
+      {color:'var(--orange)',name:'Fitness Bootcamp',date:'Sat · 6AM'},
+    ],
+    members:['J','T','R','H'],
+    memberColors:['rgba(255,225,77,.2)','rgba(255,140,66,.2)','rgba(74,222,128,.15)','rgba(255,225,77,.2)'],
+    memberTextColors:['var(--yellow)','var(--orange)','var(--green)','var(--yellow)'],
+    memberCount:'310 members',
+    tags:['Football','Cricket','Badminton','Chess','Fitness'],
+    accent:'linear-gradient(90deg,var(--yellow),var(--orange))'
+  },
+  photoclub:{
+    emoji:'📸', name:'Shutter Society', cat:'🎨 Arts & Photography',
+    desc:'Street photography walks, portrait sessions, dark-room printing, and the campus\'s most aesthetic Instagram page — all yours.',
+    events:[
+      {color:'var(--purple)',name:'Campus Photography Walk',date:'Fri · 5PM'},
+      {color:'var(--pink)',name:'Portrait Session',date:'Sun · 3PM'},
+    ],
+    members:['Z','F','W'],
+    memberColors:['rgba(124,106,247,.2)','rgba(255,77,141,.2)','rgba(124,106,247,.2)'],
+    memberTextColors:['var(--purple)','var(--pink)','var(--purple)'],
+    memberCount:'65 members',
+    tags:['Photography','Film','Editing','Portraits','Street'],
+    accent:'linear-gradient(90deg,var(--purple),var(--pink))'
+  },
+  robotics:{
+    emoji:'🤖', name:'RoboVIT', cat:'💻 Tech & Robotics',
+    desc:'Build autonomous robots, compete in national robotics championships, and push the limits of embedded systems and computer vision.',
+    events:[
+      {color:'var(--teal)',name:'Robocon Build Sprint',date:'Wed · 4PM'},
+      {color:'var(--blue)',name:'CV Workshop',date:'Thu · 5PM'},
+    ],
+    members:['C','E','B'],
+    memberColors:['rgba(61,255,208,.15)','rgba(96,165,250,.2)','rgba(61,255,208,.15)'],
+    memberTextColors:['var(--teal)','var(--blue)','var(--teal)'],
+    memberCount:'156 members',
+    tags:['Robotics','Computer Vision','Embedded','Arduino','Robocon'],
+    accent:'linear-gradient(90deg,var(--teal),var(--blue))'
+  },
+  musicclub:{
+    emoji:'🎵', name:'Resonance', cat:'🎭 Culture & Music',
+    desc:'Band jams, open-mics, classical and contemporary — Resonance is the heartbeat of campus. All genres, all instruments, all welcome.',
+    events:[
+      {color:'var(--orange)',name:'Open Mic Night',date:'Fri · 7PM'},
+      {color:'var(--yellow)',name:'Band Auditions',date:'Sat · 11AM'},
+    ],
+    members:['G','I','S'],
+    memberColors:['rgba(255,140,66,.2)','rgba(255,225,77,.15)','rgba(255,140,66,.2)'],
+    memberTextColors:['var(--orange)','var(--yellow)','var(--orange)'],
+    memberCount:'193 members',
+    tags:['Band','Open-Mic','Classical','Contemporary','Guitar','Vocals'],
+    accent:'linear-gradient(90deg,var(--orange),var(--yellow))'
+  },
+  debateclub:{
+    emoji:'🗣️', name:'DebSoc', cat:'🎭 Culture & Debate',
+    desc:'British Parliamentary, MUN, elocution, extempore — if you have opinions and love arguing, DebSoc is calling.',
+    events:[
+      {color:'var(--pink)',name:'Inter-University Debate',date:'Thu · 5PM'},
+      {color:'var(--purple)',name:'MUN Prep Session',date:'Tue · 4PM'},
+    ],
+    members:['O','Y','U'],
+    memberColors:['rgba(255,77,141,.2)','rgba(124,106,247,.2)','rgba(255,77,141,.2)'],
+    memberTextColors:['var(--pink)','var(--purple)','var(--pink)'],
+    memberCount:'98 members',
+    tags:['BP Debate','MUN','Elocution','Extempore','Public Speaking'],
+    accent:'linear-gradient(90deg,var(--pink),var(--purple))'
+  },
+  ecell:{
+    emoji:'💡', name:'E-Cell VIT', cat:'🤝 Social & Entrepreneurship',
+    desc:'Startup ideation, pitch competitions, founder talks, and incubator access. Turn your campus idea into a real company.',
+    events:[
+      {color:'var(--yellow)',name:'Startup Pitch Day',date:'Next Sat'},
+      {color:'var(--green)',name:'Founder Talk Series',date:'Wed · 6PM'},
+    ],
+    members:['X','Q','H'],
+    memberColors:['rgba(255,225,77,.2)','rgba(74,222,128,.15)','rgba(255,225,77,.2)'],
+    memberTextColors:['var(--yellow)','var(--green)','var(--yellow)'],
+    memberCount:'240 members',
+    tags:['Startups','Pitching','VC Talks','Incubator','Business'],
+    accent:'linear-gradient(90deg,var(--yellow),var(--green))'
+  }
+};
+
+let currentModalClub = null;
+function openModal(id){
+  const d = clubData[id];
+  if(!d) return;
+  currentModalClub = id;
+
+  document.getElementById('mEmoji').textContent = d.emoji;
+  document.getElementById('mName').textContent = d.name;
+  document.getElementById('mCat').textContent = d.cat;
+  document.getElementById('mDesc').textContent = d.desc;
+  document.getElementById('modalHeader').style.setProperty('--mh-accent', d.accent);
+
+  const evHTML = d.events.map(ev=>
+    `<div class="mb-event">
+      <div class="mb-ev-dot" style="background:${ev.color};"></div>
+      <div class="mb-ev-name">${ev.name}</div>
+      <div class="mb-ev-date">${ev.date}</div>
+    </div>`
+  ).join('');
+  document.getElementById('mEvents').innerHTML = evHTML;
+
+  const avHTML = d.members.map((m,i)=>
+    `<div class="mb-av" style="background:${d.memberColors[i]};color:${d.memberTextColors[i]};">${m}</div>`
+  ).join('');
+  document.getElementById('mMembers').innerHTML = avHTML +
+    `<div class="mb-av-more">+${parseInt(d.memberCount)-d.members.length}</div>`;
+  document.getElementById('mMemberText').textContent = d.memberCount;
+
+  const tagHTML = d.tags.map(t=>`<span class="cc-tag" style="font-size:12px;padding:5px 12px;">${t}</span>`).join('');
+  document.getElementById('mTags').innerHTML = tagHTML;
+
+  const joinBtn = document.getElementById('mJoinBtn');
+  if(joined.has(d.name)){
+    joinBtn.textContent = '✓ Already Joined';
+    joinBtn.classList.add('joined');
+  } else {
+    joinBtn.textContent = '+ Join Club';
+    joinBtn.classList.remove('joined');
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleModalJoin(){
+  const d = clubData[currentModalClub];
+  if(!d) return;
+  const btn = document.getElementById('mJoinBtn');
+  if(joined.has(d.name)){
+    joined.delete(d.name);
+    btn.textContent = '+ Join Club';
+    btn.classList.remove('joined');
+    showToast('👋',`Left ${d.name}`);
+  } else {
+    joined.add(d.name);
+    btn.textContent = '✓ Joined!';
+    btn.classList.add('joined');
+    anime({targets:btn,scale:[1,.9,1.05,1],duration:500,easing:'easeOutElastic(1,.5)'});
+    showToast('🎉',`Joined ${d.name}! Welcome 🚀`);
+    // Update grid card buttons
+    document.querySelectorAll('.cc-join').forEach(b=>{
+      if(b.closest('.club-card') && b.closest('.club-card').dataset.id === currentModalClub){
+        b.innerHTML = '✓ Joined';
+        b.classList.add('joined');
+      }
+    });
+  }
+}
+
+document.getElementById('modalOverlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modalOverlay')) closeModal();
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ── TOAST ── */
+function showToast(icon,msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{
+  const nav = document.getElementById('navbar');
+  nav.style.background = window.scrollY>30 ? 'rgba(8,7,18,.92)' : 'rgba(18,17,36,.78)';
 });
 
-anime({
-    targets:'.blob',
-    translateX:function(){
-        return anime.random(-40,40);
-    },
-    translateY:function(){
-        return anime.random(-40,40);
-    },
-    duration:4000,
-    direction:'alternate',
-    easing:'easeInOutSine',
-    loop:true
+/* ── BUTTON RIPPLE ── */
+document.querySelectorAll('.nav-cta,.fc-join-btn,.mb-join-big').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    const r=document.createElement('span'),rect=this.getBoundingClientRect(),s=Math.max(rect.width,rect.height)*2;
+    r.style.cssText=`position:absolute;border-radius:50%;background:rgba(255,255,255,.2);width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px;pointer-events:none;animation:rp .5s ease-out forwards;`;
+    this.style.position='relative';this.style.overflow='hidden';this.appendChild(r);setTimeout(()=>r.remove(),600);
+  });
 });
-
-anime({
-    targets:'.hero-text h1 span',
-    scale:[0.8,1],
-    opacity:[0,1],
-    duration:1500,
-    easing:'easeOutElastic(1,.6)'
-});
-
-anime({
-    targets:'.club-card',
-    translateY:[50,0],
-    opacity:[0,1],
-    delay:anime.stagger(120),
-    duration:1200,
-    easing:'easeOutExpo'
-});
-
+const rs=document.createElement('style');rs.textContent='@keyframes rp{to{transform:scale(2.5);opacity:0;}}';document.head.appendChild(rs);
 </script>
-
 </body>
 </html>
