@@ -845,7 +845,7 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
       <div class="modal-tab" id="tabLoginSignup" onclick="openModal('signup'); closeModal('login');">Sign Up</div>
     </div>
     <div class="modal-field">
-      <label>College Email</label>
+      <label>Email/Phone Number</label>
       <input type="email" placeholder="yourname@college.edu">
     </div>
     <div class="modal-field">
@@ -875,8 +875,12 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
       <input type="text" placeholder="Your name">
     </div>
     <div class="modal-field">
-      <label>College Email</label>
+      <label>Your Email</label>
       <input type="email" placeholder="yourname@college.edu">
+    </div>
+    <div class="modal-field">
+      <label>Your Phone Number</label>
+      <input type="phone number" placeholder="xxxxx xxxxx">
     </div>
     <div class="modal-field">
       <label>Password</label>
@@ -1112,7 +1116,7 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;">
             <div><div class="b-count" style="color:var(--teal);">12K+</div><div class="b-count-label">Notes shared</div></div>
-            <a href="notes.html" class="b-cta" style="--b-color:var(--teal);">Open Library →</a>
+            <a href="note.html" class="b-cta" style="--b-color:var(--teal);">Open Library →</a>
           </div>
         </div>
       </div>
@@ -1126,7 +1130,7 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
           <div style="flex:1;background:rgba(255,225,77,.07);border:1px solid rgba(255,225,77,.15);border-radius:10px;padding:10px;text-align:center;font-size:12px;"><div style="font-size:20px;margin-bottom:4px;">🔑</div>Keys · Found</div>
           <div style="flex:1;background:rgba(255,77,141,.07);border:1px solid rgba(255,77,141,.15);border-radius:10px;padding:10px;text-align:center;font-size:12px;"><div style="font-size:20px;margin-bottom:4px;">💙</div>AirPods · Lost</div>
         </div>
-        <a href="#" class="b-cta" style="--b-color:var(--yellow);">View Board →</a>
+        <a href="lost & found.html" class="b-cta" style="--b-color:var(--yellow);">View Board →</a>
       </div>
 
       <!-- EVENTS -->
@@ -1140,18 +1144,43 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
         </div>
       </div>
 
-      <!-- CLUBS -->
-      <div class="bento b-clubs rev d3" style="--b-accent:linear-gradient(90deg,var(--purple),var(--teal));--b-glow:rgba(124,106,247,.12);--b-color:var(--purple);--b-dashed:rgba(124,106,247,.3);">
-        <div class="b-icon" style="background:rgba(124,106,247,.1);">🎭</div>
-        <div class="b-title">Clubs</div>
-        <div class="b-desc">Join clubs, post announcements, grow your circle.</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
-          <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(124,106,247,.1);color:var(--purple);">TechClub</span>
-          <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,77,141,.1);color:var(--pink);">DramaClub</span>
-          <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(61,255,208,.08);color:var(--teal);">EcoSoc</span>
-          <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,140,66,.08);color:var(--orange);">SportsClub</span>
-        </div>
-      </div>
+     <!-- CLUBS -->
+<a href="club.html" style="text-decoration:none;color:inherit;">
+  <div class="bento b-clubs rev d3"
+    style="--b-accent:linear-gradient(90deg,var(--purple),var(--teal));
+    --b-glow:rgba(124,106,247,.12);
+    --b-color:var(--purple);
+    --b-dashed:rgba(124,106,247,.3);
+    cursor:pointer;">
+
+    <div class="b-icon" style="background:rgba(124,106,247,.1);">🎭</div>
+
+    <div class="b-title">Clubs</div>
+
+    <div class="b-desc">
+      Join clubs, post announcements, grow your circle.
+    </div>
+
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+      <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(124,106,247,.1);color:var(--purple);">
+        TechClub
+      </span>
+
+      <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,77,141,.1);color:var(--pink);">
+        DramaClub
+      </span>
+
+      <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(61,255,208,.08);color:var(--teal);">
+        EcoSoc
+      </span>
+
+      <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,140,66,.08);color:var(--orange);">
+        SportsClub
+      </span>
+    </div>
+
+  </div>
+</a>
 
       <!-- MARKETPLACE -->
       <div class="bento b-market rev d4" style="--b-accent:linear-gradient(90deg,var(--green),var(--teal));--b-glow:rgba(74,222,128,.1);--b-color:var(--green);--b-dashed:rgba(74,222,128,.3);">
@@ -1179,15 +1208,38 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
       </div>
 
       <!-- CONFESSIONS -->
-      <div class="bento b-confess rev d6" style="--b-accent:linear-gradient(90deg,var(--pink),var(--purple));--b-glow:rgba(255,77,141,.12);--b-color:var(--pink);--b-dashed:rgba(255,77,141,.3);">
-        <div class="b-icon" style="background:rgba(255,77,141,.1);">🤫</div>
-        <div class="b-title">Confessions</div>
-        <div class="b-desc">100% anonymous. Completely unhinged. Deeply relatable.</div>
-        <div class="confess-preview">
-          <div class="cp-item">"I've been attending the wrong lecture for 3 weeks. The prof thinks I'm his most dedicated student." ❤️ 847</div>
-          <div class="cp-item">"The canteen chicken has been 'special' for 3 years. I think it's a government experiment." ❤️ 1.2K</div>
-        </div>
+<a href="confessions.html" style="text-decoration:none;color:inherit;">
+
+  <div class="bento b-confess rev d6"
+    style="--b-accent:linear-gradient(90deg,var(--pink),var(--purple));
+    --b-glow:rgba(255,77,141,.12);
+    --b-color:var(--pink);
+    --b-dashed:rgba(255,77,141,.3);
+    cursor:pointer;">
+
+    <div class="b-icon" style="background:rgba(255,77,141,.1);">🤫</div>
+
+    <div class="b-title">Confessions</div>
+
+    <div class="b-desc">
+      100% anonymous. Completely unhinged. Deeply relatable.
+    </div>
+
+    <div class="confess-preview">
+      <div class="cp-item">
+        "I've been attending the wrong lecture for 3 weeks.
+        The prof thinks I'm his most dedicated student." ❤️ 847
       </div>
+
+      <div class="cp-item">
+        "The canteen chicken has been 'special' for 3 years.
+        I think it's a government experiment." ❤️ 1.2K
+      </div>
+    </div>
+
+  </div>
+
+</a>
 
       <!-- CAMPUS CHAT — NEW -->
       <div class="bento b-chat rev" style="--b-accent:linear-gradient(90deg,var(--purple),var(--teal));--b-glow:rgba(124,106,247,.15);--b-color:var(--purple);--b-dashed:rgba(124,106,247,.3);">
@@ -1200,7 +1252,7 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
               <div class="chat-online-dot"></div>
               <span>248 students online now</span>
             </div>
-            <a href="#" class="b-cta" style="margin-top:14px;display:inline-flex;">Open Chat →</a>
+            <a href="chatting.html" class="b-cta" style="margin-top:14px;display:inline-flex;">Open Chat →</a>
           </div>
           <div style="flex:1; min-width:0;">
             <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">CS Dept · Sem 5 Group</div>
@@ -1262,7 +1314,7 @@ footer { border-top:1px solid var(--border);position:relative;z-index:2; }
           <div class="tl-step rev d1">
             <div class="tl-num-wrap"><div class="tl-num">01</div></div>
             <div class="tl-body">
-              <div class="tl-title">Sign up with your college email</div>
+              <div class="tl-title">Sign up with your email and name of College</div>
               <p class="tl-desc">Auto-verified instantly. No admin approval, no waiting. Your .edu email is your ticket in.</p>
             </div>
           </div>
